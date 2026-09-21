@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { estimateRehab, formatEuro } from '../../src/lib/pricing';
 import { trackingMap } from '../../src/data/tracking';
 import { locations } from '../../src/data/locations';
-import { buildAffiliateUrl } from '../../src/lib/affiliate';
+import { buildAffiliateUrl, resolveAffiliateDestination } from '../../src/lib/affiliate';
 import { geoSectionOrder } from '../../src/lib/location-layout';
 import { absoluteUrl, resolveSiteUrl } from '../../src/config/site.config';
 
@@ -44,7 +44,7 @@ describe('site url', () => {
     assert.equal(resolveSiteUrl('', ''), 'https://example.com');
     assert.equal(resolveSiteUrl('', 'rehabilitacionedificios.vercel.app'), 'https://rehabilitacionedificios.vercel.app');
     assert.equal(resolveSiteUrl('rehabilitacionedificios.vercel.app'), 'https://rehabilitacionedificios.vercel.app');
-    assert.equal(absoluteUrl('/images/og/default.svg', ''), 'https://example.com/images/og/default.svg');
+    assert.equal(absoluteUrl('/images/og/default.svg', 'https://example.com'), 'https://example.com/images/og/default.svg');
   });
 });
 
@@ -52,5 +52,13 @@ describe('affiliate', () => {
   it('marks destination with clickref even without Awin ids', () => {
     const url = buildAffiliateUrl('home_hero_rehabilitacion');
     assert.ok(url.includes('clickref=home_hero_rehabilitacion'));
+  });
+
+  it('does not throw when the destination env is empty', () => {
+    assert.equal(
+      resolveAffiliateDestination(''),
+      'https://www.habitissimo.es/presupuestos/reformas',
+    );
+    assert.doesNotThrow(() => new URL(resolveAffiliateDestination('not a url %')));
   });
 });
