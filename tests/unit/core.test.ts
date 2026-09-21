@@ -5,6 +5,7 @@ import { trackingMap } from '../../src/data/tracking';
 import { locations } from '../../src/data/locations';
 import { buildAffiliateUrl } from '../../src/lib/affiliate';
 import { geoSectionOrder } from '../../src/lib/location-layout';
+import { absoluteUrl, resolveSiteUrl } from '../../src/config/site.config';
 
 describe('pricing', () => {
   it('returns a rounded interval, never a closed quote', () => {
@@ -35,6 +36,15 @@ describe('locations', () => {
     assert.equal(new Set(locations.map((item) => item.layoutId)).size, 30);
     const orders = locations.map((_, index) => geoSectionOrder(index).join(','));
     assert.equal(new Set(orders).size, 30);
+  });
+});
+
+describe('site url', () => {
+  it('accepts an empty or protocol-less host without throwing', () => {
+    assert.equal(resolveSiteUrl('', ''), 'https://example.com');
+    assert.equal(resolveSiteUrl('', 'rehabilitacionedificios.vercel.app'), 'https://rehabilitacionedificios.vercel.app');
+    assert.equal(resolveSiteUrl('rehabilitacionedificios.vercel.app'), 'https://rehabilitacionedificios.vercel.app');
+    assert.equal(absoluteUrl('/images/og/default.svg', ''), 'https://example.com/images/og/default.svg');
   });
 });
 

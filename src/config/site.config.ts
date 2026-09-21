@@ -1,5 +1,28 @@
 import { affiliateConfig } from './affiliate.config';
 
+function envValue(value: unknown): string {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function processEnv(key: string): string {
+  return typeof process !== 'undefined' ? envValue(process.env[key]) : '';
+}
+
+/** Always returns an origin with protocol so `new URL()` never throws on Vercel. */
+export function resolveSiteUrl(
+  configured = envValue(import.meta.env?.PUBLIC_SITE_URL) || processEnv('PUBLIC_SITE_URL'),
+  vercelHost = processEnv('VERCEL_URL'),
+): string {
+  const fallback = vercelHost ? `https://${vercelHost.replace(/^https?:\/\//i, '')}` : 'https://example.com';
+  const raw = configured || fallback;
+  const href = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+  try {
+    return new URL(href).origin;
+  } catch {
+    return 'https://example.com';
+  }
+}
+
 export const siteConfig = {
   brand: {
     name: 'Rehabilita tu Edificio',
@@ -13,7 +36,7 @@ export const siteConfig = {
   locale: 'es-ES',
   country: 'ES',
   language: 'es',
-  siteUrl: import.meta.env?.PUBLIC_SITE_URL ?? 'https://example.com',
+  siteUrl: resolveSiteUrl(),
   trailingSlash: true as const,
   contact: {
     email: import.meta.env?.PUBLIC_CONTACT_EMAIL ?? '',
@@ -44,10 +67,15 @@ export const siteConfig = {
 
 export type SiteConfig = typeof siteConfig;
 
-export function absoluteUrl(path = '/'): string {
-  const origin = siteConfig.siteUrl.replace(/\/$/, '');
+export function absoluteUrl(path = '/', origin = siteConfig.siteUrl): string {
+  const base = resolveSiteUrl(origin);
   const normalized = path.startsWith('/') ? path : `/${path}`;
-  if (normalized === '/') return `${origin}/`;
-  if (/\.[a-z0-9]+$/i.test(normalized)) return `${origin}${normalized}`;
-  return `${origin}${normalized.endsWith('/') ? normalized : `${normalized}/`}`;
+  try {
+    const url = new URL(normalized, `${base}/`);
+    if (normalized === '/') return `${url.origin}/`;
+    if (/\.[a-z0-9]+$/i.test(normalized)) return url.href;
+    return url.href.endsWith('/') ? url.href : `${url.href}/`;
+  } catch {
+    return `${base}${normalized === '/' ? '/' : normalized}`;
+  }
 }

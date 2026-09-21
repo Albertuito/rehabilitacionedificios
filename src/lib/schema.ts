@@ -1,4 +1,4 @@
-import { siteConfig } from '../config/site.config';
+import { absoluteUrl, siteConfig } from '../config/site.config';
 import { getPerson } from '../data/authors';
 
 interface JsonLd {
@@ -34,7 +34,7 @@ export function breadcrumbNode(items: { name: string; path: string }[]): Record<
       '@type': 'ListItem',
       position: index + 1,
       name: item.name,
-      item: new URL(item.path, siteConfig.siteUrl).toString(),
+      item: absoluteUrl(item.path),
     })),
   };
 }
@@ -58,7 +58,7 @@ export function articleNode(input: {
     author: { '@type': 'Person', name: author?.name ?? 'Equipo editorial' },
     publisher: { '@id': `${siteConfig.siteUrl}/#organization` },
     image: input.image,
-    mainEntityOfPage: new URL(input.path, siteConfig.siteUrl).toString(),
+    mainEntityOfPage: absoluteUrl(input.path),
   };
 }
 
@@ -70,7 +70,7 @@ export function serviceNode(input: { name: string; description: string; path: st
     provider: { '@id': `${siteConfig.siteUrl}/#organization` },
     areaServed: 'ES',
     serviceType: 'Información y acceso a profesionales de rehabilitación de edificios',
-    url: new URL(input.path, siteConfig.siteUrl).toString(),
+    url: absoluteUrl(input.path),
   };
 }
 

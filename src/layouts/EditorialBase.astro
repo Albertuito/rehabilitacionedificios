@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { siteConfig } from '../../site.config';
+import { absoluteUrl, siteConfig } from '../../site.config';
 import ConsentSheet from '../components/editorial/ConsentSheet';
 
 interface Props {
@@ -17,7 +17,7 @@ const {
   description,
   canonical,
   robots = 'index,follow',
-  ogImage = new URL('/images/og/default.svg', siteConfig.siteUrl).toString(),
+  ogImage = absoluteUrl(siteConfig.defaults.ogImage),
   jsonLd,
 } = Astro.props;
 ---
