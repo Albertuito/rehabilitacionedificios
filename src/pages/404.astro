@@ -1,0 +1,32 @@
+---
+import Base from '../components/layout/Base.astro';
+import SiteHeader from '../components/layout/SiteHeader.astro';
+import SiteFooter from '../components/layout/SiteFooter.astro';
+import AffiliateCta from '../components/conversion/AffiliateCta.astro';
+import { absoluteUrl, siteConfig } from '../config/site.config';
+---
+
+<Base
+  title={`Página no encontrada | ${siteConfig.brand.name}`}
+  description="La URL no existe. Vuelve al inicio, consulta servicios de rehabilitación o solicita presupuestos."
+  canonical={absoluteUrl('/404/')}
+  robots="noindex,nofollow"
+>
+  <SiteHeader slot="header" />
+  <main id="contenido" class="ed-container py-20">
+    <p class="ed-kicker">Error 404</p>
+    <h1 class="ed-h1">Esta página no existe</h1>
+    <p class="ed-lead">La ruta no está en el mapa del sitio. Puede ser una URL antigua de reformas de vivienda.</p>
+    <ul class="mt-8">
+      <li><a class="ed-link" href="/">Inicio</a></li>
+      <li><a class="ed-link" href="/servicios/">Tipos de rehabilitación</a></li>
+      <li><a class="ed-link" href="/provincias/">Provincias</a></li>
+      <li><a class="ed-link" href="/guias/">Guías</a></li>
+      <li><a class="ed-link" href="/calculadora/">Calculadora orientativa</a></li>
+    </ul>
+    <div class="mt-10">
+      <AffiliateCta clickref="error_404_cta" label="Solicitar presupuestos" placement="final" />
+    </div>
+  </main>
+  <SiteFooter slot="footer" />
+</Base>

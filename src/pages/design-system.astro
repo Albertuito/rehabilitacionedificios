@@ -1,0 +1,65 @@
+---
+import Base from '../components/layout/Base.astro';
+import SiteHeader from '../components/layout/SiteHeader.astro';
+import SiteFooter from '../components/layout/SiteFooter.astro';
+import { siteConfig, absoluteUrl } from '../config/site.config';
+---
+
+<Base
+  title={`Sistema de diseño | ${siteConfig.brand.name}`}
+  description="Editorial técnico-arquitectónico: tokens, retícula, tipografía y cromado de Rehabilita tu Edificio."
+  canonical={absoluteUrl('/design-system/')}
+  robots="noindex,nofollow"
+>
+  <SiteHeader slot="header" />
+  <main id="contenido" class="ed-container ed-section">
+    <p class="ed-kicker">Uso interno</p>
+    <h1 class="ed-h1">Editorial técnico-arquitectónico</h1>
+    <p class="ed-lead">
+      Identidad propia: Newsreader en titulares, Manrope en interfaz, carbón, marfil y terracota. Tailwind 4 solo como
+      motor de utilidades. Sin DaisyUI, shadcn, Tailwind UI ni plantillas de secciones.
+    </p>
+    <p>Archivos: <code>tokens.css</code>, <code>typography.css</code>, <code>utilities.css</code>, <code>content.css</code>, entrada en <code>global.css</code>.</p>
+    <dl class="ed-facts">
+      <div>
+        <dt>Carbón</dt>
+        <dd>#151918</dd>
+      </div>
+      <div>
+        <dt>Marfil</dt>
+        <dd>#F4F0E8</dd>
+      </div>
+      <div>
+        <dt>Terracota</dt>
+        <dd>#B64A2B</dd>
+      </div>
+      <div>
+        <dt>Verde grisáceo</dt>
+        <dd>#68736A</dd>
+      </div>
+    </dl>
+    <div class="ed-grid" style="margin-top:2.5rem">
+      {
+        [
+          ['Carbón', '#151918'],
+          ['Marfil', '#F4F0E8'],
+          ['Terracota', '#B64A2B'],
+          ['Sage', '#68736A'],
+          ['Bordes', '#D8D5CE'],
+        ].map(([name, hex]) => (
+          <div class="ed-col-6 ed-md-4 ed-lg-4">
+            <div style={`height:5.5rem;border:var(--rule);background:${hex}`} />
+            <p class="ed-meta">
+              {name} {hex}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+    <p style="margin-top:2.5rem">
+      <a class="ed-btn ed-btn-primary" href="/">Botón primario</a>
+      <a class="ed-btn ed-btn-ghost" href="/servicios/" style="margin-left:1rem">Botón ghost</a>
+    </p>
+  </main>
+  <SiteFooter slot="footer" />
+</Base>

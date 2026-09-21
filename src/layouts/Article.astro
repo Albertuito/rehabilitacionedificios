@@ -1,0 +1,112 @@
+---
+import Base from './Base.astro';
+import Header from '../components/global/Header.astro';
+import Footer from '../components/global/Footer.astro';
+import Breadcrumbs from '../components/global/Breadcrumbs.astro';
+import AffiliateLink from '../components/conversion/AffiliateLink.astro';
+import AnswerBlock from '../components/content/AnswerBlock.astro';
+import SourceList from '../components/content/SourceList.astro';
+import FaqList from '../components/content/FaqList.astro';
+import { seoTags } from '../lib/seo';
+import { breadcrumbNode, jsonLd, organizationNode, websiteNode } from '../lib/schema';
+
+interface Props {
+  title: string;
+  description: string;
+  h1: string;
+  path: string;
+  answer?: string;
+  crumbs: { label: string; href?: string }[];
+  sources?: string[];
+  faqs?: { question: string; answer: string }[];
+  clickref?: string;
+  ctaLabel?: string;
+  noindex?: boolean;
+  ogImage?: string;
+  extraSchema?: Record<string, unknown>[];
+  stickyClickref?: string;
+}
+
+const props = Astro.props;
+const seo = seoTags({
+  title: props.title,
+  description: props.description,
+  path: props.path,
+  noindex: props.noindex,
+  ogImage: props.ogImage,
+});
+const schema = jsonLd([
+  organizationNode(),
+  websiteNode(),
+  breadcrumbNode(props.crumbs.map((crumb) => ({ name: crumb.label, path: crumb.href ?? props.path }))),
+  ...(props.extraSchema ?? []),
+]);
+---
+
+<Base title={seo.title} description={seo.description} canonical={seo.canonical} robots={seo.robots} ogImage={seo.ogImage} jsonLd={schema}>
+  <Header slot="header" />
+  <main id="contenido">
+    {props.crumbs.length > 1 && <Breadcrumbs items={props.crumbs} />}
+    {
+      (props.h1 || props.answer) && (
+        <div class="hero-band">
+          <header class="page-hero wrap">
+            {props.h1 && <h1>{props.h1}</h1>}
+            {props.answer && <AnswerBlock text={props.answer} />}
+            {
+              props.clickref && props.ctaLabel && (
+                <div class="cta-row">
+                  <AffiliateLink clickref={props.clickref} label={props.ctaLabel} placement="hero" />
+                  <a class="btn btn-secondary" href="/calculadora/">Calcular horquilla</a>
+                </div>
+              )
+            }
+          </header>
+        </div>
+      )
+    }
+    <article class="wrap">
+      <slot />
+      {props.faqs && props.faqs.length > 0 && <FaqList items={props.faqs} />}
+      {props.sources && props.sources.length > 0 && <SourceList ids={props.sources} />}
+      <p class="disclosure">
+        Algunos enlaces son de afiliación: si solicitas presupuesto a través de ellos, podemos recibir una comisión. El
+        profesional es quien decide si compra el contacto. Esta web informa y compara; no contrata la obra.
+      </p>
+    </article>
+  </main>
+  {
+    props.stickyClickref && props.ctaLabel && (
+      <AffiliateLink
+        class="btn btn-primary sticky-cta"
+        clickref={props.stickyClickref}
+        label="Pedir presupuestos"
+        placement="sticky"
+      />
+    )
+  }
+  <Footer slot="footer" />
+</Base>
+<script>
+  const sticky = document.querySelector('.sticky-cta');
+  const onLegal = /aviso-legal|privacidad|cookies|afiliacion/.test(location.pathname);
+  if (sticky && !onLegal) {
+    const onScroll = () => {
+      const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+      sticky.classList.toggle('is-visible', scrolled > 0.25);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+  document.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    const link = target.closest('[data-event="affiliate_click"]');
+    if (link instanceof HTMLElement) {
+      window.dispatchEvent(
+        new CustomEvent('ri:affiliate_click', {
+          detail: { clickref: link.dataset.clickref, placement: link.dataset.placement },
+        }),
+      );
+    }
+  });
+</script>

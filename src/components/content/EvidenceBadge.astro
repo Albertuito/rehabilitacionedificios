@@ -1,0 +1,11 @@
+---
+import { getVerifiedEvidence } from '../../lib/evidence';
+
+interface Props {
+  evidenceId: string;
+}
+const { evidenceId } = Astro.props;
+const evidence = getVerifiedEvidence(evidenceId);
+---
+
+{evidence && <p class="muted"><strong>{evidence.publicWording}</strong></p>}

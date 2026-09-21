@@ -1,0 +1,24 @@
+---
+import { getRelatedLocations } from '../../data/locations';
+import type { LocationSlug } from '../../data/locations';
+
+interface Props {
+  slug: LocationSlug;
+}
+const { slug } = Astro.props;
+const related = getRelatedLocations(slug);
+---
+
+<section>
+  <h2>Otras localidades útiles</h2>
+  <ul>
+    {
+      related.map((location) => (
+        <li>
+          <a href={`/rehabilitacion-edificios/${location.slug}/`}>{location.name}</a>
+        </li>
+      ))
+    }
+  </ul>
+  <p><a href="/provincias/">Ver el directorio completo</a></p>
+</section>

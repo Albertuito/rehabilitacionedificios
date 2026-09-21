@@ -1,0 +1,83 @@
+---
+import { siteConfig } from '../../../site.config';
+
+interface Props {
+  overlay?: boolean;
+}
+const { overlay = false } = Astro.props;
+const path = Astro.url.pathname;
+const links = [
+  { href: '/servicios/', label: 'Servicios' },
+  { href: '/precios/', label: 'Precios' },
+  { href: '/calculadora/', label: 'Calculadora' },
+  { href: '/provincias/', label: 'Provincias' },
+  { href: '/guias/', label: 'Guías' },
+];
+---
+
+<header
+  class:list={[
+    'ed-header fixed inset-x-0 top-0 z-40 border-b border-transparent transition-colors duration-[180ms]',
+    overlay ? 'ed-header--overlay' : 'bg-paper/95 border-border',
+  ]}
+  id="cabecera"
+>
+  <div class="ed-container flex items-center justify-between gap-4 min-h-16 md:min-h-20">
+    <a href="/" class="font-serif text-[1.35rem] tracking-tight text-ink no-underline leading-none">
+      {siteConfig.brand.name}
+    </a>
+    <nav class="hidden lg:flex items-center gap-7" aria-label="Principal">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class:list={[
+              'text-[0.92rem] font-medium no-underline border-b border-transparent pb-0.5 hover:border-ink',
+              path.startsWith(link.href) && 'border-ink',
+            ]}
+            aria-current={path.startsWith(link.href) ? 'page' : undefined}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+    <div class="flex items-center gap-3">
+      <a class="ed-btn ed-btn-primary !min-h-10 !px-4 text-sm whitespace-nowrap shrink-0" href="/calculadora/">Calcular intervalo</a>
+      <button
+        class="lg:hidden border border-ink px-3 py-2 text-sm font-semibold"
+        type="button"
+        aria-expanded="false"
+        aria-controls="menu"
+        data-nav-toggle
+      >
+        Menú
+      </button>
+    </div>
+  </div>
+  <nav class="hidden border-t border-border bg-paper px-4 py-4 flex-col gap-3" id="menu" aria-label="Móvil">
+    {
+      links.map((link) => (
+        <a href={link.href} class="py-2 font-medium no-underline">
+          {link.label}
+        </a>
+      ))
+    }
+  </nav>
+</header>
+<script>
+  const header = document.getElementById('cabecera');
+  const toggle = document.querySelector('[data-nav-toggle]');
+  const menu = document.getElementById('menu');
+  toggle?.addEventListener('click', () => {
+    const open = menu?.classList.toggle('hidden') === false;
+    menu?.classList.toggle('flex', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  const onScroll = () => {
+    if (!header?.classList.contains('ed-header--overlay')) return;
+    header.classList.toggle('is-solid', window.scrollY > 12);
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+</script>

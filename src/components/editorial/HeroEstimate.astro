@@ -1,0 +1,21 @@
+---
+interface Props {
+  m2?: number;
+  clickref: string;
+}
+const { m2 = 80 } = Astro.props;
+---
+
+<form class="bg-ink text-paper p-5" data-hero-calc>
+  <p class="text-[0.7rem] tracking-[0.16em] uppercase text-sage m-0">Estimación inicial · {m2} m²</p>
+  <label class="mt-4 block text-xs uppercase tracking-wide text-paper/70">
+    Calidad
+    <select name="quality" class="mt-2 w-full min-h-11 bg-ink text-paper border border-white/25 px-3 rounded-[4px]">
+      <option value="functional">Funcional</option>
+      <option value="mid" selected>Media</option>
+      <option value="high">Alta</option>
+    </select>
+  </label>
+  <a class="ed-btn ed-btn-primary mt-4 w-full" href="#calculadora">Calcular horquilla</a>
+  <p class="mt-3 mb-0 text-[0.75rem] text-paper/60">Sin nombre ni teléfono. No es una cotización.</p>
+</form>

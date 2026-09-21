@@ -1,0 +1,26 @@
+---
+import SimplePage from '../components/layout/SimplePage.astro';
+import { siteConfig } from '../config/site.config';
+---
+
+<SimplePage
+  title={`Política de privacidad | ${siteConfig.brand.name}`}
+  description="Tratamientos reales de datos personales. La calculadora no recoge nombre, correo ni teléfono."
+  h1="Política de privacidad"
+  path="/privacidad/"
+  robots="noindex,follow"
+>
+  <p>
+    En la versión actual la calculadora y los selectores de esta web no recogen nombre, correo ni teléfono. Los datos
+    técnicos de navegación solo se miden si aceptas cookies no esenciales.
+  </p>
+  <p>
+    Si solicitas presupuesto, el formulario de contacto lo gestiona Habitissimo según su propia política. Esta
+    plataforma no opera como responsable de ese tratamiento.
+  </p>
+  <p>
+    Si más adelante se habilita un formulario propio, esta política se actualizará con responsable, base jurídica, plazos
+    y encargados reales antes de recoger esos datos.
+  </p>
+  <p>Puedes ejercer derechos a través del correo indicado en el aviso legal cuando esté configurado.</p>
+</SimplePage>

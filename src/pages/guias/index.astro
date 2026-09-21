@@ -1,0 +1,69 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../components/layout/Base.astro';
+import SiteHeader from '../../components/layout/SiteHeader.astro';
+import SiteFooter from '../../components/layout/SiteFooter.astro';
+import AffiliateCta from '../../components/conversion/AffiliateCta.astro';
+import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
+import { absoluteUrl, siteConfig } from '../../config/site.config';
+import { breadcrumbNode, jsonLd, organizationNode, websiteNode } from '../../lib/schema';
+
+const guides = (await getCollection('guides')).sort(
+  (a, b) => b.data.updatedAt.getTime() - a.data.updatedAt.getTime(),
+);
+const schema = jsonLd([
+  organizationNode(),
+  websiteNode(),
+  breadcrumbNode([
+    { name: 'Inicio', path: '/' },
+    { name: 'Guías', path: '/guias/' },
+  ]),
+]);
+---
+
+<Base
+  title={`Guías de rehabilitación de edificios | ${siteConfig.brand.name}`}
+  description="Costes, quién paga, permisos, ITE e IEE, SATE y cómo elegir empresa. Orientación fechada para comunidades de propietarios."
+  canonical={absoluteUrl('/guias/')}
+  jsonLd={schema}
+>
+  <SiteHeader slot="header" />
+  <main id="contenido">
+    <Breadcrumbs items={[{ name: 'Inicio', href: '/' }, { name: 'Guías' }]} />
+    <section class="ed-container mt-8">
+      <p class="ed-kicker">Editorial</p>
+      <h1 class="ed-h1">Guías para decidir con criterio</h1>
+      <p class="ed-lead">
+        Respuestas directas a las dudas que aparecen en una junta: precio, cuotas, licencias y diferencias entre
+        informes. No sustituyen al técnico municipal ni al administrador.
+      </p>
+      <div class="mt-8">
+        <AffiliateCta clickref="guias_hub" label="Solicitar presupuestos" placement="hub" />
+      </div>
+    </section>
+    <section class="ed-section">
+      <div class="ed-container">
+        <ul class="m-0 p-0 list-none">
+          {
+            guides.map((guide, i) => (
+              <li class:list={['ed-grid border-t border-border py-8', i === guides.length - 1 && 'border-b']}>
+                <p class="col-span-12 md:col-span-3 text-sm text-sage m-0">
+                  Revisión {guide.data.updatedAt.toISOString().slice(0, 10)}
+                </p>
+                <div class="col-span-12 md:col-span-9">
+                  <h2 class="ed-h3">
+                    <a class="no-underline hover:text-terracotta" href={guide.data.path}>
+                      {guide.data.h1}
+                    </a>
+                  </h2>
+                  <p class="mb-0">{guide.data.answer}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+  </main>
+  <SiteFooter slot="footer" />
+</Base>

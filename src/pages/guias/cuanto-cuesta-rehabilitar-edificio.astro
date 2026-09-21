@@ -1,0 +1,219 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '../../components/layout/Base.astro';
+import SiteHeader from '../../components/layout/SiteHeader.astro';
+import SiteFooter from '../../components/layout/SiteFooter.astro';
+import AffiliateCta from '../../components/conversion/AffiliateCta.astro';
+import Faq from '../../components/ui/Faq.astro';
+import Sources from '../../components/ui/Sources.astro';
+import Figure from '../../components/ui/Figure.astro';
+import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
+import { absoluteUrl } from '../../config/site.config';
+import { affiliateConfig } from '../../config/affiliate.config';
+import { getPerson } from '../../data/authors';
+import { actionBands, pricingMeta } from '../../data/pricing';
+import { articleNode, breadcrumbNode, faqNode, jsonLd, organizationNode, websiteNode } from '../../lib/schema';
+import edificio from '../../assets/rehab/edificio.jpg';
+
+const entry = await getEntry('guides', 'cuanto-cuesta-rehabilitar-edificio');
+if (!entry) throw new Error('Missing cost guide');
+const { Content } = await render(entry);
+const data = entry.data;
+const author = getPerson(data.authorId);
+const schema = jsonLd([
+  organizationNode(),
+  websiteNode(),
+  breadcrumbNode([
+    { name: 'Inicio', path: '/' },
+    { name: 'Guías', path: '/guias/' },
+    { name: data.h1, path: data.path },
+  ]),
+  articleNode({
+    headline: data.h1,
+    description: data.description,
+    path: data.path,
+    datePublished: data.publishedAt.toISOString(),
+    dateModified: data.updatedAt.toISOString(),
+    authorId: data.authorId,
+  }),
+  faqNode(data.faqs),
+]);
+const factors = [
+  'Superficie real de fachada y cubierta, no metros de vivienda.',
+  'Plantas, accesos y si hace falta andamio o plataforma.',
+  'Estado: aceptable, deteriorado o con riesgo de desprendimiento.',
+  'Sistema: recrecido, aplacado, SATE, cubierta u obra coordinada.',
+  'Licencias, ocupación de vía y residuos.',
+  'Ubicación y logística del solar.',
+];
+---
+
+<Base
+  title={data.title}
+  description={data.description}
+  canonical={absoluteUrl(data.path)}
+  jsonLd={schema}
+  publishedAt={data.publishedAt.toISOString()}
+  updatedAt={data.updatedAt.toISOString()}
+>
+  <SiteHeader slot="header" />
+  <main id="contenido" class="cost">
+    <Breadcrumbs items={[{ name: 'Inicio', href: '/' }, { name: 'Guías', href: '/guias/' }, { name: 'Coste' }]} />
+
+    <header class="ed-container cost-hero">
+      <p class="ed-kicker">Guía · actualización {data.updatedAt.toISOString().slice(0, 10)}</p>
+      <h1 class="ed-h1">{data.h1}</h1>
+      <p class="ed-lead">{data.answer}</p>
+      <p class="ed-meta">
+        {author?.name ?? 'Equipo editorial'} · {author?.role ?? 'Redacción'}. No es asesoramiento jurídico ni una cotización.
+        Las ayudas, licencias y plazos dependen del municipio o de la comunidad autónoma.
+      </p>
+    </header>
+
+    <section class="ed-section-s">
+      <div class="ed-container">
+        <div class="ed-answer">
+          <p class="ed-kicker">Respuesta directa</p>
+          <p>
+            No cites un único número. Pide medición de fachada y cubierta, plantas, medios auxiliares y estado. Un euro
+            por metro de vivienda induce a error: se paga envolvente y zonas comunes.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="ed-section band-white">
+      <div class="ed-container cost-factors">
+        <div>
+          <p class="ed-kicker">Factores</p>
+          <h2 class="ed-h2">Qué mueve el total</h2>
+        </div>
+        <ol class="ed-index">
+          {
+            factors.map((item, i) => (
+              <li>
+                <span class="ed-num">{String(i + 1).padStart(2, '0')}</span>
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <section class="ed-section">
+      <div class="ed-container">
+        <p class="ed-kicker">Bandas orientativas</p>
+        <h2 class="ed-h2">Rangos de partida, no tarifas</h2>
+        <p class="ed-meta">{pricingMeta.disclaimer} Consultados {pricingMeta.consultedAt}.</p>
+        <div class="cost-table">
+          <table class="ed-table">
+            <thead>
+              <tr>
+                <th>Actuación</th>
+                <th>Rango bajo</th>
+                <th>Rango alto</th>
+                <th>Unidad</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                Object.values(actionBands).map((band) => (
+                  <tr>
+                    <td>{band.label}</td>
+                    <td>{band.low}</td>
+                    <td>{band.high}</td>
+                    <td>{band.unit}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <Figure
+      src={edificio}
+      alt="Bloques residenciales, ejemplo de parque donde el coste se mide por envolvente y no por vivienda"
+      caption="Se paga fachada, cubierta y comunes. No el interior de cada casa."
+      credit="Unsplash"
+      bleed
+      ratio="21 / 9"
+      sizes="100vw"
+    />
+
+    <article class="ed-section">
+      <div class="ed-container cost-article">
+        <div class="ed-prose">
+          <Content />
+        </div>
+      </div>
+    </article>
+
+    <section class="band-ink">
+      <div class="ed-container ed-section cost-final">
+        <h2 class="ed-h2">Compara ofertas con la misma medición</h2>
+        <p class="ed-lead">Solicita presupuestos a empresas especializadas y contrasta partidas antes de votar en junta.</p>
+        <AffiliateCta clickref={data.clickref} label={data.ctaLabel} placement="final" />
+        <p class="ed-meta">{affiliateConfig.disclosure}</p>
+      </div>
+    </section>
+
+    <section class="ed-container">
+      <Faq items={data.faqs} />
+      <Sources ids={data.sources} />
+    </section>
+  </main>
+  <SiteFooter slot="footer" />
+</Base>
+
+<style>
+  .cost-hero {
+    padding-block: var(--space-5) var(--space-4);
+    max-width: 46rem;
+  }
+
+  .cost-factors,
+  .cost-article {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap-md);
+  }
+
+  .cost-factors > *,
+  .cost-article > * {
+    grid-column: 1 / -1;
+  }
+
+  .cost-table {
+    overflow-x: auto;
+    margin-top: 1.5rem;
+  }
+
+  .cost-final {
+    max-width: 40rem;
+  }
+
+  .cost-final .ed-lead {
+    margin-block: 1.25rem 2rem;
+  }
+
+  @media (min-width: 1024px) {
+    .cost-hero {
+      padding-block: var(--space-6);
+    }
+
+    .cost-factors > :first-child {
+      grid-column: 1 / span 4;
+    }
+
+    .cost-factors > :last-child {
+      grid-column: 6 / span 7;
+    }
+
+    .cost-article .ed-prose {
+      grid-column: 3 / span 8;
+    }
+  }
+</style>

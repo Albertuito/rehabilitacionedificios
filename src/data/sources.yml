@@ -1,0 +1,103 @@
+id: F1
+title: Programa de afiliación Habitissimo ES
+publisher: Awin
+url: https://www.awin.com/
+consultedAt: 2026-09-21
+appliesTo: [afiliacion, tracking]
+notes: CPA, porcentajes, cookie 30 días y referencias de precio del contacto. Revisar términos vigentes antes de publicar.
+
+id: F2
+title: AI features and your website
+publisher: Google Search Central
+url: https://developers.google.com/search/docs/appearance/ai-features
+consultedAt: 2026-09-21
+appliesTo: [seo, schema]
+notes: No hay requisitos técnicos especiales para AI Overviews o AI Mode.
+
+id: F3
+title: Creating helpful, reliable, people-first content
+publisher: Google Search Central
+url: https://developers.google.com/search/docs/fundamentals/creating-helpful-content
+consultedAt: 2026-09-21
+appliesTo: [contenido]
+notes: Autoría, utilidad y propósito.
+
+id: F4
+title: Spam policies for Google web search
+publisher: Google Search Central
+url: https://developers.google.com/search/docs/essentials/spam-policies
+consultedAt: 2026-09-21
+appliesTo: [geo, contenido]
+notes: Doorway abuse y scaled content abuse. Las landings geográficas deben ser únicas de verdad.
+
+id: F5
+title: Intro to structured data
+publisher: Google Search Central
+url: https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data
+consultedAt: 2026-09-21
+appliesTo: [schema]
+notes: JSON-LD debe coincidir con contenido visible.
+
+id: F6
+title: Precios y presupuestos para reformar una casa
+publisher: Habitissimo
+url: https://www.habitissimo.es/precios/reformar-casa
+consultedAt: 2026-09-21
+appliesTo: [precios, calculadora]
+notes: Referencia media 550 €/m2 y rango 460-650 €/m2. Revisar fecha antes de publicar.
+
+id: F7
+title: Guía sobre el uso de las cookies
+publisher: AEPD
+url: https://www.aepd.es/guias/guia-cookies.pdf
+consultedAt: 2026-09-21
+appliesTo: [consentimiento, legal]
+notes: Transparencia, consentimiento y retirada.
+
+id: F8
+title: Web Vitals
+publisher: web.dev
+url: https://web.dev/articles/vitals
+consultedAt: 2026-09-21
+appliesTo: [rendimiento]
+notes: LCP, INP y CLS.
+
+id: CTE
+title: Código Técnico de la Edificación
+publisher: Ministerio de Vivienda y Agenda Urbana
+url: https://www.codigotecnico.org/
+consultedAt: 2026-09-21
+appliesTo: [permisos, energetica]
+notes: Marco estatal de exigencias técnicas. No sustituye ordenanza municipal.
+
+id: LOE
+title: Ley 38/1999 de Ordenación de la Edificación
+publisher: BOE
+url: https://www.boe.es/buscar/act.php?id=BOE-A-1999-21567
+consultedAt: 2026-09-21
+appliesTo: [contrato, permisos]
+notes: Agentes, responsabilidades y garantías legales de la edificación.
+
+id: LPH
+title: Ley 49/1960 de Propiedad Horizontal
+publisher: BOE
+url: https://www.boe.es/buscar/act.php?id=BOE-A-1960-10906
+consultedAt: 2026-09-21
+appliesTo: [comunidades, quien-paga]
+notes: Mayorías y obligaciones en comunidades. No sustituye asesoramiento del administrador.
+
+id: ITE
+title: Inspección técnica de edificios (marco autonómico y municipal)
+publisher: Ministerio de Vivienda y Agenda Urbana
+url: https://www.mivau.gob.es/
+consultedAt: 2026-09-21
+appliesTo: [ite, iee]
+notes: La ITE/IEE concreta depende de comunidad autónoma y ayuntamiento. Verificar ordenanza local.
+
+id: CTE-HE
+title: CTE DB-HE Ahorro de energía
+publisher: Código Técnico de la Edificación
+url: https://www.codigotecnico.org/DocumentosCTE/AhorroEnergia.html
+consultedAt: 2026-09-21
+appliesTo: [sate, energetica]
+notes: Exigencias de envolvente. El proyecto debe interpretarlas caso a caso.

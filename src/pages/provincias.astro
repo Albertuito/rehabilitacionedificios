@@ -1,0 +1,93 @@
+---
+import Base from '../components/layout/Base.astro';
+import SiteHeader from '../components/layout/SiteHeader.astro';
+import SiteFooter from '../components/layout/SiteFooter.astro';
+import AffiliateCta from '../components/conversion/AffiliateCta.astro';
+import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
+import { absoluteUrl, siteConfig } from '../config/site.config';
+import { locations } from '../data/locations';
+import { breadcrumbNode, jsonLd, organizationNode, websiteNode } from '../lib/schema';
+
+const schema = jsonLd([
+  organizationNode(),
+  websiteNode(),
+  breadcrumbNode([
+    { name: 'Inicio', path: '/' },
+    { name: 'Provincias', path: '/provincias/' },
+  ]),
+]);
+---
+
+<Base
+  title={`Rehabilitación de edificios por provincia | ${siteConfig.brand.name}`}
+  description="Directorio de 30 ubicaciones urbanas. Consulta condicionantes locales y solicita presupuestos a profesionales de la zona."
+  canonical={absoluteUrl('/provincias/')}
+  jsonLd={schema}
+>
+  <SiteHeader slot="header" />
+  <main id="contenido">
+    <Breadcrumbs items={[{ name: 'Inicio', href: '/' }, { name: 'Provincias' }]} />
+    <section class="ed-container mt-8 ed-grid">
+      <div class="col-span-12 lg:col-span-8">
+        <p class="ed-kicker">Cobertura</p>
+        <h1 class="ed-h1">Provincias y ciudades prioritarias</h1>
+        <p class="ed-lead">
+          Cada ficha local habla del parque, el clima y los trámites de esa zona. No hay delegaciones propias: la
+          solicitud llega a profesionales a través de Habitissimo.
+        </p>
+      </div>
+      <div class="col-span-12 lg:col-span-4 lg:pt-16">
+        <AffiliateCta clickref="provincias_hub" label="Consultar empresas de mi zona" placement="hub" />
+      </div>
+    </section>
+    <section class="ed-section">
+      <div class="ed-container">
+        <ul class="m-0 p-0 list-none dir-list">
+          {
+            locations.map((item) => (
+              <li>
+                <p class="ed-kicker">{item.region}</p>
+                <h2 class="ed-h3">
+                  <a href={`/rehabilitacion-edificios/${item.slug}/`} data-geo-nav={item.slug}>
+                    {item.name}
+                  </a>
+                </h2>
+                <p class="ed-meta">{item.angle}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+  </main>
+  <SiteFooter slot="footer" />
+</Base>
+
+<style>
+  .dir-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .dir-list li {
+    border-top: var(--rule);
+    padding-block: 1.35rem;
+    max-width: none;
+  }
+
+  .dir-list li:last-child {
+    border-bottom: var(--rule);
+  }
+
+  .dir-list .ed-kicker {
+    margin-bottom: 0.4rem;
+  }
+
+  @media (min-width: 768px) {
+    .dir-list {
+      grid-template-columns: 1fr 1fr;
+      column-gap: 2.5rem;
+    }
+  }
+</style>

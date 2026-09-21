@@ -1,0 +1,17 @@
+{
+  "name": "Rehabilita tu Edificio",
+  "short_name": "Rehabilita",
+  "description": "Plataforma nacional para encontrar empresas especializadas en rehabilitación de edificios.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#F4F0E8",
+  "theme_color": "#151918",
+  "lang": "es-ES",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

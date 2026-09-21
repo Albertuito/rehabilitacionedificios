@@ -1,0 +1,4 @@
+# Claims only render if status is verified and not expired.
+# No social proof is published in v1.
+
+items: []

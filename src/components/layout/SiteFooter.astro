@@ -1,0 +1,165 @@
+---
+import { siteConfig } from '../../config/site.config';
+import { affiliateConfig } from '../../config/affiliate.config';
+import { services } from '../../data/services';
+import { locations } from '../../data/locations';
+
+const featured = locations.slice(0, 8);
+---
+
+<footer class="site-footer">
+  <div class="ed-container site-footer__grid">
+    <div class="site-footer__brand">
+      <p class="site-footer__name">{siteConfig.brand.name}</p>
+      <p class="site-footer__tagline">{siteConfig.brand.tagline}</p>
+      <p>
+        {affiliateConfig.disclosure} Esta web facilita información sobre rehabilitación de edificios y ayuda a los
+        usuarios a solicitar presupuestos a profesionales. Algunas solicitudes se completan a través de Habitissimo
+        mediante enlaces de afiliación.
+      </p>
+      <p>
+        Independencia: no ejecutamos obras, no tenemos cuadrillas ni oficinas locales, y no presentamos proyectos propios.
+      </p>
+    </div>
+    <div>
+      <p class="ed-kicker">Servicios</p>
+      <ul>
+        {services.slice(0, 6).map((item) => (
+          <li>
+            <a class="ed-link" href={item.path}>{item.navLabel}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <p class="ed-kicker">Provincias</p>
+      <ul>
+        {featured.map((item) => (
+          <li>
+            <a class="ed-link" href={`/rehabilitacion-edificios/${item.slug}/`}>{item.name}</a>
+          </li>
+        ))}
+        <li><a class="ed-link" href="/provincias/">Directorio completo</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="ed-kicker">Proyecto</p>
+      <ul>
+        <li><a class="ed-link" href="/guias/">Guías</a></li>
+        <li><a class="ed-link" href="/precios/">Precios</a></li>
+        <li><a class="ed-link" href="/calculadora/">Calculadora</a></li>
+        <li><a class="ed-link" href="/contacto/">Contacto</a></li>
+        <li><a class="ed-link" href="/afiliacion/">Afiliación</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ed-container site-footer__legal">
+    <a href="/aviso-legal/">Aviso legal</a>
+    <a href="/privacidad/">Privacidad</a>
+    <a href="/cookies/">Cookies</a>
+    <button type="button" data-open-consent>Configurar cookies</button>
+    <span>© {new Date().getFullYear()} {siteConfig.legal.legalName}</span>
+  </div>
+</footer>
+<script>
+  document.querySelector('[data-open-consent]')?.addEventListener('click', () => {
+    document.dispatchEvent(new CustomEvent('ri:open-consent'));
+  });
+</script>
+
+<style>
+  .site-footer {
+    margin-top: auto;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    padding-block: var(--space-6) var(--space-4);
+  }
+
+  .site-footer__grid {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .site-footer__name {
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    letter-spacing: -0.03em;
+    margin: 0;
+    color: var(--color-paper);
+  }
+
+  .site-footer__tagline {
+    margin: 1rem 0;
+    color: rgb(244 240 232 / 0.82);
+    max-width: 28rem;
+  }
+
+  .site-footer p {
+    color: rgb(244 240 232 / 0.7);
+    font-size: 0.9rem;
+    max-width: 36rem;
+  }
+
+  .site-footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.55rem;
+    font-size: 0.9rem;
+  }
+
+  .site-footer .ed-kicker {
+    color: #c5cdc8;
+    margin-bottom: 1rem;
+  }
+
+  .site-footer .ed-link {
+    text-decoration-color: rgb(244 240 232 / 0.28);
+  }
+
+  .site-footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    margin-top: var(--space-5);
+    padding-top: 1.75rem;
+    border-top: 1px solid rgb(244 240 232 / 0.15);
+    font-size: 0.85rem;
+    color: rgb(244 240 232 / 0.7);
+  }
+
+  .site-footer__legal a,
+  .site-footer__legal button {
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  @media (min-width: 768px) {
+    .site-footer__grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+
+    .site-footer__brand {
+      grid-column: span 5;
+    }
+
+    .site-footer__grid > div:nth-child(2) {
+      grid-column: span 2;
+    }
+
+    .site-footer__grid > div:nth-child(3) {
+      grid-column: span 3;
+    }
+
+    .site-footer__grid > div:nth-child(4) {
+      grid-column: span 2;
+    }
+  }
+</style>

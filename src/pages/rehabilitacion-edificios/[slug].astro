@@ -1,0 +1,333 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../components/layout/Base.astro';
+import SiteHeader from '../../components/layout/SiteHeader.astro';
+import SiteFooter from '../../components/layout/SiteFooter.astro';
+import AffiliateCta from '../../components/conversion/AffiliateCta.astro';
+import Faq from '../../components/ui/Faq.astro';
+import Sources from '../../components/ui/Sources.astro';
+import Figure from '../../components/ui/Figure.astro';
+import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
+import { absoluteUrl } from '../../config/site.config';
+import { affiliateConfig } from '../../config/affiliate.config';
+import { getRelatedLocations, getLocation, locations } from '../../data/locations';
+import { services } from '../../data/services';
+import { pricingMeta } from '../../data/pricing';
+import { geoSectionOrder, heroPattern, type GeoSection } from '../../lib/location-layout';
+import { breadcrumbNode, faqNode, jsonLd, organizationNode, serviceNode, websiteNode } from '../../lib/schema';
+import fachada from '../../assets/rehab/andamio.jpg';
+import edificio from '../../assets/rehab/edificio.jpg';
+import cubierta from '../../assets/rehab/cubierta.jpg';
+import detalle from '../../assets/rehab/detalle.jpg';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('locations');
+  return entries
+    .filter((entry) => entry.data.citySlug !== 'madrid')
+    .map((entry) => ({ params: { slug: entry.data.citySlug }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const data = entry.data;
+const location = getLocation(data.citySlug);
+if (!location) throw new Error(`Missing location ${data.citySlug}`);
+const related = getRelatedLocations(location.slug);
+const cityIndex = locations.findIndex((item) => item.slug === location.slug);
+const order = geoSectionOrder(cityIndex);
+const hero = heroPattern(cityIndex);
+const photos = [fachada, edificio, cubierta, detalle];
+const photo = photos[cityIndex % photos.length];
+const relatedServices = [services[cityIndex % services.length], services[(cityIndex + 3) % services.length], services[(cityIndex + 7) % services.length]];
+const schema = jsonLd([
+  organizationNode(),
+  websiteNode(),
+  breadcrumbNode([
+    { name: 'Inicio', path: '/' },
+    { name: 'Provincias', path: '/provincias/' },
+    { name: location.name, path: data.path },
+  ]),
+  serviceNode({ name: data.h1, description: data.description, path: data.path }),
+  faqNode(data.faqs),
+]);
+
+const sectionCopy: Record<GeoSection, { kicker: string; title: string; body: string }> = {
+  permits: {
+    kicker: 'Trámite',
+    title: `Licencia y vía pública en ${location.name}`,
+    body: location.permitHint,
+  },
+  climate: {
+    kicker: 'Clima',
+    title: 'Qué exige el entorno',
+    body: `Clima ${location.climate}. Eso condiciona juntas, cubiertas y cadencia de mantenimiento, no un precio único por distrito.`,
+  },
+  stock: {
+    kicker: 'Parque',
+    title: 'Cómo es el edificio tipo',
+    body: `${location.stock}. ${location.angle}.`,
+  },
+  content: { kicker: '', title: '', body: '' },
+  process: {
+    kicker: 'Proceso',
+    title: `Cómo solicitar presupuestos en ${location.name}`,
+    body: 'Describe plantas, fachada o cubierta y si hay informe técnico. Completa la solicitud en Habitissimo. Compara partidas y decide con la comunidad.',
+  },
+  photo: { kicker: '', title: '', body: '' },
+  budget: {
+    kicker: 'Presupuesto',
+    title: 'Qué mueve el importe aquí',
+    body: `${pricingMeta.disclaimer} En ${location.name} pesan accesos, andamio y ${location.angle}.`,
+  },
+  related: {
+    kicker: 'Actuaciones',
+    title: 'Servicios que más se consultan',
+    body: 'El orden lo marca el informe y la junta, no un pack comercial.',
+  },
+};
+---
+
+<Base
+  title={data.title}
+  description={data.description}
+  canonical={absoluteUrl(data.path)}
+  jsonLd={schema}
+  ogImage={absoluteUrl(`/images/og/${data.citySlug}.svg`)}
+  publishedAt={data.publishedAt.toISOString()}
+  updatedAt={data.updatedAt.toISOString()}
+>
+  <SiteHeader slot="header" />
+  <main id="contenido" class={`geo hero-${hero}`}>
+    <Breadcrumbs
+      items={[
+        { name: 'Inicio', href: '/' },
+        { name: 'Provincias', href: '/provincias/' },
+        { name: location.name },
+      ]}
+    />
+
+    {hero === 'image-first' && (
+      <Figure
+        src={photo}
+        alt={`Edificio o medio auxiliar, ejemplo de intervención en ${location.name}`}
+        caption={`Ejemplo de tipología. No es una obra propia en ${location.name}.`}
+        credit="Unsplash"
+        bleed
+        priority
+        ratio="16 / 8"
+        sizes="100vw"
+      />
+    )}
+
+    <section class="ed-container geo-hero">
+      <div class:list={['geo-hero__copy', hero === 'text-band' && 'is-panel']}>
+        <p class="ed-kicker">Rehabilitación de edificios · {location.name}</p>
+        <h1 class="ed-h1">{data.h1}</h1>
+        <p class="ed-lead">{data.answer}</p>
+        <div class="geo-hero__cta">
+          <AffiliateCta clickref={data.clickref} label={data.ctaLabel} placement="hero" location={data.citySlug} />
+          <a class="ed-link" href="/servicios/">Ver servicios</a>
+        </div>
+        <p class="ed-meta">{affiliateConfig.disclosure}</p>
+      </div>
+      {hero === 'split' && (
+        <div class="geo-hero__photo">
+          <Figure
+            src={photo}
+            alt={`Edificio o medio auxiliar, ejemplo de intervención en ${location.name}`}
+            caption={`Ejemplo de tipología. No es una obra propia en ${location.name}.`}
+            credit="Unsplash"
+            priority
+            ratio="4 / 5"
+            sizes="(min-width: 1024px) 45vw, 100vw"
+          />
+        </div>
+      )}
+    </section>
+
+    {hero === 'stack' && (
+      <div class="ed-container">
+        <Figure
+          src={photo}
+          alt={`Referencia visual de edificio en contexto urbano, no un proyecto propio en ${location.name}`}
+          caption="Imagen de contexto."
+          credit="Unsplash"
+          ratio="16 / 10"
+          sizes="100vw"
+        />
+      </div>
+    )}
+
+    {order.map((mod) => (
+      <>
+        {mod === 'content' && (
+          <section class="ed-section">
+            <div class="ed-container geo-body">
+              <div class="ed-prose">
+                <Content />
+              </div>
+            </div>
+          </section>
+        )}
+        {mod === 'photo' && hero !== 'split' && hero !== 'stack' && hero !== 'image-first' && (
+          <Figure
+            src={photo}
+            alt={`Referencia visual de edificio, no un proyecto propio en ${location.name}`}
+            caption="Imagen de contexto."
+            credit="Unsplash"
+            bleed
+            ratio={cityIndex % 2 === 0 ? '16 / 9' : '4 / 5'}
+            sizes="100vw"
+          />
+        )}
+        {mod === 'photo' && (hero === 'split' || hero === 'stack' || hero === 'image-first') && (
+          <section class={cityIndex % 2 ? 'band-white' : ''}>
+            <div class="ed-container ed-section-s">
+              <p class="ed-kicker">Ejemplo de actuación</p>
+              <p>
+                Las fotografías ilustran tipos de intervención (fachada, cubierta, andamio). No son obras ejecutadas por
+                esta plataforma en {location.name}.
+              </p>
+            </div>
+          </section>
+        )}
+        {mod === 'process' && (
+          <section class:list={['ed-section', cityIndex % 3 === 0 && 'band-ink']}>
+            <div class="ed-container">
+              <p class="ed-kicker">{sectionCopy.process.kicker}</p>
+              <h2 class="ed-h2">{sectionCopy.process.title}</h2>
+              <ol class="geo-steps">
+                <li><span class="ed-num">01</span> Describe la actuación que necesita el edificio.</li>
+                <li><span class="ed-num">02</span> Profesionales interesados de la zona pueden contactar a través de Habitissimo.</li>
+                <li><span class="ed-num">03</span> Compara presupuestos y decide libremente con la comunidad.</li>
+              </ol>
+              <AffiliateCta clickref={`${data.citySlug}_midpage`} label="Pedir una valoración" placement="mid" location={data.citySlug} />
+            </div>
+          </section>
+        )}
+        {mod !== 'content' && mod !== 'photo' && mod !== 'process' && mod !== 'related' && (
+          <section class:list={['ed-section', mod === 'stock' && cityIndex % 4 === 1 && 'band-white']}>
+            <div class="ed-container">
+              <p class="ed-kicker">{sectionCopy[mod].kicker}</p>
+              <h2 class="ed-h2">{sectionCopy[mod].title}</h2>
+              <p>{sectionCopy[mod].body}</p>
+            </div>
+          </section>
+        )}
+        {mod === 'related' && (
+          <section class="ed-container ed-section-s">
+            <p class="ed-kicker">{sectionCopy.related.kicker}</p>
+            <h2 class="ed-h2">{sectionCopy.related.title}</h2>
+            <ul class="ed-index">
+              {relatedServices.map((item, i) => (
+                <li>
+                  <span class="ed-num">{String(i + 1).padStart(2, '0')}</span>
+                  <a class="ed-link" href={item.path}>{item.name}</a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </>
+    ))}
+
+    <section class="ed-container">
+      <Faq items={data.faqs} />
+      <Sources ids={data.sources} />
+      <h2 class="ed-h3">Ubicaciones próximas</h2>
+      <ul class="geo-near">
+        {related.map((item) => (
+          <li>
+            <a class="ed-link" href={`/rehabilitacion-edificios/${item.slug}/`} data-geo-nav={item.slug}>
+              {item.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </main>
+  <SiteFooter slot="footer" />
+</Base>
+
+<style>
+  .geo-hero,
+  .geo-body {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap-md);
+    padding-top: var(--space-4);
+    align-items: end;
+  }
+
+  .geo-hero__copy,
+  .geo-hero__photo,
+  .geo-body > * {
+    grid-column: 1 / -1;
+  }
+
+  .geo-hero__cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem 1.75rem;
+    margin: 1.75rem 0 1rem;
+  }
+
+  .geo-hero__copy.is-panel {
+    background: var(--color-white);
+    border: var(--rule);
+    padding: 1.5rem;
+  }
+
+  .hero-narrow .geo-hero__copy {
+    max-width: 40rem;
+  }
+
+  .geo-steps {
+    list-style: none;
+    margin: 0 0 1.75rem;
+    padding: 0;
+    max-width: 42rem;
+  }
+
+  .geo-steps li {
+    display: grid;
+    grid-template-columns: 3.25rem 1fr;
+    gap: 0.75rem;
+    border-top: var(--rule);
+    padding-block: 1rem;
+  }
+
+  .band-ink .geo-steps li {
+    border-top-color: rgb(244 240 232 / 0.18);
+  }
+
+  .geo-near {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem 1.75rem;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-6);
+  }
+
+  @media (min-width: 1024px) {
+    .hero-split .geo-hero__copy {
+      grid-column: 1 / span 6;
+      padding-right: 1rem;
+      padding-bottom: 1.5rem;
+    }
+
+    .hero-split .geo-hero__photo {
+      grid-column: 7 / span 6;
+    }
+
+    .geo-body .ed-prose {
+      grid-column: 2 / span 8;
+    }
+
+    .geo-hero__copy.is-panel {
+      padding: 2.25rem;
+    }
+  }
+</style>

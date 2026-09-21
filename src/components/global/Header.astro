@@ -1,0 +1,51 @@
+---
+import { siteConfig } from '../../../site.config';
+
+const path = Astro.url.pathname;
+const links = [
+  { href: '/servicios/', label: 'Servicios' },
+  { href: '/precios/', label: 'Precios' },
+  { href: '/calculadora/', label: 'Calculadora' },
+  { href: '/provincias/', label: 'Provincias' },
+  { href: '/guias/', label: 'Guías' },
+];
+---
+
+<header class="site-header" id="cabecera">
+  <div class="wrap header-bar">
+    <a class="brand" href="/">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="28" height="28">
+          <rect x="1.5" y="1.5" width="29" height="29" fill="none" stroke="currentColor" stroke-width="1.75" />
+          <path d="M6 16h20M16 6v20M6 22h7V16" fill="none" stroke="currentColor" stroke-width="1.75" />
+          <rect x="20" y="6" width="6" height="6" fill="var(--action-500)" stroke="none" />
+        </svg>
+      </span>
+      <span class="brand-text">
+        <b>{siteConfig.brand.name}</b>
+        <small>Rehabilitación de edificios</small>
+      </span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu" data-nav-toggle>
+      Menú
+    </button>
+    <nav class="site-nav" id="menu" aria-label="Principal">
+      {
+        links.map((link) => (
+          <a href={link.href} aria-current={path.startsWith(link.href) ? 'page' : undefined}>
+            {link.label}
+          </a>
+        ))
+      }
+      <a class="btn btn-primary nav-cta" href="/calculadora/">Calcular</a>
+    </nav>
+  </div>
+</header>
+<script>
+  const header = document.getElementById('cabecera');
+  const toggle = document.querySelector('[data-nav-toggle]');
+  toggle?.addEventListener('click', () => {
+    const open = header?.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+</script>

@@ -1,0 +1,29 @@
+---
+import SimplePage from '../components/layout/SimplePage.astro';
+import { siteConfig } from '../config/site.config';
+---
+
+<SimplePage
+  title={`Aviso legal | ${siteConfig.brand.name}`}
+  description="Identificación del editor, objeto del sitio y alojamiento de la plataforma de rehabilitación de edificios."
+  h1="Aviso legal"
+  path="/aviso-legal/"
+  robots="noindex,follow"
+>
+  <p>
+    Esta página usa placeholders hasta que existan dominio, razón social y datos de contacto reales. Sustitúyelos en
+    <code>src/config/site.config.ts</code> y en las variables <code>PUBLIC_*</code> antes de indexar.
+  </p>
+  <ul>
+    <li>Titular: {siteConfig.legal.legalName}</li>
+    <li>NIF/CIF: {siteConfig.legal.taxId}</li>
+    <li>Contacto: {siteConfig.contact.email || '[EMAIL DE CONTACTO]'}</li>
+    <li>Dirección: {siteConfig.contact.postalAddress || '[DIRECCIÓN]'}</li>
+    <li>Alojamiento: {siteConfig.legal.hosting}</li>
+  </ul>
+  <p>
+    El sitio ofrece información editorial sobre rehabilitación de edificios y comunidades de propietarios, y acceso a
+    profesionales de terceros a través de Habitissimo. No ejecutamos obras, no intermediamos el contrato de ejecución y
+    no tenemos delegaciones locales.
+  </p>
+</SimplePage>

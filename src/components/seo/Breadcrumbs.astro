@@ -1,0 +1,49 @@
+---
+interface Props {
+  items: { name: string; href?: string }[];
+}
+const { items } = Astro.props;
+---
+
+<nav class="crumbs ed-container" aria-label="Migas de pan">
+  <ol>
+    {
+      items.map((item, index) => (
+        <li>
+          {index > 0 && <span aria-hidden="true">/</span>}
+          {item.href ? <a href={item.href}>{item.name}</a> : <span aria-current="page">{item.name}</span>}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  .crumbs {
+    padding-top: 1.35rem;
+    font-size: 0.82rem;
+    color: var(--color-muted);
+  }
+
+  .crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.55rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .crumbs li {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    max-width: none;
+  }
+
+  .crumbs a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>

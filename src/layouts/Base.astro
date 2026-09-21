@@ -1,0 +1,59 @@
+---
+import '../styles/global.css';
+import { siteConfig } from '../../site.config';
+import ConsentManager from '../components/global/ConsentManager';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  robots?: string;
+  ogImage?: string;
+  ogType?: string;
+  jsonLd?: string;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  robots = 'index,follow',
+  ogImage = new URL('/images/og/default.svg', siteConfig.siteUrl).toString(),
+  ogType = 'website',
+  jsonLd,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="es_ES" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
+    {siteConfig.analytics.gtmId && <meta name="gtm-id" content={siteConfig.analytics.gtmId} />}
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <slot name="header" />
+    <slot />
+    <slot name="footer" />
+    <ConsentManager client:idle brand={siteConfig.brand.name} />
+    <script>
+      import '../scripts/tracking';
+    </script>
+  </body>
+</html>

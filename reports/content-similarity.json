@@ -1,0 +1,81 @@
+{
+  "duplicates": [],
+  "closest": [
+    {
+      "a": "src\\content\\locations\\girona.mdx",
+      "b": "src\\content\\locations\\granada.mdx",
+      "score": 0.01368421052631579
+    },
+    {
+      "a": "src\\content\\locations\\pamplona.mdx",
+      "b": "src\\content\\locations\\toledo.mdx",
+      "score": 0.012565445026178011
+    },
+    {
+      "a": "src\\content\\locations\\granada.mdx",
+      "b": "src\\content\\locations\\toledo.mdx",
+      "score": 0.008447729672650475
+    },
+    {
+      "a": "src\\content\\locations\\pamplona.mdx",
+      "b": "src\\content\\locations\\zaragoza.mdx",
+      "score": 0.008088978766430738
+    },
+    {
+      "a": "src\\content\\locations\\oviedo.mdx",
+      "b": "src\\content\\locations\\valladolid.mdx",
+      "score": 0.007782101167315175
+    },
+    {
+      "a": "src\\content\\locations\\tarragona.mdx",
+      "b": "src\\content\\locations\\toledo.mdx",
+      "score": 0.007470651013874066
+    },
+    {
+      "a": "src\\content\\locations\\granada.mdx",
+      "b": "src\\content\\locations\\vigo.mdx",
+      "score": 0.007322175732217573
+    },
+    {
+      "a": "src\\content\\locations\\cadiz.mdx",
+      "b": "src\\content\\locations\\tarragona.mdx",
+      "score": 0.006349206349206349
+    },
+    {
+      "a": "src\\content\\locations\\girona.mdx",
+      "b": "src\\content\\locations\\vigo.mdx",
+      "score": 0.006276150627615063
+    },
+    {
+      "a": "src\\content\\locations\\cordoba.mdx",
+      "b": "src\\content\\locations\\vitoria-gasteiz.mdx",
+      "score": 0.005313496280552604
+    },
+    {
+      "a": "src\\content\\locations\\girona.mdx",
+      "b": "src\\content\\locations\\marbella.mdx",
+      "score": 0.005268703898840885
+    },
+    {
+      "a": "src\\content\\locations\\girona.mdx",
+      "b": "src\\content\\locations\\toledo.mdx",
+      "score": 0.005268703898840885
+    },
+    {
+      "a": "src\\content\\locations\\cadiz.mdx",
+      "b": "src\\content\\locations\\salamanca.mdx",
+      "score": 0.005257623554153523
+    },
+    {
+      "a": "src\\content\\locations\\cadiz.mdx",
+      "b": "src\\content\\locations\\granada.mdx",
+      "score": 0.00522466039707419
+    },
+    {
+      "a": "src\\content\\locations\\pamplona.mdx",
+      "b": "src\\content\\locations\\vitoria-gasteiz.mdx",
+      "score": 0.005197505197505198
+    }
+  ],
+  "tooSimilar": []
+}

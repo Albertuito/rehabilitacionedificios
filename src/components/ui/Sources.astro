@@ -1,0 +1,41 @@
+---
+interface Props {
+  ids: string[];
+}
+const catalog: Record<string, { title: string; url: string; consultedAt: string }> = {
+  F1: { title: 'Awin · Programa Habitissimo ES', url: 'https://www.awin.com/', consultedAt: '2026-09-21' },
+  F7: { title: 'AEPD · Guía de cookies', url: 'https://www.aepd.es/guias/guia-cookies.pdf', consultedAt: '2026-09-21' },
+  CTE: { title: 'Código Técnico de la Edificación', url: 'https://www.codigotecnico.org/', consultedAt: '2026-09-21' },
+  'CTE-HE': { title: 'CTE DB-HE Ahorro de energía', url: 'https://www.codigotecnico.org/DocumentosCTE/AhorroEnergia.html', consultedAt: '2026-09-21' },
+  LPH: { title: 'Ley de Propiedad Horizontal', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-1960-10906', consultedAt: '2026-09-21' },
+  ITE: { title: 'Marco de inspección técnica de edificios', url: 'https://www.mivau.gob.es/', consultedAt: '2026-09-21' },
+  LOE: { title: 'Ley de Ordenación de la Edificación', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-1999-21567', consultedAt: '2026-09-21' },
+};
+const { ids } = Astro.props;
+const sources = ids.map((id) => ({ id, ...catalog[id] })).filter((item) => item.title);
+---
+
+<section class="sources" aria-labelledby="fuentes">
+  <h2 class="ed-h3" id="fuentes">Fuentes consultadas</h2>
+  <ul>
+    {
+      sources.map((source) => (
+        <li>
+          <a class="ed-link" href={source.url} rel="noopener">{source.title}</a> · consulta {source.consultedAt}
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .sources {
+    border-top: var(--rule);
+    padding-top: 2.25rem;
+    margin-bottom: var(--space-5);
+  }
+
+  .sources ul {
+    padding-left: 1.15rem;
+  }
+</style>

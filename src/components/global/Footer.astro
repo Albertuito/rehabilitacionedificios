@@ -1,0 +1,43 @@
+---
+import { siteConfig } from '../../../site.config';
+---
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <p class="footer-brand">{siteConfig.brand.name}</p>
+      <p class="footer-tagline">{siteConfig.brand.tagline}</p>
+      <p>Plataforma nacional de rehabilitación de edificios. Informamos y comparamos; no ejecutamos obras ni tenemos oficinas locales.</p>
+    </div>
+    <div>
+      <h2>Decidir</h2>
+      <ul>
+        <li><a href="/calculadora/">Calculadora</a></li>
+        <li><a href="/precios/">Precios</a></li>
+        <li><a href="/servicios/">Servicios</a></li>
+        <li><a href="/guias/cuanto-cuesta-rehabilitar-edificio/">Coste de rehabilitar</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Proyecto</h2>
+      <ul>
+        <li><a href="/contacto/">Contacto</a></li>
+        <li><a href="/afiliacion/">Afiliación</a></li>
+        <li><a href="/provincias/">Provincias</a></li>
+        <li><a href="/guias/">Guías</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap legal-strip">
+    <a href="/aviso-legal/">Aviso legal</a>
+    <a href="/privacidad/">Privacidad</a>
+    <a href="/cookies/">Cookies</a>
+    <button type="button" data-open-consent class="linkish">Configurar cookies</button>
+    <span>© {new Date().getFullYear()} {siteConfig.legal.legalName}</span>
+  </div>
+</footer>
+<script>
+  document.querySelector('[data-open-consent]')?.addEventListener('click', () => {
+    document.dispatchEvent(new CustomEvent('ri:open-consent'));
+  });
+</script>

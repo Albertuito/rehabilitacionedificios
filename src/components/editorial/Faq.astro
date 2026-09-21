@@ -1,0 +1,23 @@
+---
+interface Props {
+  items: { question: string; answer: string }[];
+}
+const { items } = Astro.props;
+---
+
+<section class="ed-section pt-0" aria-labelledby="preguntas">
+  <h2 class="ed-h2" id="preguntas">Preguntas frecuentes</h2>
+  <div class="border-t border-border">
+    {
+      items.map((item, i) => (
+        <details class="border-b border-border py-5" data-event="faq_open">
+          <summary class="cursor-pointer font-semibold list-none flex gap-6">
+            <span class="text-sage tabular-nums">0{i + 1}</span>
+            <span>{item.question}</span>
+          </summary>
+          <p class="mt-4 ml-12 text-ink-soft">{item.answer}</p>
+        </details>
+      ))
+    }
+  </div>
+</section>

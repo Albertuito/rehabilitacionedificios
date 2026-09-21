@@ -1,0 +1,43 @@
+---
+import Base from '../components/layout/Base.astro';
+import SiteHeader from '../components/layout/SiteHeader.astro';
+import SiteFooter from '../components/layout/SiteFooter.astro';
+import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
+import RehabCalc from '../components/calculator/RehabCalc';
+import { absoluteUrl, siteConfig } from '../config/site.config';
+import { pricingMeta } from '../data/pricing';
+import { breadcrumbNode, jsonLd, organizationNode, websiteNode } from '../lib/schema';
+
+const schema = jsonLd([
+  organizationNode(),
+  websiteNode(),
+  breadcrumbNode([
+    { name: 'Inicio', path: '/' },
+    { name: 'Calculadora', path: '/calculadora/' },
+  ]),
+]);
+---
+
+<Base
+  title={`Calculadora de rehabilitación de edificios | ${siteConfig.brand.name}`}
+  description="Estima un intervalo orientativo según actuación, plantas, superficie, estado, provincia y andamios. Sin teléfono ni correo. El CTA abre Habitissimo."
+  canonical={absoluteUrl('/calculadora/')}
+  jsonLd={schema}
+>
+  <SiteHeader slot="header" />
+  <main id="contenido">
+    <Breadcrumbs items={[{ name: 'Inicio', href: '/' }, { name: 'Calculadora' }]} />
+    <section class="ed-container mt-8 max-w-3xl">
+      <p class="ed-kicker">Herramienta</p>
+      <h1 class="ed-h1">Calculadora orientativa de rehabilitación</h1>
+      <p class="ed-lead">
+        No pedimos nombre, correo ni teléfono. El resultado es un intervalo, nunca un presupuesto cerrado.
+        {pricingMeta.disclaimer}
+      </p>
+    </section>
+    <section class="ed-container ed-section pt-8">
+      <RehabCalc client:load clickref="calculadora_result" />
+    </section>
+  </main>
+  <SiteFooter slot="footer" />
+</Base>

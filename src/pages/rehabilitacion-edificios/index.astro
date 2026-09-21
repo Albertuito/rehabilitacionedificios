@@ -1,0 +1,72 @@
+---
+import Base from '../../components/layout/Base.astro';
+import SiteHeader from '../../components/layout/SiteHeader.astro';
+import SiteFooter from '../../components/layout/SiteFooter.astro';
+import AffiliateCta from '../../components/conversion/AffiliateCta.astro';
+import Figure from '../../components/ui/Figure.astro';
+import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
+import { absoluteUrl, siteConfig } from '../../config/site.config';
+import { locations } from '../../data/locations';
+import { breadcrumbNode, jsonLd, organizationNode, websiteNode } from '../../lib/schema';
+import edificio from '../../assets/rehab/edificio.jpg';
+
+const schema = jsonLd([
+  organizationNode(),
+  websiteNode(),
+  breadcrumbNode([
+    { name: 'Inicio', path: '/' },
+    { name: 'Rehabilitación de edificios', path: '/rehabilitacion-edificios/' },
+  ]),
+]);
+---
+
+<Base
+  title={`Rehabilitación de edificios por ciudad | ${siteConfig.brand.name}`}
+  description="Landings locales para comunidades que necesitan rehabilitar fachada, cubierta o accesos. Contenido propio por ubicación, sin sedes inventadas."
+  canonical={absoluteUrl('/rehabilitacion-edificios/')}
+  jsonLd={schema}
+>
+  <SiteHeader slot="header" />
+  <main id="contenido">
+    <Breadcrumbs items={[{ name: 'Inicio', href: '/' }, { name: 'Rehabilitación de edificios' }]} />
+    <section class="ed-container ed-grid mt-8 items-end">
+      <div class="col-span-12 lg:col-span-6">
+        <p class="ed-kicker">Directorio local</p>
+        <h1 class="ed-h1">Rehabilitación de edificios en tu ciudad</h1>
+        <p class="ed-lead">
+          El clima, el tipo de bloque y la ocupación de vía cambian el presupuesto. Elige la ubicación para leer el
+          contexto y pedir presupuestos a empresas de la zona.
+        </p>
+        <div class="mt-8">
+          <AffiliateCta clickref="rehabilitacion_edificios_hub" label="Solicitar presupuestos" placement="hub" />
+        </div>
+      </div>
+      <div class="col-span-12 lg:col-span-6">
+        <Figure
+          src={edificio}
+          alt="Bloques residenciales, ejemplo de parque donde se rehabilitan fachadas y cubiertas"
+          caption="Parque residencial de ejemplo. No representa obras propias."
+          credit="Unsplash"
+          ratio="16 / 10"
+          sizes="(min-width: 1024px) 45vw, 100vw"
+        />
+      </div>
+    </section>
+    <section class="ed-section">
+      <div class="ed-container columns-1 sm:columns-2 lg:columns-3 gap-x-10">
+        {
+          locations.map((item) => (
+            <p class="mb-3 break-inside-avoid">
+              <a class="ed-link" href={`/rehabilitacion-edificios/${item.slug}/`} data-geo-nav={item.slug}>
+                {item.name}
+              </a>
+              <span class="text-muted"> · {item.kind}</span>
+            </p>
+          ))
+        }
+      </div>
+      <p class="ed-container mt-10"><a class="ed-link" href="/provincias/">Ver fichas con ángulo local</a></p>
+    </section>
+  </main>
+  <SiteFooter slot="footer" />
+</Base>

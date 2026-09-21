@@ -1,0 +1,208 @@
+---
+import { siteConfig } from '../../config/site.config';
+import AffiliateCta from '../conversion/AffiliateCta.astro';
+
+const path = Astro.url.pathname;
+const links = [
+  { href: '/servicios/', label: 'Servicios' },
+  { href: '/servicios/rehabilitacion-fachadas/', label: 'Fachadas' },
+  { href: '/servicios/reparacion-cubiertas-tejados/', label: 'Cubiertas' },
+  { href: '/servicios/rehabilitacion-energetica/', label: 'Rehabilitación energética' },
+  { href: '/precios/', label: 'Precios' },
+  { href: '/provincias/', label: 'Provincias' },
+  { href: '/guias/', label: 'Guías' },
+];
+---
+
+<header class="site-header" id="cabecera">
+  <div class="ed-container site-header__bar">
+    <a href="/" class="site-header__brand">
+      {siteConfig.brand.name}
+    </a>
+    <nav class="site-header__nav" aria-label="Principal">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class:list={['site-header__link', path.startsWith(link.href) && 'is-active']}
+            aria-current={path.startsWith(link.href) ? 'page' : undefined}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+    <div class="site-header__actions">
+      <AffiliateCta clickref="header_cta" label="Solicitar presupuestos" placement="header" class="ed-btn ed-btn-primary site-header__cta" />
+      <button class="site-header__toggle" type="button" aria-expanded="false" aria-controls="menu" data-nav-toggle>
+        Menú
+      </button>
+    </div>
+  </div>
+  <nav class="site-header__drawer" id="menu" aria-label="Móvil" hidden>
+    {
+      links.map((link) => (
+        <a href={link.href} class="site-header__drawer-link">
+          {link.label}
+        </a>
+      ))
+    }
+  </nav>
+</header>
+
+<script>
+  const header = document.getElementById('cabecera');
+  const toggle = document.querySelector('[data-nav-toggle]');
+  const menu = document.getElementById('menu');
+
+  const setStuck = () => {
+    header?.classList.toggle('is-stuck', window.scrollY > 8);
+  };
+  setStuck();
+  window.addEventListener('scroll', setStuck, { passive: true });
+
+  const setOpen = (open) => {
+    if (menu) menu.hidden = !open;
+    toggle?.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (toggle) toggle.textContent = open ? 'Cerrar' : 'Menú';
+    if (open) {
+      const first = menu?.querySelector('a');
+      first instanceof HTMLElement && first.focus();
+    } else if (toggle instanceof HTMLButtonElement) {
+      toggle.focus();
+    }
+  };
+
+  toggle?.addEventListener('click', () => {
+    setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
+      setOpen(false);
+    }
+  });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: var(--color-paper);
+    border-bottom: 1px solid transparent;
+  }
+
+  .site-header.is-stuck {
+    border-bottom-color: var(--color-border);
+    box-shadow: var(--shadow-hair);
+  }
+
+  .site-header__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: var(--header-h);
+  }
+
+  .site-header__brand {
+    font-family: var(--font-serif);
+    font-size: 1.12rem;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    text-decoration: none;
+    flex-shrink: 0;
+    max-width: 11.5rem;
+  }
+
+  .site-header__nav {
+    display: none;
+    align-items: center;
+    gap: 1.15rem;
+  }
+
+  .site-header__link {
+    font-size: 0.84rem;
+    font-weight: 550;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 0.15rem;
+    white-space: nowrap;
+  }
+
+  .site-header__link:hover,
+  .site-header__link.is-active {
+    border-bottom-color: var(--color-ink);
+  }
+
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-shrink: 0;
+  }
+
+  .site-header__cta {
+    min-height: 2.5rem;
+    padding-inline: 0.9rem;
+    font-size: 0.82rem;
+    white-space: nowrap;
+  }
+
+  .site-header__toggle {
+    min-height: 2.5rem;
+    padding: 0 0.85rem;
+    border: 1px solid var(--color-ink);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    font: inherit;
+    font-size: 0.84rem;
+    font-weight: 650;
+    cursor: pointer;
+  }
+
+  .site-header__drawer {
+    border-top: var(--rule);
+    background: var(--color-paper);
+    padding: 0.5rem 1.25rem 1.25rem;
+  }
+
+  .site-header__drawer[hidden] {
+    display: none;
+  }
+
+  .site-header__drawer-link {
+    display: block;
+    padding-block: 0.85rem;
+    text-decoration: none;
+    border-bottom: var(--rule);
+    font-weight: 550;
+  }
+
+  @media (min-width: 1024px) {
+    .site-header__brand {
+      max-width: none;
+    }
+
+    .site-header__nav {
+      display: flex;
+    }
+
+    .site-header__toggle {
+      display: none;
+    }
+
+    .site-header__cta {
+      min-height: 2.65rem;
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .site-header__cta {
+      padding-inline: 0.7rem;
+      font-size: 0.75rem;
+    }
+  }
+</style>

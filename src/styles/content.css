@@ -1,0 +1,154 @@
+/* Editorial técnico-arquitectónico — prosa, tablas, figuras, formularios */
+
+.ed-prose {
+  max-width: var(--measure);
+}
+
+.ed-prose :where(h2) {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 1.15rem + 1.4vw, 2.25rem);
+  margin: 2.75rem 0 0.9rem;
+}
+
+.ed-prose :where(h3) {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  margin: 2rem 0 0.7rem;
+}
+
+.ed-prose :where(p, li) {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+.ed-prose :where(a) {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ed-prose :where(table),
+.ed-table {
+  width: 100%;
+  max-width: none;
+  border-collapse: collapse;
+  margin: 1.5rem 0 2rem;
+  font-size: 0.92rem;
+}
+
+.ed-prose :where(th, td),
+.ed-table th,
+.ed-table td {
+  text-align: left;
+  padding: 0.9rem 0.7rem;
+  border-bottom: var(--rule);
+  vertical-align: top;
+}
+
+.ed-prose :where(th),
+.ed-table th {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-sage);
+  font-weight: 700;
+}
+
+.ed-prose :where(strong) {
+  font-weight: 650;
+}
+
+.ed-figure {
+  margin: 0;
+}
+
+.ed-figure-frame {
+  overflow: hidden;
+  background: var(--color-border);
+}
+
+.ed-figure img,
+.ed-figure picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ed-figure figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.ed-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-weight: 650;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-sage);
+}
+
+.ed-field input,
+.ed-field select {
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 1rem;
+  min-height: 48px;
+  border: var(--rule);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  color: var(--color-ink);
+  padding: 0.5rem 0.75rem;
+}
+
+.band-ink .ed-field select,
+.band-ink .ed-field input {
+  background: #1d2220;
+  color: var(--color-paper);
+  border-color: rgb(244 240 232 / 0.22);
+}
+
+.ed-faq details {
+  border-bottom: var(--rule);
+  padding-block: 1.15rem;
+}
+
+.ed-faq summary {
+  cursor: pointer;
+  font-weight: 650;
+  display: flex;
+  gap: 1.25rem;
+  list-style: none;
+}
+
+.ed-faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.ed-faq p {
+  margin: 0.9rem 0 0 3.25rem;
+  color: var(--color-ink-soft);
+}
+
+.ed-answer {
+  border-top: var(--rule);
+  border-bottom: var(--rule);
+  padding-block: 1.35rem;
+  max-width: var(--measure);
+}
+
+details > summary {
+  list-style: none;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}

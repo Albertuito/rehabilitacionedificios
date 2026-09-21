@@ -1,0 +1,73 @@
+/* Editorial técnico-arquitectónico — tokens */
+
+:root {
+  --color-ink: #151918;
+  --color-ink-soft: #2b302e;
+  --color-paper: #f4f0e8;
+  --color-white: #ffffff;
+  --color-terracotta: #b64a2b;
+  --color-terracotta-dark: #8f351f;
+  --color-sage: #68736a;
+  --color-muted: #515754;
+  --color-border: #d8d5ce;
+  --color-focus: #215c4a;
+  --color-paper-deep: #ebe6dc;
+
+  --font-serif: "Newsreader", ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+
+  --text-body: clamp(1rem, 0.96rem + 0.18vw, 1.125rem);
+  --text-lead: clamp(1.125rem, 1.05rem + 0.35vw, 1.35rem);
+  --text-h1: clamp(2.35rem, 1.2rem + 4.6vw, 5rem);
+  --text-h2: clamp(1.75rem, 1.15rem + 2.1vw, 3.1rem);
+  --text-h3: clamp(1.35rem, 1.2rem + 0.7vw, 1.85rem);
+  --text-kicker: 0.72rem;
+  --leading-body: 1.65;
+  --leading-display: 1.08;
+  --measure: 68ch;
+  --measure-narrow: 38rem;
+
+  --space-1: 0.5rem;
+  --space-2: 0.75rem;
+  --space-3: 1.25rem;
+  --space-4: 2rem;
+  --space-5: 3.5rem;
+  --space-6: 5.5rem;
+  --space-7: 8rem;
+  --header-h: 3.65rem;
+
+  --container: 1280px;
+  --gutter: 16px;
+  --gutter-md: 24px;
+  --grid-gap: 16px;
+  --grid-gap-md: 24px;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  --shadow-hair: 0 1px 0 rgb(21 25 24 / 6%);
+  --shadow-soft: 0 8px 24px rgb(21 25 24 / 5%);
+  --rule: 1px solid var(--color-border);
+
+  --duration: 160ms;
+  --ease: ease;
+}
+
+@theme {
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Newsreader", ui-serif, Georgia, "Times New Roman", serif;
+  --color-ink: #151918;
+  --color-ink-soft: #2b302e;
+  --color-paper: #f4f0e8;
+  --color-white: #ffffff;
+  --color-terracotta: #b64a2b;
+  --color-terracotta-dark: #8f351f;
+  --color-sage: #68736a;
+  --color-border: #d8d5ce;
+  --color-muted: #515754;
+  --color-focus: #215c4a;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+}

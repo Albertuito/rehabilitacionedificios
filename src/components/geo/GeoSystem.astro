@@ -1,0 +1,14 @@
+---
+interface Props {
+  layoutId: string;
+  city: string;
+  h1: string;
+  kicker: string;
+}
+const { city, h1, kicker } = Astro.props;
+---
+
+<section aria-label={`Introducción de ${city}`}>
+  <p class="ed-kicker">{kicker}</p>
+  <h1 class="ed-h1">{h1}</h1>
+</section>

@@ -1,0 +1,104 @@
+---
+import Base from '../components/layout/Base.astro';
+import SiteHeader from '../components/layout/SiteHeader.astro';
+import SiteFooter from '../components/layout/SiteFooter.astro';
+import AffiliateCta from '../components/conversion/AffiliateCta.astro';
+import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
+import RehabCalc from '../components/calculator/RehabCalc';
+import { absoluteUrl, siteConfig } from '../config/site.config';
+import { actionBands, pricingMeta } from '../data/pricing';
+import { breadcrumbNode, jsonLd, organizationNode, websiteNode } from '../lib/schema';
+
+const schema = jsonLd([
+  organizationNode(),
+  websiteNode(),
+  breadcrumbNode([
+    { name: 'Inicio', path: '/' },
+    { name: 'Precios', path: '/precios/' },
+  ]),
+]);
+const factors = [
+  'Superficie de fachada, cubierta o patio.',
+  'Estado actual y urgencia del daño.',
+  'Accesibilidad del solar y de las viviendas.',
+  'Materiales y sistema constructivo.',
+  'Andamios u otros medios auxiliares.',
+  'Licencias y ocupación de vía.',
+  'Ubicación y logística.',
+  'Tipo de intervención (parcial o coordinada).',
+];
+---
+
+<Base
+  title={`Precios orientativos de rehabilitación | ${siteConfig.brand.name}`}
+  description="Rangos de partida para fachada, cubierta, SATE y otras actuaciones de edificio. No son cotizaciones: cada comunidad necesita medición."
+  canonical={absoluteUrl('/precios/')}
+  jsonLd={schema}
+>
+  <SiteHeader slot="header" />
+  <main id="contenido">
+    <Breadcrumbs items={[{ name: 'Inicio', href: '/' }, { name: 'Precios' }]} />
+    <section class="ed-container mt-8">
+      <p class="ed-kicker">Guía de costes</p>
+      <h1 class="ed-h1">Precios orientativos, no un reclamo</h1>
+      <p class="ed-lead">{pricingMeta.disclaimer}</p>
+      <p>
+        Consultados {pricingMeta.consultedAt}. Revisión prevista {pricingMeta.reviewAfter}. Amplía el contexto en
+        <a class="ed-link" href="/guias/cuanto-cuesta-rehabilitar-edificio/">cuánto cuesta rehabilitar un edificio</a>.
+      </p>
+    </section>
+    <section class="ed-section pt-8">
+      <div class="ed-container overflow-x-auto">
+        <table class="ed-table">
+          <thead>
+            <tr>
+              <th>Actuación</th>
+              <th>Rango bajo</th>
+              <th>Rango alto</th>
+              <th>Unidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              Object.values(actionBands).map((band) => (
+                <tr>
+                  <td>{band.label}</td>
+                  <td>{band.low}</td>
+                  <td>{band.high}</td>
+                  <td>{band.unit}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+        <p class="text-sm text-muted mt-4">{pricingMeta.disclaimer}</p>
+        <div class="mt-8">
+          <AffiliateCta clickref="precios_table" label="Pedir una valoración" placement="table" />
+        </div>
+      </div>
+    </section>
+    <section class="ed-section pt-0">
+      <div class="ed-container ed-grid">
+        <div class="col-span-12 lg:col-span-5">
+          <h2 class="ed-h2">De qué depende el coste</h2>
+        </div>
+        <ul class="col-span-12 lg:col-span-7 m-0 p-0 list-none">
+          {
+            factors.map((item, i) => (
+              <li class="border-t border-border py-4 flex gap-4">
+                <span class="text-sage tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+    <section class="band-ink">
+      <div class="ed-container ed-section">
+        <RehabCalc client:visible clickref="precios_calculator" tone="charcoal" />
+      </div>
+    </section>
+  </main>
+  <SiteFooter slot="footer" />
+</Base>

@@ -1,0 +1,252 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../components/layout/Base.astro';
+import SiteHeader from '../../components/layout/SiteHeader.astro';
+import SiteFooter from '../../components/layout/SiteFooter.astro';
+import AffiliateCta from '../../components/conversion/AffiliateCta.astro';
+import Faq from '../../components/ui/Faq.astro';
+import Sources from '../../components/ui/Sources.astro';
+import Figure from '../../components/ui/Figure.astro';
+import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
+import { absoluteUrl } from '../../config/site.config';
+import { affiliateConfig } from '../../config/affiliate.config';
+import { getService, services } from '../../data/services';
+import { breadcrumbNode, faqNode, jsonLd, organizationNode, serviceNode, websiteNode } from '../../lib/schema';
+import andamio from '../../assets/rehab/andamio.jpg';
+import cubierta from '../../assets/rehab/cubierta.jpg';
+import edificio from '../../assets/rehab/edificio.jpg';
+import detalle from '../../assets/rehab/detalle.jpg';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('services');
+  return entries
+    .filter((entry) => entry.id !== 'rehabilitacion-fachadas')
+    .map((entry) => ({
+      params: { slug: entry.data.path.replace('/servicios/', '').replace(/\//g, '') },
+      props: { entry },
+    }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const data = entry.data;
+const slug = Astro.params.slug ?? '';
+const def = getService(slug);
+const related = services.filter((item) => data.relatedPages.includes(item.path));
+const index = Math.max(0, services.findIndex((item) => item.slug === slug));
+const photos = [andamio, cubierta, edificio, detalle];
+const photo = photos[index % photos.length];
+const pattern = index % 4;
+const schema = jsonLd([
+  organizationNode(),
+  websiteNode(),
+  breadcrumbNode([
+    { name: 'Inicio', path: '/' },
+    { name: 'Servicios', path: '/servicios/' },
+    { name: data.h1, path: data.path },
+  ]),
+  serviceNode({ name: data.h1, description: data.description, path: data.path }),
+  faqNode(data.faqs),
+]);
+---
+
+<Base
+  title={data.title}
+  description={data.description}
+  canonical={absoluteUrl(data.path)}
+  jsonLd={schema}
+  publishedAt={data.publishedAt.toISOString()}
+  updatedAt={data.updatedAt.toISOString()}
+>
+  <SiteHeader slot="header" />
+  <main id="contenido" class={`svc pattern-${pattern}`}>
+    <Breadcrumbs
+      items={[
+        { name: 'Inicio', href: '/' },
+        { name: 'Servicios', href: '/servicios/' },
+        { name: def?.navLabel ?? 'Servicio' },
+      ]}
+    />
+
+    {pattern === 2 && (
+      <Figure
+        src={photo}
+        alt={`Ejemplo de ${def?.name ?? 'actuación'}, no un proyecto propio`}
+        caption="Imagen de contexto de la actuación."
+        credit="Unsplash"
+        bleed
+        priority
+        ratio="16 / 8"
+        sizes="100vw"
+      />
+    )}
+
+    <section class="ed-container svc-hero">
+      {pattern === 1 && (
+        <div class="svc-hero__photo">
+          <Figure
+            src={photo}
+            alt={`Ejemplo de ${def?.name ?? 'actuación'}, no un proyecto propio`}
+            caption="Imagen de contexto de la actuación."
+            credit="Unsplash"
+            ratio="4 / 5"
+            sizes="(min-width: 1024px) 40vw, 100vw"
+          />
+        </div>
+      )}
+      <div class="svc-hero__copy">
+        <p class="ed-kicker">Servicio</p>
+        <h1 class="ed-h1">{data.h1}</h1>
+        <p class="ed-lead">{data.answer}</p>
+        <p class="ed-meta">Equipo editorial · revisión {data.updatedAt.toISOString().slice(0, 10)}</p>
+        <div class="svc-hero__cta">
+          <AffiliateCta clickref={data.clickref} label={data.ctaLabel} placement="hero" service={def?.slug} />
+        </div>
+        <p class="ed-meta">{affiliateConfig.disclosure}</p>
+      </div>
+      {pattern === 0 && (
+        <div class="svc-hero__photo">
+          <Figure
+            src={photo}
+            alt={`Ejemplo de ${def?.name ?? 'actuación'}, no un proyecto propio`}
+            caption="Imagen de contexto de la actuación."
+            credit="Unsplash"
+            ratio="4 / 5"
+            sizes="(min-width: 1024px) 40vw, 100vw"
+          />
+        </div>
+      )}
+    </section>
+
+    {pattern === 3 && (
+      <section class="band-ink">
+        <div class="ed-container ed-section">
+          <p class="ed-kicker">Proceso habitual</p>
+          <ol class="svc-steps">
+            <li><span class="ed-num">01</span> Diagnóstico del daño o de la deficiencia.</li>
+            <li><span class="ed-num">02</span> Alcance, medios auxiliares y permisos municipales.</li>
+            <li><span class="ed-num">03</span> Comparación de presupuestos de empresas especializadas.</li>
+          </ol>
+        </div>
+      </section>
+    )}
+
+    <section class="ed-section">
+      <div class="ed-container svc-body">
+        <div class="ed-prose">
+          <Content />
+        </div>
+      </div>
+    </section>
+
+    {pattern !== 2 && pattern !== 1 && (
+      <section class="band-white ed-section">
+        <div class="ed-container">
+          <p class="ed-kicker">Ejemplo visual</p>
+          <Figure
+            src={photos[(index + 1) % photos.length]}
+            alt={`Referencia visual de ${def?.name ?? 'actuación'}`}
+            caption="Imagen de contexto. No es una obra propia."
+            credit="Unsplash"
+            ratio="16 / 9"
+            sizes="100vw"
+          />
+        </div>
+      </section>
+    )}
+
+    <section class="ed-container svc-end">
+      <AffiliateCta clickref={`${def?.slug}_final`} label="Comparar presupuestos" placement="final" service={def?.slug} />
+      <h2 class="ed-h3">Servicios relacionados</h2>
+      <ul class="ed-index">
+        {related.map((item, i) => (
+          <li>
+            <span class="ed-num">{String(i + 1).padStart(2, '0')}</span>
+            <a class="ed-link" href={item.path}>{item.name}</a>
+          </li>
+        ))}
+      </ul>
+      <Faq items={data.faqs} />
+      <Sources ids={data.sources} />
+    </section>
+  </main>
+  <SiteFooter slot="footer" />
+</Base>
+
+<style>
+  .svc-hero,
+  .svc-body {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap-md);
+    padding-top: var(--space-4);
+  }
+
+  .svc-hero__copy,
+  .svc-hero__photo,
+  .svc-body > * {
+    grid-column: 1 / -1;
+  }
+
+  .svc-hero__cta {
+    margin: 1.75rem 0 1rem;
+  }
+
+  .pattern-3 .svc-hero__copy {
+    background: var(--color-white);
+    border: var(--rule);
+    padding: 1.5rem;
+  }
+
+  .svc-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    max-width: 42rem;
+  }
+
+  .svc-steps li {
+    display: grid;
+    grid-template-columns: 3.25rem 1fr;
+    gap: 0.75rem;
+    align-items: baseline;
+  }
+
+  .svc-end {
+    padding-bottom: var(--space-6);
+  }
+
+  @media (min-width: 1024px) {
+    .pattern-0 .svc-hero__copy,
+    .pattern-3 .svc-hero__copy {
+      grid-column: 1 / span 7;
+    }
+
+    .pattern-0 .svc-hero__photo,
+    .pattern-3 .svc-hero__photo {
+      grid-column: 8 / span 5;
+    }
+
+    .pattern-1 .svc-hero__photo {
+      grid-column: 1 / span 5;
+    }
+
+    .pattern-1 .svc-hero__copy {
+      grid-column: 7 / span 6;
+    }
+
+    .pattern-2 .svc-hero__copy {
+      grid-column: 1 / span 8;
+    }
+
+    .svc-body .ed-prose {
+      grid-column: 2 / span 8;
+    }
+
+    .pattern-3 .svc-hero__copy {
+      padding: 2.25rem;
+    }
+  }
+</style>

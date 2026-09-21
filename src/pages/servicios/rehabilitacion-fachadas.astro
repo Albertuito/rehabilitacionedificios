@@ -1,0 +1,281 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '../../components/layout/Base.astro';
+import SiteHeader from '../../components/layout/SiteHeader.astro';
+import SiteFooter from '../../components/layout/SiteFooter.astro';
+import AffiliateCta from '../../components/conversion/AffiliateCta.astro';
+import Faq from '../../components/ui/Faq.astro';
+import Sources from '../../components/ui/Sources.astro';
+import Figure from '../../components/ui/Figure.astro';
+import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
+import { absoluteUrl } from '../../config/site.config';
+import { affiliateConfig } from '../../config/affiliate.config';
+import { getService, services } from '../../data/services';
+import { breadcrumbNode, faqNode, jsonLd, organizationNode, serviceNode, websiteNode } from '../../lib/schema';
+import hero from '../../assets/rehab/hero-fachada.jpg';
+import andamio from '../../assets/rehab/andamio.jpg';
+import detalle from '../../assets/rehab/detalle.jpg';
+
+const entry = await getEntry('services', 'rehabilitacion-fachadas');
+if (!entry) throw new Error('Missing rehabilitacion-fachadas');
+const { Content } = await render(entry);
+const data = entry.data;
+const def = getService('rehabilitacion-fachadas');
+const related = services.filter((item) => data.relatedPages.includes(item.path));
+const schema = jsonLd([
+  organizationNode(),
+  websiteNode(),
+  breadcrumbNode([
+    { name: 'Inicio', path: '/' },
+    { name: 'Servicios', path: '/servicios/' },
+    { name: data.h1, path: data.path },
+  ]),
+  serviceNode({ name: data.h1, description: data.description, path: data.path }),
+  faqNode(data.faqs),
+]);
+---
+
+<Base
+  title={data.title}
+  description={data.description}
+  canonical={absoluteUrl(data.path)}
+  jsonLd={schema}
+  publishedAt={data.publishedAt.toISOString()}
+  updatedAt={data.updatedAt.toISOString()}
+>
+  <SiteHeader slot="header" />
+  <main id="contenido" class="fachada">
+    <Breadcrumbs
+      items={[
+        { name: 'Inicio', href: '/' },
+        { name: 'Servicios', href: '/servicios/' },
+        { name: def?.navLabel ?? 'Fachadas' },
+      ]}
+    />
+
+    <Figure
+      src={hero}
+      alt="Fachada de edificio residencial, ejemplo de envolvente donde se intervienen revestimientos y anclajes"
+      caption="Ejemplo de envolvente. No es un proyecto ejecutado por esta web."
+      credit="Unsplash"
+      bleed
+      priority
+      ratio="16 / 7"
+      sizes="100vw"
+    />
+
+    <section class="ed-container fachada-hero">
+      <p class="ed-kicker">Servicio · envolvente</p>
+      <h1 class="ed-h1">{data.h1}</h1>
+      <p class="ed-lead">{data.answer}</p>
+      <div class="fachada-hero__cta">
+        <AffiliateCta clickref={data.clickref} label={data.ctaLabel} placement="hero" service={def?.slug} />
+        <a class="ed-link" href="/guias/permisos-rehabilitar-fachada/">Permisos de fachada</a>
+      </div>
+      <p class="ed-meta">{affiliateConfig.disclosure}</p>
+    </section>
+
+    <section class="ed-section-s band-white">
+      <div class="ed-container">
+        <dl class="ed-facts">
+          <div>
+            <dt>01 · Revestimiento</dt>
+            <dd>Mortero, aplacado o SATE</dd>
+          </div>
+          <div>
+            <dt>02 · Anclajes</dt>
+            <dd>Cantos, cornisas, balcones</dd>
+          </div>
+          <div>
+            <dt>03 · Andamio</dt>
+            <dd>Partida y ocupación de vía</dd>
+          </div>
+          <div>
+            <dt>04 · Permiso</dt>
+            <dd>Licencia municipal</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="ed-section">
+      <div class="ed-container fachada-body">
+        <div class="ed-prose">
+          <Content />
+        </div>
+        <aside>
+          <p class="ed-kicker">No confundir</p>
+          <p>Rehabilitar fachada no es pintar. El SATE es una opción de aislamiento, no un sinónimo del trabajo de envolvente.</p>
+          <p><a class="ed-link" href="/servicios/aislamiento-sate/">Ver aislamiento SATE</a></p>
+          <p><a class="ed-link" href="/guias/precio-rehabilitar-fachada/">Precio de rehabilitar fachada</a></p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="band-ink">
+      <div class="ed-container ed-section fachada-steps">
+        <div>
+          <p class="ed-kicker">Proceso habitual</p>
+          <h2 class="ed-h2">Tres pasos antes de comparar ofertas</h2>
+        </div>
+        <ol>
+          <li>
+            <span class="ed-num">01</span>
+            <div>
+              <h3 class="ed-h3">Diagnóstico del daño</h3>
+              <p>Desprendimientos, humedad, cantos de forjado y encuentros con cubierta.</p>
+            </div>
+          </li>
+          <li>
+            <span class="ed-num">02</span>
+            <div>
+              <h3 class="ed-h3">Alcance y medios</h3>
+              <p>Sistema constructivo, andamio, residuos y permiso de ocupación de acera.</p>
+            </div>
+          </li>
+          <li>
+            <span class="ed-num">03</span>
+            <div>
+              <h3 class="ed-h3">Ofertas comparables</h3>
+              <p>Misma superficie, mismo sistema y exclusiones por escrito.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="ed-section">
+      <div class="ed-container fachada-related">
+        <Figure
+          src={detalle}
+          alt="Detalle de encuentro en fachada, ejemplo de punto singular en rehabilitación"
+          caption="Los encuentros concentran fallos. Pídelos desglosados."
+          credit="Unsplash"
+          ratio="4 / 5"
+          sizes="(min-width: 1024px) 32vw, 100vw"
+        />
+        <div>
+          <p class="ed-kicker">Relacionado</p>
+          <h2 class="ed-h2">Otras partidas de la envolvente</h2>
+          <ul class="ed-index">
+            {
+              related.map((item, i) => (
+                <li>
+                  <span class="ed-num">{String(i + 1).padStart(2, '0')}</span>
+                  <a class="ed-link" href={item.path}>{item.name}</a>
+                </li>
+              ))
+            }
+          </ul>
+          <div class="fachada-related__cta">
+            <AffiliateCta clickref={`${def?.slug}_final`} label="Comparar presupuestos" placement="final" service={def?.slug} />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ed-container">
+      <Figure
+        src={andamio}
+        alt="Andamio montado en calle, ejemplo de medio auxiliar en rehabilitación de fachada"
+        caption="El andamio debe aparecer como partida, no como imprevisto."
+        credit="Unsplash"
+        ratio="16 / 9"
+        sizes="100vw"
+      />
+      <Faq items={data.faqs} />
+      <Sources ids={data.sources} />
+    </section>
+  </main>
+  <SiteFooter slot="footer" />
+</Base>
+
+<style>
+  .fachada-hero {
+    padding-block: var(--space-5) var(--space-4);
+    max-width: 52rem;
+  }
+
+  .fachada-hero__cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem 1.75rem;
+    margin: 2rem 0 1rem;
+  }
+
+  .fachada-body,
+  .fachada-related,
+  .fachada-steps {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap-md);
+  }
+
+  .fachada-body > *,
+  .fachada-related > *,
+  .fachada-steps > * {
+    grid-column: 1 / -1;
+  }
+
+  .fachada-body aside {
+    border-top: var(--rule);
+    padding-top: 1.5rem;
+  }
+
+  .fachada-steps ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .fachada-steps li {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr;
+    gap: 1rem;
+    border-top: 1px solid rgb(244 240 232 / 0.18);
+    padding-block: 1.4rem;
+  }
+
+  .fachada-steps .ed-num {
+    font-size: 2rem;
+    color: #e08a72;
+  }
+
+  .fachada-related__cta {
+    margin-top: 2rem;
+  }
+
+  @media (min-width: 1024px) {
+    .fachada-hero {
+      padding-block: var(--space-6);
+    }
+
+    .fachada-body .ed-prose {
+      grid-column: 1 / span 7;
+    }
+
+    .fachada-body aside {
+      grid-column: 9 / span 4;
+      border-top: 0;
+      border-left: var(--rule);
+      padding: 0 0 0 1.75rem;
+    }
+
+    .fachada-steps > :first-child {
+      grid-column: 1 / span 4;
+    }
+
+    .fachada-steps ol {
+      grid-column: 6 / span 7;
+    }
+
+    .fachada-related > :first-child {
+      grid-column: 1 / span 4;
+    }
+
+    .fachada-related > :last-child {
+      grid-column: 6 / span 7;
+    }
+  }
+</style>

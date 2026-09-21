@@ -1,0 +1,25 @@
+---
+import { buildAffiliateUrl, assertClickref } from '../../lib/affiliate';
+
+interface Props {
+  clickref: string;
+  label: string;
+  class?: string;
+  placement?: string;
+}
+const { clickref, label, class: className = 'btn btn-primary', placement = 'inline' } = Astro.props;
+assertClickref(clickref);
+const href = buildAffiliateUrl(clickref);
+---
+
+<a
+  class={className}
+  href={href}
+  rel="sponsored noopener"
+  target="_blank"
+  data-event="affiliate_click"
+  data-clickref={clickref}
+  data-placement={placement}
+>
+  {label}
+</a>

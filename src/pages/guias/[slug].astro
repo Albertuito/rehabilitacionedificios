@@ -1,0 +1,113 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../components/layout/Base.astro';
+import SiteHeader from '../../components/layout/SiteHeader.astro';
+import SiteFooter from '../../components/layout/SiteFooter.astro';
+import AffiliateCta from '../../components/conversion/AffiliateCta.astro';
+import Faq from '../../components/ui/Faq.astro';
+import Sources from '../../components/ui/Sources.astro';
+import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
+import { absoluteUrl } from '../../config/site.config';
+import { affiliateConfig } from '../../config/affiliate.config';
+import { getPerson } from '../../data/authors';
+import { articleNode, breadcrumbNode, faqNode, jsonLd, organizationNode, websiteNode } from '../../lib/schema';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('guides');
+  return entries
+    .filter((entry) => entry.id !== 'cuanto-cuesta-rehabilitar-edificio')
+    .map((entry) => ({
+      params: { slug: entry.data.path.replace('/guias/', '').replace(/\//g, '') },
+      props: { entry },
+    }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const data = entry.data;
+const author = getPerson(data.authorId);
+const schema = jsonLd([
+  organizationNode(),
+  websiteNode(),
+  breadcrumbNode([
+    { name: 'Inicio', path: '/' },
+    { name: 'Guías', path: '/guias/' },
+    { name: data.h1, path: data.path },
+  ]),
+  articleNode({
+    headline: data.h1,
+    description: data.description,
+    path: data.path,
+    datePublished: data.publishedAt.toISOString(),
+    dateModified: data.updatedAt.toISOString(),
+    authorId: data.authorId,
+  }),
+  faqNode(data.faqs),
+]);
+---
+
+<Base
+  title={data.title}
+  description={data.description}
+  canonical={absoluteUrl(data.path)}
+  jsonLd={schema}
+  publishedAt={data.publishedAt.toISOString()}
+  updatedAt={data.updatedAt.toISOString()}
+>
+  <SiteHeader slot="header" />
+  <main id="contenido" class="guide">
+    <Breadcrumbs items={[{ name: 'Inicio', href: '/' }, { name: 'Guías', href: '/guias/' }, { name: data.h1 }]} />
+    <article class="ed-container guide-article">
+      <header class="guide-hero">
+        <p class="ed-kicker">Guía · actualización {data.updatedAt.toISOString().slice(0, 10)}</p>
+        <h1 class="ed-h1">{data.h1}</h1>
+        <p class="ed-lead">{data.answer}</p>
+        <p class="ed-meta">
+          {author?.name ?? 'Equipo editorial'} · {author?.role ?? 'Redacción'}. No es asesoramiento jurídico ni una cotización.
+          Las ayudas, licencias y plazos dependen del municipio o de la comunidad autónoma.
+        </p>
+      </header>
+      <div class="ed-prose">
+        <Content />
+      </div>
+      <div class="guide-cta">
+        <AffiliateCta clickref={data.clickref} label={data.ctaLabel} placement="final" />
+        <p class="ed-meta">{affiliateConfig.disclosure}</p>
+      </div>
+      <Faq items={data.faqs} />
+      <Sources ids={data.sources} />
+    </article>
+  </main>
+  <SiteFooter slot="footer" />
+</Base>
+
+<style>
+  .guide-article {
+    padding-block: var(--space-4) var(--space-6);
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap);
+  }
+
+  .guide-hero,
+  .guide-article .ed-prose,
+  .guide-cta,
+  .guide-article :global(.ed-faq),
+  .guide-article :global(section) {
+    grid-column: 1 / -1;
+  }
+
+  .guide-cta {
+    margin-top: var(--space-5);
+  }
+
+  @media (min-width: 1024px) {
+    .guide-hero,
+    .guide-article .ed-prose,
+    .guide-cta,
+    .guide-article :global(.ed-faq),
+    .guide-article :global(section) {
+      grid-column: 2 / span 8;
+    }
+  }
+</style>

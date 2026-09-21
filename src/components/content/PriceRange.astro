@@ -1,0 +1,24 @@
+---
+interface Props {
+  low: number;
+  high: number;
+  consultedAt: string;
+  assumptions: string[];
+  methodologyHref?: string;
+}
+const { low, high, consultedAt, assumptions, methodologyHref = '/metodologia-precios/' } = Astro.props;
+const format = (value: number) =>
+  new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value);
+---
+
+<aside class="card" style="background:var(--surface-cool)">
+  <p class="eyebrow">Horquilla orientativa</p>
+  <p class="tabular" style="font-size:2rem;font-weight:800;color:var(--ink-900);margin:0 0 0.4rem">
+    {format(low)} – {format(high)}
+  </p>
+  <p class="muted">Actualizado el {consultedAt}. No es una cotización.</p>
+  <ul>
+    {assumptions.map((item) => <li>{item}</li>)}
+  </ul>
+  <p><a href={methodologyHref}>Cómo calculamos estos rangos</a></p>
+</aside>

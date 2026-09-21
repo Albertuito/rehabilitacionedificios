@@ -1,0 +1,28 @@
+---
+import SimplePage from '../components/layout/SimplePage.astro';
+import AffiliateCta from '../components/conversion/AffiliateCta.astro';
+import { siteConfig } from '../config/site.config';
+---
+
+<SimplePage
+  title={`Contacto | ${siteConfig.brand.name}`}
+  description="Cómo contactar con la plataforma informativa de rehabilitación de edificios. No somos una constructora ni tenemos delegaciones."
+  h1="Contacto"
+  path="/contacto/"
+>
+  <p>
+    {siteConfig.brand.name} es una plataforma informativa. Ayudamos a propietarios, presidentes de comunidad y
+    administradores a encontrar empresas especializadas. No ejecutamos obras ni visitamos el edificio.
+  </p>
+  <ul>
+    <li>Email: {siteConfig.contact.email || '[EMAIL DE CONTACTO — configura PUBLIC_CONTACT_EMAIL]'}</li>
+    <li>Titular: {siteConfig.legal.legalName}</li>
+  </ul>
+  <p>
+    Si lo que necesitas es un presupuesto de rehabilitación, la vía prevista es Habitissimo. Completarás allí los datos
+    de contacto.
+  </p>
+  <div class="mt-8">
+    <AffiliateCta clickref="contacto_cta" label="Solicitar presupuestos" placement="final" />
+  </div>
+</SimplePage>

@@ -1,0 +1,18 @@
+---
+interface Props {
+  items: { question: string; answer: string }[];
+}
+const { items } = Astro.props;
+---
+
+<section class="faq" aria-labelledby="preguntas">
+  <h2 id="preguntas">Preguntas frecuentes</h2>
+  {
+    items.map((item) => (
+      <details data-event="faq_open">
+        <summary>{item.question}</summary>
+        <p>{item.answer}</p>
+      </details>
+    ))
+  }
+</section>

@@ -1,0 +1,284 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '../../components/layout/Base.astro';
+import SiteHeader from '../../components/layout/SiteHeader.astro';
+import SiteFooter from '../../components/layout/SiteFooter.astro';
+import AffiliateCta from '../../components/conversion/AffiliateCta.astro';
+import Faq from '../../components/ui/Faq.astro';
+import Sources from '../../components/ui/Sources.astro';
+import Figure from '../../components/ui/Figure.astro';
+import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
+import { absoluteUrl } from '../../config/site.config';
+import { affiliateConfig } from '../../config/affiliate.config';
+import { getRelatedLocations, getLocation } from '../../data/locations';
+import { services } from '../../data/services';
+import { pricingMeta } from '../../data/pricing';
+import { breadcrumbNode, faqNode, jsonLd, organizationNode, serviceNode, websiteNode } from '../../lib/schema';
+import edificio from '../../assets/rehab/edificio.jpg';
+import andamio from '../../assets/rehab/andamio.jpg';
+
+const entry = await getEntry('locations', 'madrid');
+if (!entry) throw new Error('Missing madrid');
+const { Content } = await render(entry);
+const data = entry.data;
+const location = getLocation('madrid');
+if (!location) throw new Error('Missing location madrid');
+const related = getRelatedLocations(location.slug);
+const relatedServices = [services[1], services[2], services[8]];
+const schema = jsonLd([
+  organizationNode(),
+  websiteNode(),
+  breadcrumbNode([
+    { name: 'Inicio', path: '/' },
+    { name: 'Provincias', path: '/provincias/' },
+    { name: location.name, path: data.path },
+  ]),
+  serviceNode({ name: data.h1, description: data.description, path: data.path }),
+  faqNode(data.faqs),
+]);
+---
+
+<Base
+  title={data.title}
+  description={data.description}
+  canonical={absoluteUrl(data.path)}
+  jsonLd={schema}
+  ogImage={absoluteUrl(`/images/og/${data.citySlug}.svg`)}
+  publishedAt={data.publishedAt.toISOString()}
+  updatedAt={data.updatedAt.toISOString()}
+>
+  <SiteHeader slot="header" />
+  <main id="contenido" class="madrid">
+    <Breadcrumbs
+      items={[
+        { name: 'Inicio', href: '/' },
+        { name: 'Provincias', href: '/provincias/' },
+        { name: location.name },
+      ]}
+    />
+
+    <section class="ed-container madrid-hero">
+      <div class="madrid-hero__copy">
+        <p class="ed-kicker">Rehabilitación de edificios · Madrid</p>
+        <h1 class="ed-h1">{data.h1}</h1>
+        <p class="ed-lead">{data.answer}</p>
+        <div class="madrid-hero__cta">
+          <AffiliateCta clickref={data.clickref} label={data.ctaLabel} placement="hero" location={data.citySlug} />
+          <a class="ed-link" href="/servicios/">Ver servicios</a>
+        </div>
+        <p class="ed-meta">{affiliateConfig.disclosure}</p>
+      </div>
+      <div class="madrid-hero__photo">
+        <Figure
+          src={edificio}
+          alt="Bloques residenciales, ejemplo de parque de vivienda en altura como el de Madrid"
+          caption="Tipología de referencia. No es una obra propia en Madrid."
+          credit="Unsplash"
+          priority
+          ratio="4 / 5"
+          sizes="(min-width: 1024px) 52vw, 100vw"
+        />
+      </div>
+    </section>
+
+    <section class="band-ink">
+      <div class="ed-container ed-section madrid-permit">
+        <p class="ed-kicker">Trámite</p>
+        <h2 class="ed-h2">Licencia y vía pública en Madrid</h2>
+        <p>{location.permitHint}</p>
+        <p>La ocupación de acera con andamio se tramita aparte de la obra. Pregunta tasas y plazos al Ayuntamiento, no solo a la empresa.</p>
+      </div>
+    </section>
+
+    <section class="ed-section">
+      <div class="ed-container">
+        <dl class="ed-facts">
+          <div>
+            <dt>Clima</dt>
+            <dd>{location.climate}</dd>
+          </div>
+          <div>
+            <dt>Parque</dt>
+            <dd>{location.stock}</dd>
+          </div>
+          <div>
+            <dt>Hilo local</dt>
+            <dd>{location.angle}</dd>
+          </div>
+          <div>
+            <dt>Precio</dt>
+            <dd>Acceso y andamio pesan tanto como el mortero</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="ed-section band-white">
+      <div class="ed-container madrid-body">
+        <div class="ed-prose">
+          <Content />
+        </div>
+      </div>
+    </section>
+
+    <Figure
+      src={andamio}
+      alt="Andamio en calle estrecha, ejemplo de medio auxiliar habitual en comunidades madrileñas"
+      caption="En el interior de ensanche el andamio compite con el aparcamiento."
+      credit="Unsplash"
+      bleed
+      ratio="21 / 9"
+      sizes="100vw"
+    />
+
+    <section class="ed-section">
+      <div class="ed-container madrid-budget">
+        <div>
+          <p class="ed-kicker">Presupuesto</p>
+          <h2 class="ed-h2">Qué mueve el importe aquí</h2>
+        </div>
+        <div>
+          <p>{pricingMeta.disclaimer}</p>
+          <table class="ed-table">
+            <thead>
+              <tr>
+                <th>Condicionante</th>
+                <th>Por qué importa en Madrid</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ITE o IEE</td>
+                <td>El informe marca prioridades de envolvente e instalaciones comunes.</td>
+              </tr>
+              <tr>
+                <td>Andamio en calle estrecha</td>
+                <td>Ocupación de vía, plazos y tasas pueden igualar el revestimiento.</td>
+              </tr>
+              <tr>
+                <td>Patio de luces</td>
+                <td>Un presupuesto que solo pinta el frente deja el patio como reclamación.</td>
+              </tr>
+              <tr>
+                <td>Cantos de forjado</td>
+                <td>Punto frecuente en bloques de los 60–80. Pídelos desglosados.</td>
+              </tr>
+            </tbody>
+          </table>
+          <AffiliateCta clickref={`${data.citySlug}_midpage`} label="Pedir una valoración" placement="mid" location={data.citySlug} />
+        </div>
+      </div>
+    </section>
+
+    <section class="ed-section band-white">
+      <div class="ed-container madrid-index">
+        <div>
+          <p class="ed-kicker">Actuaciones</p>
+          <h2 class="ed-h2">Servicios que más se consultan</h2>
+          <p>El orden lo marca el informe y la junta, no un pack comercial.</p>
+        </div>
+        <ul class="ed-index">
+          {
+            relatedServices.map((item, i) => (
+              <li>
+                <span class="ed-num">{String(i + 1).padStart(2, '0')}</span>
+                <a class="ed-link" href={item.path}>{item.name}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="ed-container">
+      <Faq items={data.faqs} />
+      <Sources ids={data.sources} />
+      <h2 class="ed-h3">Ubicaciones próximas</h2>
+      <ul class="madrid-near">
+        {related.map((item) => (
+          <li>
+            <a class="ed-link" href={`/rehabilitacion-edificios/${item.slug}/`} data-geo-nav={item.slug}>
+              {item.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </main>
+  <SiteFooter slot="footer" />
+</Base>
+
+<style>
+  .madrid-hero,
+  .madrid-budget,
+  .madrid-index {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap-md);
+  }
+
+  .madrid-hero {
+    align-items: end;
+    padding-top: var(--space-4);
+    padding-bottom: var(--space-5);
+  }
+
+  .madrid-hero__copy,
+  .madrid-hero__photo,
+  .madrid-budget > *,
+  .madrid-index > *,
+  .madrid-body .ed-prose {
+    grid-column: 1 / -1;
+  }
+
+  .madrid-hero__cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem 1.75rem;
+    margin: 2rem 0 1rem;
+  }
+
+  .madrid-permit {
+    max-width: 42rem;
+  }
+
+  .madrid-permit p {
+    color: rgb(244 240 232 / 0.78);
+  }
+
+  .madrid-near {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem 1.75rem;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-6);
+  }
+
+  @media (min-width: 1024px) {
+    .madrid-hero__copy {
+      grid-column: 1 / span 5;
+      padding-right: 1rem;
+      padding-bottom: 2rem;
+    }
+
+    .madrid-hero__photo {
+      grid-column: 6 / span 7;
+    }
+
+    .madrid-body .ed-prose {
+      grid-column: 2 / span 8;
+    }
+
+    .madrid-budget > :first-child,
+    .madrid-index > :first-child {
+      grid-column: 1 / span 4;
+    }
+
+    .madrid-budget > :last-child,
+    .madrid-index > :last-child {
+      grid-column: 6 / span 7;
+    }
+  }
+</style>

@@ -1,0 +1,42 @@
+---
+import SimplePage from '../components/layout/SimplePage.astro';
+import { siteConfig } from '../config/site.config';
+---
+
+<SimplePage
+  title={`Política de cookies | ${siteConfig.brand.name}`}
+  description="Inventario de cookies y cómo aceptar, rechazar o configurar el consentimiento."
+  h1="Política de cookies"
+  path="/cookies/"
+  robots="noindex,follow"
+>
+  <table class="ed-table">
+    <thead>
+      <tr>
+        <th>Cookie</th>
+        <th>Tipo</th>
+        <th>Finalidad</th>
+        <th>Duración</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>ri_consent</td>
+        <td>Técnica necesaria</td>
+        <td>Guardar tu elección de consentimiento</td>
+        <td>12 meses</td>
+      </tr>
+      <tr>
+        <td>Analítica (solo si aceptas)</td>
+        <td>No esencial</td>
+        <td>Medir páginas y eventos agregados (GA4, GTM o Clarity si hay ID)</td>
+        <td>Según proveedor, máximo 14 meses</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>
+    Aceptar, Rechazar y Configurar tienen el mismo peso visual en el aviso. El rechazo no bloquea contenido ni la
+    calculadora. Google Analytics 4, Search Console y Microsoft Clarity solo se activan si existe el identificador
+    correspondiente y hay consentimiento.
+  </p>
+</SimplePage>

@@ -1,0 +1,47 @@
+---
+import { siteConfig } from '../../../site.config';
+---
+
+<footer class="mt-auto bg-ink text-paper">
+  <div class="ed-container grid gap-12 py-20 md:grid-cols-12">
+    <div class="md:col-span-5">
+      <p class="font-serif text-3xl text-paper m-0">{siteConfig.brand.name}</p>
+      <p class="mt-4 text-paper/80 max-w-md">{siteConfig.brand.tagline}</p>
+      <p class="mt-4 text-paper/70 max-w-md">
+        Plataforma nacional de rehabilitación de edificios. Informamos y comparamos; no ejecutamos obras ni tenemos oficinas locales.
+      </p>
+    </div>
+    <div class="md:col-span-3">
+      <p class="ed-kicker text-sage !mb-4">Decidir</p>
+      <ul class="m-0 list-none p-0 space-y-3">
+        <li><a class="ed-link decoration-white/30" href="/calculadora/">Calculadora</a></li>
+        <li><a class="ed-link decoration-white/30" href="/precios/">Precios</a></li>
+        <li><a class="ed-link decoration-white/30" href="/servicios/">Servicios</a></li>
+        <li><a class="ed-link decoration-white/30" href="/guias/cuanto-cuesta-rehabilitar-edificio/">Coste de rehabilitar</a></li>
+      </ul>
+    </div>
+    <div class="md:col-span-4">
+      <p class="ed-kicker text-sage !mb-4">Proyecto</p>
+      <ul class="m-0 list-none p-0 space-y-3">
+        <li><a class="ed-link decoration-white/30" href="/contacto/">Contacto</a></li>
+        <li><a class="ed-link decoration-white/30" href="/afiliacion/">Afiliación</a></li>
+        <li><a class="ed-link decoration-white/30" href="/provincias/">Provincias</a></li>
+        <li><a class="ed-link decoration-white/30" href="/guias/">Guías</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ed-container flex flex-wrap gap-x-6 gap-y-3 border-t border-white/15 py-8 text-sm text-paper/70">
+    <a href="/aviso-legal/">Aviso legal</a>
+    <a href="/privacidad/">Privacidad</a>
+    <a href="/cookies/">Cookies</a>
+    <button type="button" data-open-consent class="bg-transparent border-0 p-0 text-inherit font-inherit cursor-pointer underline underline-offset-4">
+      Configurar cookies
+    </button>
+    <span>© {new Date().getFullYear()} {siteConfig.legal.legalName}</span>
+  </div>
+</footer>
+<script>
+  document.querySelector('[data-open-consent]')?.addEventListener('click', () => {
+    document.dispatchEvent(new CustomEvent('ri:open-consent'));
+  });
+</script>

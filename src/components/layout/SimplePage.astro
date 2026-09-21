@@ -1,0 +1,58 @@
+---
+import Base from './Base.astro';
+import SiteHeader from './SiteHeader.astro';
+import SiteFooter from './SiteFooter.astro';
+import Breadcrumbs from '../seo/Breadcrumbs.astro';
+import { absoluteUrl } from '../../config/site.config';
+import { breadcrumbNode, jsonLd, organizationNode, websiteNode } from '../../lib/schema';
+
+interface Props {
+  title: string;
+  description: string;
+  h1: string;
+  path: string;
+  robots?: string;
+}
+const { title, description, h1, path, robots } = Astro.props;
+const schema = jsonLd([
+  organizationNode(),
+  websiteNode(),
+  breadcrumbNode([
+    { name: 'Inicio', path: '/' },
+    { name: h1, path },
+  ]),
+]);
+---
+
+<Base title={title} description={description} canonical={absoluteUrl(path)} robots={robots} jsonLd={schema}>
+  <SiteHeader slot="header" />
+  <main id="contenido">
+    <Breadcrumbs items={[{ name: 'Inicio', href: '/' }, { name: h1 }]} />
+    <article class="ed-container simple">
+      <h1 class="ed-h1">{h1}</h1>
+      <div class="ed-prose">
+        <slot />
+      </div>
+    </article>
+  </main>
+  <SiteFooter slot="footer" />
+</Base>
+
+<style>
+  .simple {
+    padding-block: var(--space-4) var(--space-7);
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap);
+  }
+
+  .simple > * {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 1024px) {
+    .simple > * {
+      grid-column: 2 / span 8;
+    }
+  }
+</style>

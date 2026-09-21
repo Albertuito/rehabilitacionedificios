@@ -1,0 +1,108 @@
+---
+import Base from '../../components/layout/Base.astro';
+import SiteHeader from '../../components/layout/SiteHeader.astro';
+import SiteFooter from '../../components/layout/SiteFooter.astro';
+import AffiliateCta from '../../components/conversion/AffiliateCta.astro';
+import Figure from '../../components/ui/Figure.astro';
+import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
+import { absoluteUrl, siteConfig } from '../../config/site.config';
+import { services } from '../../data/services';
+import { breadcrumbNode, jsonLd, organizationNode, websiteNode } from '../../lib/schema';
+import andamio from '../../assets/rehab/andamio.jpg';
+import cubierta from '../../assets/rehab/cubierta.jpg';
+
+const featured = services[0];
+const rest = services.slice(1);
+const schema = jsonLd([
+  organizationNode(),
+  websiteNode(),
+  breadcrumbNode([
+    { name: 'Inicio', path: '/' },
+    { name: 'Servicios', path: '/servicios/' },
+  ]),
+]);
+---
+
+<Base
+  title={`Tipos de rehabilitación de edificios | ${siteConfig.brand.name}`}
+  description="Fachadas, cubiertas, SATE, accesibilidad, bajantes, patios e ITE. Elige la actuación y solicita presupuestos a empresas especializadas."
+  canonical={absoluteUrl('/servicios/')}
+  jsonLd={schema}
+>
+  <SiteHeader slot="header" />
+  <main id="contenido">
+    <Breadcrumbs items={[{ name: 'Inicio', href: '/' }, { name: 'Servicios' }]} />
+    <section class="ed-container ed-grid mt-8 items-end">
+      <div class="col-span-12 lg:col-span-7">
+        <p class="ed-kicker">Servicios</p>
+        <h1 class="ed-h1">Tipos de rehabilitación de un edificio</h1>
+        <p class="ed-lead">
+          Cada comunidad parte de un síntoma distinto. Aquí se ordenan las actuaciones más habituales para que puedas
+          pedir presupuestos comparables, no un pack genérico de reforma de vivienda.
+        </p>
+        <div class="mt-8">
+          <AffiliateCta clickref="servicios_hub" label="Encontrar profesionales" placement="hub" />
+        </div>
+      </div>
+      <div class="col-span-12 lg:col-span-5">
+        <Figure
+          src={andamio}
+          alt="Andamio en fachada, ejemplo de medio auxiliar en rehabilitación"
+          caption="Ejemplo de intervención en envolvente. No es una obra propia."
+          credit="Unsplash"
+          ratio="4 / 5"
+          sizes="(min-width: 1024px) 40vw, 100vw"
+        />
+      </div>
+    </section>
+
+    <section class="ed-section band-white">
+      <div class="ed-container ed-grid items-start">
+        <div class="col-span-12 lg:col-span-5">
+          <p class="ed-kicker">Integral</p>
+          <h2 class="ed-h2">
+            <a class="no-underline hover:text-terracotta" href={featured.path}>{featured.name}</a>
+          </h2>
+          <p>{featured.short}</p>
+          <p class="text-muted">{featured.problem}</p>
+          <p><a class="ed-link" href={featured.path}>Ver rehabilitación integral</a></p>
+        </div>
+        <div class="col-span-12 lg:col-span-7">
+          <Figure
+            src={cubierta}
+            alt="Cubierta de edificio residencial, ejemplo de actuación en comunidades"
+            caption="Cubierta como partida frecuente en un proyecto coordinado."
+            credit="Unsplash"
+            ratio="16 / 10"
+            sizes="(min-width: 1024px) 55vw, 100vw"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="ed-section pt-0">
+      <div class="ed-container">
+        <p class="ed-kicker">Listado</p>
+        <h2 class="ed-h2">Resto de actuaciones</h2>
+        <ul class="m-0 p-0 list-none">
+          {
+            rest.map((item, i) => (
+              <li class:list={['border-t border-border py-8 ed-grid', i === rest.length - 1 && 'border-b']}>
+                <div class="col-span-12 md:col-span-4">
+                  <h3 class="ed-h3 m-0">
+                    <a class="no-underline hover:text-terracotta" href={item.path}>
+                      {item.name}
+                    </a>
+                  </h3>
+                </div>
+                <p class="col-span-12 md:col-span-5 mb-0">{item.short}</p>
+                <p class="col-span-12 md:col-span-3 mb-0 text-sm text-muted">{item.problem}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+  </main>
+  <SiteFooter slot="footer" />
+</Base>

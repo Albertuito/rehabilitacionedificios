@@ -1,0 +1,29 @@
+---
+interface Props {
+  ids: string[];
+}
+const catalog: Record<string, { title: string; url: string; consultedAt: string }> = {
+  F1: { title: 'Awin · Programa Habitissimo ES', url: 'https://www.awin.com/', consultedAt: '2026-09-21' },
+  F2: { title: 'Google Search Central · AI features', url: 'https://developers.google.com/search/docs/appearance/ai-features', consultedAt: '2026-09-21' },
+  F5: { title: 'Google · Structured data', url: 'https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data', consultedAt: '2026-09-21' },
+  F6: { title: 'Habitissimo · Precios para reformar una casa', url: 'https://www.habitissimo.es/precios/reformar-casa', consultedAt: '2026-09-21' },
+  F7: { title: 'AEPD · Guía de cookies', url: 'https://www.aepd.es/guias/guia-cookies.pdf', consultedAt: '2026-09-21' },
+  CTE: { title: 'Código Técnico de la Edificación', url: 'https://www.codigotecnico.org/', consultedAt: '2026-09-21' },
+  LOE: { title: 'Ley de Ordenación de la Edificación', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-1999-21567', consultedAt: '2026-09-21' },
+};
+const { ids } = Astro.props;
+const sources = ids.map((id) => ({ id, ...catalog[id] })).filter((item) => item.title);
+---
+
+<section class="source-list" aria-labelledby="fuentes">
+  <h2 id="fuentes">Fuentes consultadas</h2>
+  <ul>
+    {
+      sources.map((source) => (
+        <li>
+          <a href={source.url} rel="noopener">{source.title}</a> · consulta {source.consultedAt}
+        </li>
+      ))
+    }
+  </ul>
+</section>
