@@ -2,7 +2,7 @@
 import Base from '../components/layout/Base.astro';
 import SiteHeader from '../components/layout/SiteHeader.astro';
 import SiteFooter from '../components/layout/SiteFooter.astro';
-import Figure from '../components/ui/Figure.astro';
+import { Picture } from 'astro:assets';
 import LineIcon from '../components/ui/LineIcon.astro';
 import AffiliateCta from '../components/conversion/AffiliateCta.astro';
 import RehabCalc from '../components/calculator/RehabCalc';
@@ -14,7 +14,34 @@ import { services } from '../data/services';
 import { locations } from '../data/locations';
 import { faqNode, jsonLd, organizationNode, webPageNode, websiteNode } from '../lib/schema';
 import edificio from '../assets/rehab/edificio.jpg';
-import andamio from '../assets/rehab/andamio.jpg';
+
+type IconName =
+  | 'facade'
+  | 'roof'
+  | 'damp'
+  | 'insulate'
+  | 'access'
+  | 'crack'
+  | 'ite'
+  | 'building'
+  | 'energy'
+  | 'pipe'
+  | 'patio';
+
+const serviceIcons: Record<string, IconName> = {
+  'rehabilitacion-integral-edificios': 'building',
+  'rehabilitacion-fachadas': 'facade',
+  'reparacion-cubiertas-tejados': 'roof',
+  'impermeabilizacion-cubiertas': 'damp',
+  'aislamiento-sate': 'insulate',
+  'rehabilitacion-energetica': 'energy',
+  'refuerzo-estructural': 'crack',
+  'reparacion-grietas': 'crack',
+  'accesibilidad-comunidades': 'access',
+  'reforma-patios-interiores': 'patio',
+  'sustitucion-bajantes': 'pipe',
+  'ite-iee': 'ite',
+};
 
 const faqs = [
   {
@@ -94,14 +121,19 @@ const process = [
           <p class="home-hero__legal">Servicio gratuito de comparación. La solicitud se completa en Habitissimo.</p>
         </div>
         <div class="home-hero__photo">
-          <Figure
+          <Picture
             src={edificio}
-            alt="Bloques residenciales, ejemplo de parque de vivienda donde se rehabilitan fachadas y cubiertas"
-            caption="Tipología residencial de ejemplo. No es un proyecto ejecutado por esta web."
-            credit="Unsplash"
-            priority
-            ratio="4 / 5"
-            sizes="(min-width: 1024px) 42vw, 100vw"
+            alt="Edificio residencial con balcones, ejemplo de fachada a rehabilitar"
+            width={edificio.width}
+            height={edificio.height}
+            widths={[560, 800, 1200]}
+            sizes="(min-width: 1024px) 520px, 100vw"
+            formats={['avif', 'webp']}
+            fallbackFormat="jpg"
+            quality={78}
+            loading="eager"
+            fetchpriority="high"
+            class="home-hero__img"
           />
         </div>
       </div>
@@ -171,26 +203,21 @@ const process = [
       </div>
     </section>
 
-    <section class="ed-section band-white">
-      <div class="ed-container home-services">
-        <div class="home-services__intro">
+    <section class="ed-section band-white" id="servicios">
+      <div class="ed-container">
+        <div class="home-services__head">
           <p class="ed-kicker">Actuaciones</p>
           <h2 class="ed-h2">Servicios de rehabilitación</h2>
-          <p>Elige la partida. Cada ficha explica el problema, el alcance habitual y cómo pedir ofertas comparables.</p>
-          <Figure
-            src={andamio}
-            alt="Andamio en un edificio, ejemplo de medio auxiliar habitual en rehabilitación de fachada"
-            caption="Medios auxiliares de ejemplo. No representa una obra propia."
-            credit="Unsplash"
-            ratio="16 / 10"
-            sizes="(min-width: 1024px) 36vw, 100vw"
-          />
+          <p class="ed-lead">Elige la partida. Cada ficha explica el problema, el alcance habitual y cómo pedir ofertas comparables.</p>
         </div>
-        <ul class="home-services__list">
+        <ul class="home-services__grid">
           {
-            services.slice(0, 6).map((item) => (
+            services.map((item) => (
               <li>
                 <a href={item.path}>
+                  <span class="home-services__icon">
+                    <LineIcon name={serviceIcons[item.slug] ?? 'building'} />
+                  </span>
                   <strong>{item.name}</strong>
                   <span>{item.short}</span>
                 </a>
@@ -268,19 +295,37 @@ const process = [
 
   .home-hero__grid {
     display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: var(--grid-gap);
-    padding-block: var(--space-5);
+    gap: 2rem;
+    padding-block: 2.5rem;
     align-items: center;
   }
 
-  .home-hero__copy,
-  .home-hero__photo {
-    grid-column: 1 / -1;
+  .home-hero__copy {
+    max-width: 36rem;
   }
 
-  .home-hero__photo :global(.ed-figure-frame) {
-    max-height: 520px;
+  .home-hero__copy .ed-h1 {
+    margin-bottom: 1rem;
+  }
+
+  .home-hero__copy .ed-lead {
+    color: rgb(255 255 255 / 0.84);
+    max-width: 32rem;
+  }
+
+  .home-hero__photo :global(picture) {
+    display: block;
+    width: 100%;
+    height: 280px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .home-hero__photo :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .home-hero__cta {
@@ -380,7 +425,6 @@ const process = [
   }
 
   .home-process,
-  .home-services,
   .home-geo,
   .home-guides {
     display: grid;
@@ -389,7 +433,6 @@ const process = [
   }
 
   .home-process > *,
-  .home-services > *,
   .home-geo > *,
   .home-guides > * {
     grid-column: 1 / -1;
@@ -413,33 +456,68 @@ const process = [
     font-size: 1.7rem;
   }
 
-  .home-services__list {
+  .home-services__head {
+    max-width: 40rem;
+    margin-bottom: 2rem;
+  }
+
+  .home-services__grid {
     list-style: none;
     margin: 0;
     padding: 0;
+    display: grid;
+    gap: 0.9rem;
   }
 
-  .home-services__list a {
-    display: block;
+  .home-services__grid a {
+    display: grid;
+    grid-template-columns: 2.75rem 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 0.9rem;
+    row-gap: 0.25rem;
     text-decoration: none;
-    border-top: var(--rule);
-    padding-block: 1.15rem;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.05rem 1.1rem;
+    min-height: 6.5rem;
+    height: 100%;
   }
 
-  .home-services__list a:hover strong {
-    color: var(--color-orange-600);
+  .home-services__grid a:hover {
+    border-color: var(--color-navy-800);
   }
 
-  .home-services__list strong {
-    display: block;
-    font-size: 1.05rem;
+  .home-services__icon {
+    grid-row: 1 / span 2;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-orange-100);
+    border-radius: 10px;
   }
 
-  .home-services__list span {
-    display: block;
-    margin-top: 0.3rem;
+  .home-services__icon :global(.line-icon) {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .home-services__grid strong {
+    font-size: 0.98rem;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+
+  .home-services__grid a > span:last-child {
     color: var(--color-muted);
-    font-size: 0.92rem;
+    font-size: 0.86rem;
+    line-height: 1.4;
+  }
+
+  .home-services__more {
+    margin-top: 1.5rem;
   }
 
   .home-geo__cols {
@@ -481,12 +559,26 @@ const process = [
   }
 
   @media (min-width: 768px) {
+    .home-hero__grid {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: 3rem;
+      padding-block: 3.25rem;
+    }
+
+    .home-hero__photo :global(picture) {
+      height: 420px;
+    }
+
     .home-trust__grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       padding-block: 1.5rem;
     }
 
     .home-problems {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .home-services__grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
@@ -497,23 +589,19 @@ const process = [
 
   @media (min-width: 1024px) {
     .home-hero {
-      min-height: 680px;
+      min-height: 640px;
       display: flex;
       align-items: center;
     }
 
     .home-hero__grid {
-      padding-block: var(--space-6);
       width: 100%;
+      padding-block: 3.5rem;
+      gap: 4rem;
     }
 
-    .home-hero__copy {
-      grid-column: 1 / span 7;
-      padding-right: 2rem;
-    }
-
-    .home-hero__photo {
-      grid-column: 8 / span 5;
+    .home-hero__photo :global(picture) {
+      height: 480px;
     }
 
     .home-trust__grid {
@@ -533,16 +621,8 @@ const process = [
       grid-column: 6 / span 7;
     }
 
-    .home-services__intro {
-      grid-column: 1 / span 5;
-    }
-
-    .home-services__list {
-      grid-column: 7 / span 6;
-    }
-
-    .home-services__more {
-      grid-column: 7 / span 6;
+    .home-services__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .home-geo > :first-child {

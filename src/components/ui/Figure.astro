@@ -5,8 +5,8 @@ import { Picture } from 'astro:assets';
 interface Props {
   src: ImageMetadata;
   alt: string;
-  caption: string;
-  credit: string;
+  caption?: string;
+  credit?: string;
   widths?: number[];
   sizes?: string;
   priority?: boolean;
@@ -17,8 +17,8 @@ interface Props {
 const {
   src,
   alt,
-  caption,
-  credit,
+  caption = '',
+  credit = '',
   widths = [480, 800, 1200, 1600],
   sizes = '(min-width: 1024px) 50vw, 100vw',
   priority = false,
@@ -46,10 +46,12 @@ const {
       pictureAttributes={{ class: 'ed-figure-picture', style: `aspect-ratio:${ratio}` }}
     />
   </div>
-  <figcaption class:list={[bleed && 'ed-container']}>
-    <span>{caption}</span>
-    <span>Foto: {credit}</span>
-  </figcaption>
+  {(caption || credit) && (
+    <figcaption class:list={[bleed && 'ed-container']}>
+      {caption && <span>{caption}</span>}
+      {credit && <span>Foto: {credit}</span>}
+    </figcaption>
+  )}
 </figure>
 
 <style>

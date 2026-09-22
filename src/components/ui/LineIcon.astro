@@ -13,7 +13,10 @@ interface Props {
     | 'commit'
     | 'zone'
     | 'compare'
-    | 'check';
+    | 'check'
+    | 'energy'
+    | 'pipe'
+    | 'patio';
 }
 const { name } = Astro.props;
 ---
@@ -118,6 +121,29 @@ const { name } = Astro.props;
       <>
         <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.6" />
         <path d="M8.5 12.2 11 14.7 15.5 9.5" stroke="currentColor" stroke-width="1.8" />
+      </>
+    )
+  }
+  {
+    name === 'energy' && (
+      <>
+        <path d="M13 3 6 13h6l-1 8 7-10h-6l1-8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" />
+      </>
+    )
+  }
+  {
+    name === 'pipe' && (
+      <>
+        <path d="M8 4v7.5a4 4 0 0 0 8 0V4" stroke="currentColor" stroke-width="1.6" />
+        <path d="M8 20v-4.5a4 4 0 0 1 8 0V20" stroke="currentColor" stroke-width="1.6" />
+      </>
+    )
+  }
+  {
+    name === 'patio' && (
+      <>
+        <rect x="4" y="6" width="16" height="13" stroke="currentColor" stroke-width="1.6" />
+        <path d="M4 11h16M9 6v13M15 6v13" stroke="currentColor" stroke-width="1.6" />
       </>
     )
   }
