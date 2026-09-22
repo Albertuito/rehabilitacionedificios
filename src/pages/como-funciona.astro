@@ -1,0 +1,154 @@
+---
+import Base from '../components/layout/Base.astro';
+import SiteHeader from '../components/layout/SiteHeader.astro';
+import SiteFooter from '../components/layout/SiteFooter.astro';
+import AffiliateCta from '../components/conversion/AffiliateCta.astro';
+import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
+import Faq from '../components/ui/Faq.astro';
+import { absoluteUrl, siteConfig } from '../config/site.config';
+import { PRIMARY_CTA } from '../config/affiliate.config';
+import { breadcrumbNode, faqNode, jsonLd, organizationNode, webPageNode, websiteNode } from '../lib/schema';
+
+const faqs = [
+  {
+    question: '¿Rehabilitando Edificios ejecuta la obra?',
+    answer:
+      'No. Esta web informa y facilita una solicitud de presupuestos. Las empresas contactan a través de Habitissimo. El contrato, si se celebra, es con el profesional.',
+  },
+  {
+    question: '¿Por qué el formulario está en Habitissimo?',
+    answer:
+      'Habitissimo gestiona la petición y el contacto con empresas de la zona. Si hay un enlace Awin configurado, esta web puede recibir comisión. Eso no cambia el precio que te cotice la empresa.',
+  },
+  {
+    question: '¿Tengo que aceptar la primera oferta?',
+    answer: 'No. Puedes comparar partidas, plazos y exclusiones, y decidir con la comunidad. La solicitud no implica contratar.',
+  },
+];
+const schema = jsonLd([
+  organizationNode(),
+  websiteNode(),
+  breadcrumbNode([
+    { name: 'Inicio', path: '/' },
+    { name: 'Cómo funciona', path: '/como-funciona/' },
+  ]),
+  webPageNode({
+    name: 'Cómo funciona la solicitud de presupuestos',
+    description: 'Pasos para pedir presupuestos de rehabilitación de edificios y comparar empresas de tu zona.',
+    path: '/como-funciona/',
+  }),
+  faqNode(faqs),
+]);
+const steps = [
+  {
+    n: '01',
+    t: 'Identifica la actuación',
+    d: 'Fachada, cubierta, humedades, accesibilidad, ITE u obra coordinada. Usa las fichas de servicio si no tienes claro el alcance.',
+  },
+  {
+    n: '02',
+    t: 'Pide presupuestos gratis',
+    d: 'El botón naranja abre el formulario de Habitissimo. Completas allí los datos de contacto. En esta web no pedimos teléfono ni correo.',
+  },
+  {
+    n: '03',
+    t: 'Recibe propuestas de tu zona',
+    d: 'Empresas interesadas pueden contactarte. No afirmamos que seleccionemos personalmente a cada profesional ni que ejecutemos la obra.',
+  },
+  {
+    n: '04',
+    t: 'Compara y decide con la comunidad',
+    d: 'Pide la misma superficie, el mismo sistema y las exclusiones por escrito. El contrato es entre la comunidad y la empresa elegida.',
+  },
+];
+---
+
+<Base
+  title={`Cómo funciona | ${siteConfig.brand.name}`}
+  description="Cómo pedir presupuestos de rehabilitación de edificios: describes la actuación, completas la solicitud en Habitissimo y comparas empresas de tu zona."
+  canonical={absoluteUrl('/como-funciona/')}
+  jsonLd={schema}
+>
+  <SiteHeader slot="header" />
+  <main id="contenido">
+    <Breadcrumbs items={[{ name: 'Inicio', href: '/' }, { name: 'Cómo funciona' }]} />
+    <section class="ed-container how-hero">
+      <p class="ed-kicker">Proceso</p>
+      <h1 class="ed-h1">Cómo funciona la solicitud de presupuestos</h1>
+      <p class="ed-lead">
+        Rehabilitando Edificios es un servicio de comparación. No somos una constructora, no visitamos el edificio y no
+        gestionamos la obra.
+      </p>
+    </section>
+    <section class="ed-section band-white">
+      <div class="ed-container how-steps">
+        {
+          steps.map((item) => (
+            <article>
+              <span class="ed-num">{item.n}</span>
+              <h2 class="ed-h3">{item.t}</h2>
+              <p>{item.d}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+    <section class="ed-section">
+      <div class="ed-container how-note">
+        <h2 class="ed-h2">Afiliación y transparencia</h2>
+        <p>
+          Si <code>PUBLIC_AWIN_URL</code> está configurada, los botones de presupuesto son enlaces de tracking Awin hacia
+          Habitissimo. Podemos recibir comisión si un profesional compra el contacto. La explicación legal está en
+          <a class="ed-link" href="/afiliacion/">afiliación</a> y en el aviso legal.
+        </p>
+        <p>
+          Si el enlace de afiliación no está configurado, los botones permanecen visibles pero desactivados. No usamos un
+          destino directo a habitissimo.es como tracking.
+        </p>
+        <div class="how-note__cta">
+          <AffiliateCta clickref="como_funciona_cta" label={PRIMARY_CTA} placement="final" />
+        </div>
+      </div>
+    </section>
+    <section class="ed-container">
+      <Faq items={faqs} />
+    </section>
+  </main>
+  <SiteFooter slot="footer" />
+</Base>
+
+<style>
+  .how-hero {
+    padding-block: var(--space-5);
+    max-width: 46rem;
+  }
+
+  .how-steps {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .how-steps article {
+    border-top: var(--rule);
+    padding-top: 1.15rem;
+  }
+
+  .how-steps .ed-num {
+    font-size: 1.6rem;
+  }
+
+  .how-note {
+    max-width: 46rem;
+  }
+
+  .how-note__cta {
+    margin-top: 1.75rem;
+  }
+
+  @media (min-width: 768px) {
+    .how-steps {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.75rem 2rem;
+    }
+  }
+</style>

@@ -57,7 +57,7 @@ const schema = jsonLd([
       <h1 class="ed-h1">{data.h1}</h1>
       <p class="ed-lead">{data.answer}</p>
       <div class="fachada-hero__cta">
-        <AffiliateCta clickref={data.clickref} label={data.ctaLabel} placement="hero" service={def?.slug} />
+        <AffiliateCta clickref={data.clickref} placement="hero" service={def?.slug} />
         <a class="ed-link" href="/guias/permisos-rehabilitar-fachada/">Permisos de fachada</a>
       </div>
       <p class="ed-meta">{affiliateConfig.disclosure}</p>
@@ -167,7 +167,7 @@ const schema = jsonLd([
             }
           </ul>
           <div class="fachada-related__cta">
-            <AffiliateCta clickref={`${def?.slug}_final`} label="Comparar presupuestos" placement="final" service={def?.slug} />
+            <AffiliateCta clickref={`${def?.slug}_final`} placement="final" service={def?.slug} />
           </div>
         </div>
       </div>
@@ -238,7 +238,7 @@ const schema = jsonLd([
 
   .fachada-steps .ed-num {
     font-size: 2rem;
-    color: #e08a72;
+    color: var(--color-orange-500);
   }
 
   .fachada-related__cta {

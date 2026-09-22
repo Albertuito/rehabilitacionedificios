@@ -3,6 +3,7 @@ import { siteConfig } from '../../config/site.config';
 import { affiliateConfig } from '../../config/affiliate.config';
 import { services } from '../../data/services';
 import { locations } from '../../data/locations';
+import BrandMark from '../brand/BrandMark.astro';
 
 const featured = locations.slice(0, 8);
 ---
@@ -10,7 +11,9 @@ const featured = locations.slice(0, 8);
 <footer class="site-footer">
   <div class="ed-container site-footer__grid">
     <div class="site-footer__brand">
-      <p class="site-footer__name">{siteConfig.brand.name}</p>
+      <a href="/" class="site-footer__logo" aria-label="Rehabilitando Edificios, inicio">
+        <BrandMark invert />
+      </a>
       <p class="site-footer__tagline">{siteConfig.brand.tagline}</p>
       <p>
         {affiliateConfig.disclosure}
@@ -48,6 +51,7 @@ const featured = locations.slice(0, 8);
     <div>
       <p class="ed-kicker">Proyecto</p>
       <ul>
+        <li><a class="ed-link" href="/como-funciona/">Cómo funciona</a></li>
         <li><a class="ed-link" href="/guias/">Guías</a></li>
         <li><a class="ed-link" href="/precios/">Precios</a></li>
         <li><a class="ed-link" href="/calculadora/">Calculadora</a></li>
@@ -74,8 +78,8 @@ const featured = locations.slice(0, 8);
 <style>
   .site-footer {
     margin-top: auto;
-    background: var(--color-ink);
-    color: var(--color-paper);
+    background: var(--color-navy-950);
+    color: var(--color-white);
     padding-block: var(--space-6) var(--space-4);
   }
 
@@ -84,22 +88,19 @@ const featured = locations.slice(0, 8);
     gap: var(--space-5);
   }
 
-  .site-footer__name {
-    font-family: var(--font-serif);
-    font-size: 1.75rem;
-    letter-spacing: -0.03em;
-    margin: 0;
-    color: var(--color-paper);
+  .site-footer__logo {
+    text-decoration: none;
+    display: inline-flex;
   }
 
   .site-footer__tagline {
     margin: 1rem 0;
-    color: rgb(244 240 232 / 0.82);
+    color: rgb(255 255 255 / 0.82);
     max-width: 28rem;
   }
 
   .site-footer p {
-    color: rgb(244 240 232 / 0.7);
+    color: rgb(255 255 255 / 0.7);
     font-size: 0.9rem;
     max-width: 36rem;
   }
@@ -114,12 +115,12 @@ const featured = locations.slice(0, 8);
   }
 
   .site-footer .ed-kicker {
-    color: #c5cdc8;
+    color: var(--color-orange-500);
     margin-bottom: 1rem;
   }
 
   .site-footer .ed-link {
-    text-decoration-color: rgb(244 240 232 / 0.28);
+    text-decoration-color: rgb(255 255 255 / 0.28);
   }
 
   .site-footer__legal {
@@ -128,9 +129,10 @@ const featured = locations.slice(0, 8);
     gap: 0.75rem 1.5rem;
     margin-top: var(--space-5);
     padding-top: 1.75rem;
-    border-top: 1px solid rgb(244 240 232 / 0.15);
+    border-top: 1px solid rgb(255 255 255 / 0.14);
     font-size: 0.85rem;
-    color: rgb(244 240 232 / 0.7);
+    color: rgb(255 255 255 / 0.7);
+    position: relative;
   }
 
   .site-footer__awin {

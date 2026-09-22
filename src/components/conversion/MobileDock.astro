@@ -1,0 +1,37 @@
+---
+import { affiliateConfig, PRIMARY_CTA } from '../../config/affiliate.config';
+import AffiliateCta from './AffiliateCta.astro';
+---
+
+{
+  affiliateConfig.isConfigured && (
+    <div class="mobile-dock" role="region" aria-label="Solicitar presupuesto">
+      <AffiliateCta clickref="mobile_sticky_cta" label={PRIMARY_CTA} placement="sticky" class="ed-btn ed-btn-primary mobile-dock__cta" />
+    </div>
+  )
+}
+
+<style>
+  .mobile-dock {
+    display: none;
+  }
+
+  @media (max-width: 1023px) {
+    .mobile-dock {
+      display: flex;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 35;
+      padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom));
+      background: var(--color-white);
+      border-top: 1px solid var(--color-border);
+      box-shadow: 0 -8px 24px rgb(8 20 38 / 8%);
+    }
+
+    .mobile-dock__cta {
+      width: 100%;
+    }
+  }
+</style>

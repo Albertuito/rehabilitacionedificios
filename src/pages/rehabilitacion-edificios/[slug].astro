@@ -112,7 +112,7 @@ const sectionCopy: Record<GeoSection, { kicker: string; title: string; body: str
         <h1 class="ed-h1">{data.h1}</h1>
         <p class="ed-lead">{data.answer}</p>
         <div class="geo-hero__cta">
-          <AffiliateCta clickref={data.clickref} label={data.ctaLabel} placement="hero" location={data.citySlug} />
+          <AffiliateCta clickref={data.clickref} placement="hero" location={data.citySlug} />
           <a class="ed-link" href="/servicios/">Ver servicios</a>
         </div>
         <p class="ed-meta">{affiliateConfig.disclosure}</p>
@@ -200,7 +200,7 @@ const sectionCopy: Record<GeoSection, { kicker: string; title: string; body: str
                 <li><span class="ed-num">02</span> Profesionales interesados de la zona pueden contactar a través de Habitissimo.</li>
                 <li><span class="ed-num">03</span> Compara presupuestos y decide libremente con la comunidad.</li>
               </ol>
-              <AffiliateCta clickref={`${data.citySlug}_midpage`} label="Pedir una valoración" placement="mid" location={data.citySlug} />
+              <AffiliateCta clickref={`${data.citySlug}_midpage`} placement="mid" location={data.citySlug} />
             </div>
           </section>
         )}

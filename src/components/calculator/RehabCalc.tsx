@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'preact/hooks';
 import { locations } from '../../data/locations';
 import { estimateRehab, formatEuro } from '../../lib/pricing';
 import { buildAffiliateUrl } from '../../lib/affiliate';
-import { affiliateConfig } from '../../config/affiliate.config';
+import { affiliateConfig, PRIMARY_CTA } from '../../config/affiliate.config';
 import { readConsentFromDocument, type ConsentChoice } from '../../lib/consent';
 import type { RehabAction } from '../../data/pricing';
 
@@ -59,7 +59,7 @@ export default function RehabCalc({ clickref, tone = 'ivory' }: Props) {
 
   return (
     <form
-      class={dark ? 'text-paper' : 'text-ink'}
+      class={dark ? 'rehab-calc is-dark text-paper' : 'rehab-calc text-ink'}
       onSubmit={(event) => {
         event.preventDefault();
         setDone(true);
@@ -68,7 +68,7 @@ export default function RehabCalc({ clickref, tone = 'ivory' }: Props) {
         emit('ri:calculator_complete', detail);
       }}
     >
-      <p class="ed-kicker" style={dark ? { color: '#c5cdc8' } : undefined}>
+      <p class="ed-kicker" style={dark ? { color: 'var(--color-orange-500)' } : undefined}>
         Calculadora orientativa · sin datos personales
       </p>
       <h2 class="ed-h2" style={{ color: 'inherit', marginTop: 0 }}>
@@ -139,7 +139,7 @@ export default function RehabCalc({ clickref, tone = 'ivory' }: Props) {
       </button>
       {done && (
         <div class="mt-10 border-t pt-8" style={{ borderColor: dark ? 'rgba(255,255,255,.18)' : 'var(--color-border)' }}>
-          <p class="font-serif tabular-nums leading-none" style={{ fontSize: 'clamp(2.2rem, 4vw, 3.6rem)' }}>
+          <p class="rehab-calc__result">
             {formatEuro(result.low)} – {formatEuro(result.high)}
           </p>
           <p class="mt-4">Referencia {result.consultedAt}. No es un presupuesto cerrado.</p>
@@ -165,11 +165,11 @@ export default function RehabCalc({ clickref, tone = 'ivory' }: Props) {
               data-location={province}
               data-service={action}
             >
-              Obtén presupuestos adaptados a tu edificio
+              {PRIMARY_CTA}
             </a>
           ) : (
             <span class="ed-btn ed-btn-primary is-disabled mt-8" aria-disabled="true" title={affiliateConfig.disabledReason}>
-              Obtén presupuestos adaptados a tu edificio
+              {PRIMARY_CTA}
             </span>
           )}
         </div>

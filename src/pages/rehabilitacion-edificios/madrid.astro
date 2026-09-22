@@ -63,7 +63,7 @@ const schema = jsonLd([
         <h1 class="ed-h1">{data.h1}</h1>
         <p class="ed-lead">{data.answer}</p>
         <div class="madrid-hero__cta">
-          <AffiliateCta clickref={data.clickref} label={data.ctaLabel} placement="hero" location={data.citySlug} />
+          <AffiliateCta clickref={data.clickref} placement="hero" location={data.citySlug} />
           <a class="ed-link" href="/servicios/">Ver servicios</a>
         </div>
         <p class="ed-meta">{affiliateConfig.disclosure}</p>
@@ -165,7 +165,7 @@ const schema = jsonLd([
               </tr>
             </tbody>
           </table>
-          <AffiliateCta clickref={`${data.citySlug}_midpage`} label="Pedir una valoración" placement="mid" location={data.citySlug} />
+          <AffiliateCta clickref={`${data.citySlug}_midpage`} placement="mid" location={data.citySlug} />
         </div>
       </div>
     </section>

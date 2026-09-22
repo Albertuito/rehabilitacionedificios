@@ -1,0 +1,134 @@
+---
+interface Props {
+  name:
+    | 'facade'
+    | 'roof'
+    | 'damp'
+    | 'insulate'
+    | 'access'
+    | 'crack'
+    | 'ite'
+    | 'building'
+    | 'free'
+    | 'commit'
+    | 'zone'
+    | 'compare'
+    | 'check';
+}
+const { name } = Astro.props;
+---
+
+<svg class="line-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+  {
+    name === 'facade' && (
+      <>
+        <rect x="5" y="4" width="14" height="16" stroke="currentColor" stroke-width="1.6" />
+        <path d="M8 8h2M14 8h2M8 12h2M14 12h2M8 16h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" />
+      </>
+    )
+  }
+  {
+    name === 'roof' && (
+      <>
+        <path d="M4 12 12 5l8 7" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" />
+        <path d="M6 11.5V19h12v-7.5" stroke="currentColor" stroke-width="1.6" />
+      </>
+    )
+  }
+  {
+    name === 'damp' && (
+      <>
+        <path d="M12 4c3.2 4.2 5 7 5 10a5 5 0 1 1-10 0c0-3 1.8-5.8 5-10Z" stroke="currentColor" stroke-width="1.6" />
+      </>
+    )
+  }
+  {
+    name === 'insulate' && (
+      <>
+        <rect x="4" y="5" width="16" height="14" stroke="currentColor" stroke-width="1.6" />
+        <path d="M8 5v14M12 5v14M16 5v14" stroke="currentColor" stroke-width="1.6" />
+      </>
+    )
+  }
+  {
+    name === 'access' && (
+      <>
+        <path d="M5 19V8l7-4 7 4v11" stroke="currentColor" stroke-width="1.6" />
+        <path d="M10 19v-6h4v6" stroke="currentColor" stroke-width="1.6" />
+      </>
+    )
+  }
+  {
+    name === 'crack' && (
+      <>
+        <path d="M5 5h14v14H5V5Z" stroke="currentColor" stroke-width="1.6" />
+        <path d="M10 5 8 10l5 2-3 7" stroke="currentColor" stroke-width="1.6" />
+      </>
+    )
+  }
+  {
+    name === 'ite' && (
+      <>
+        <rect x="5" y="4" width="14" height="16" stroke="currentColor" stroke-width="1.6" />
+        <path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" />
+      </>
+    )
+  }
+  {
+    name === 'building' && (
+      <>
+        <path d="M4 20V8l6-3 6 3v12H4Z" stroke="currentColor" stroke-width="1.6" />
+        <path d="M16 11h4v9h-4M8 11h2M8 15h2" stroke="currentColor" stroke-width="1.6" />
+      </>
+    )
+  }
+  {
+    name === 'free' && (
+      <>
+        <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.6" />
+        <path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="1.6" />
+      </>
+    )
+  }
+  {
+    name === 'commit' && (
+      <>
+        <path d="M7 12.5 10.2 16 17 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" />
+      </>
+    )
+  }
+  {
+    name === 'zone' && (
+      <>
+        <path d="M12 21s7-6.1 7-11a7 7 0 1 0-14 0c0 4.9 7 11 7 11Z" stroke="currentColor" stroke-width="1.6" />
+        <circle cx="12" cy="10" r="2.2" stroke="currentColor" stroke-width="1.6" />
+      </>
+    )
+  }
+  {
+    name === 'compare' && (
+      <>
+        <rect x="3.5" y="6" width="7" height="12" stroke="currentColor" stroke-width="1.6" />
+        <rect x="13.5" y="6" width="7" height="12" stroke="currentColor" stroke-width="1.6" />
+      </>
+    )
+  }
+  {
+    name === 'check' && (
+      <>
+        <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.6" />
+        <path d="M8.5 12.2 11 14.7 15.5 9.5" stroke="currentColor" stroke-width="1.8" />
+      </>
+    )
+  }
+</svg>
+
+<style>
+  .line-icon {
+    width: 1.35rem;
+    height: 1.35rem;
+    display: block;
+    color: var(--color-orange-500);
+    flex-shrink: 0;
+  }
+</style>

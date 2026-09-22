@@ -22,6 +22,8 @@ export function isAwinTrackingUrl(url: string): boolean {
 const trackingUrlRaw = publicEnv(import.meta.env?.PUBLIC_AWIN_URL);
 const trackingUrl = trackingUrlRaw && isAwinTrackingUrl(trackingUrlRaw) ? trackingUrlRaw : '';
 
+export const PRIMARY_CTA = 'Pedir presupuestos gratis';
+
 export const affiliateConfig = {
   provider: 'awin' as const,
   programName: 'Habitissimo / Awin',

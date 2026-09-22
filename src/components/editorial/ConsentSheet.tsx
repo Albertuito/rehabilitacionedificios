@@ -35,24 +35,24 @@ export default function ConsentSheet({ brand }: Props) {
 
   return (
     <div
-      class="fixed bottom-3 right-3 z-50 w-[min(20.5rem,calc(100%-1.5rem))] border border-border bg-paper p-3.5 text-ink shadow-[0_6px_20px_rgb(21_25_24/10%)]"
+      class="consent-sheet"
       role="dialog"
       aria-labelledby="consent-title"
     >
-      <h2 id="consent-title" class="font-serif text-lg m-0 leading-tight">
+      <h2 id="consent-title" class="consent-sheet__title">
         Cookies en {brand}
       </h2>
-      <p class="mt-2 text-xs text-ink-soft leading-snug">
+      <p class="consent-sheet__copy">
         Solo las técnicas son necesarias. La analítica se carga si la aceptas.
       </p>
-      <div class="mt-3 grid grid-cols-3 gap-1.5">
-        <button class="ed-btn ed-btn-primary" type="button" style={{ minHeight: '2.25rem', fontSize: '0.75rem', padding: '0 0.4rem' }} onClick={() => decide('accepted')}>
+      <div class="consent-sheet__actions">
+        <button class="ed-btn ed-btn-primary" type="button" onClick={() => decide('accepted')}>
           Aceptar
         </button>
-        <button class="ed-btn ed-btn-ghost" type="button" style={{ minHeight: '2.25rem', fontSize: '0.75rem', padding: '0 0.4rem' }} onClick={() => decide('rejected')}>
+        <button class="ed-btn ed-btn-ghost" type="button" onClick={() => decide('rejected')}>
           Rechazar
         </button>
-        <button class="ed-btn ed-btn-ghost" type="button" style={{ minHeight: '2.25rem', fontSize: '0.75rem', padding: '0 0.4rem' }} onClick={() => decide('custom')}>
+        <button class="ed-btn ed-btn-ghost" type="button" onClick={() => decide('custom')}>
           Ajustar
         </button>
       </div>

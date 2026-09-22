@@ -1,5 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" fill="#151918"/>
-  <rect x="14" y="16" width="36" height="32" fill="#F4F0E8"/>
-  <rect x="14" y="42" width="36" height="6" fill="#B64A2B"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+  <rect width="40" height="40" rx="8" fill="#0d1b32"/>
+  <rect x="4" y="34" width="32" height="2" rx="1" fill="#ffffff"/>
+  <path fill="#ffffff" fill-rule="evenodd" d="M8 14h10v20H8V14Zm4 4h2v3h-2v-3Zm0 6h2v3h-2v-3Zm0 6h2v3h-2v-3Z"/>
+  <path fill="#ffffff" fill-rule="evenodd" d="M20 10h12v24H20V10Zm4 7.5h4V20h-4v-2.5Zm0 5.5h4v2.5h-4V23Zm0 5.5h4V31h-4v-2.5Z"/>
+  <rect x="24" y="11" width="4" height="2.5" rx="0.4" fill="#ff9d0a"/>
 </svg>

@@ -1,4 +1,4 @@
-/* Editorial técnico-arquitectónico — retícula, botones, bandas */
+/* Rehabilitando Edificios — retícula, botones, bandas */
 
 .ed-page {
   min-height: 100vh;
@@ -91,7 +91,7 @@
   padding: 0 1.35rem;
   border-radius: var(--radius-sm);
   font-family: var(--font-sans);
-  font-weight: 650;
+  font-weight: 700;
   font-size: 0.9375rem;
   text-decoration: none;
   border: 1px solid transparent;
@@ -105,45 +105,46 @@
 }
 
 .ed-btn-primary {
-  background: var(--color-terracotta);
-  color: var(--color-white);
+  background: var(--color-orange-500);
+  color: var(--color-navy-950);
 }
 
 .ed-btn-primary:hover {
-  background: var(--color-terracotta-dark);
+  background: var(--color-orange-600);
+  color: var(--color-navy-950);
 }
 
 .ed-btn-ghost {
   background: transparent;
-  color: var(--color-ink);
-  border-color: var(--color-ink);
+  color: var(--color-text);
+  border-color: var(--color-border);
 }
 
 .ed-btn-ghost:hover {
-  background: var(--color-ink);
-  color: var(--color-paper);
+  background: var(--color-navy-900);
+  color: var(--color-white);
+  border-color: var(--color-navy-900);
 }
 
 .ed-btn.is-disabled,
 .ed-link.is-disabled {
-  opacity: 0.42;
   pointer-events: none;
   cursor: not-allowed;
-  filter: grayscale(0.15);
 }
 
 .band-ink .ed-btn-primary {
-  background: var(--color-paper);
-  color: var(--color-ink);
+  background: var(--color-orange-500);
+  color: var(--color-navy-950);
 }
 
 .band-ink .ed-btn-primary:hover {
-  background: var(--color-white);
+  background: var(--color-orange-600);
+  color: var(--color-navy-950);
 }
 
 .band-ink .ed-btn-ghost {
-  color: var(--color-paper);
-  border-color: rgb(244 240 232 / 0.45);
+  color: var(--color-white);
+  border-color: rgb(255 255 255 / 0.35);
 }
 
 .ed-link {
@@ -154,16 +155,16 @@
 }
 
 .ed-link:hover {
-  color: var(--color-terracotta);
+  color: var(--color-orange-600);
 }
 
 .band-ink .ed-link:hover {
-  color: var(--color-white);
+  color: var(--color-orange-500);
 }
 
 .band-ink {
-  background: var(--color-ink);
-  color: var(--color-paper);
+  background: var(--color-navy-900);
+  color: var(--color-white);
 }
 
 .band-white {
@@ -171,7 +172,7 @@
 }
 
 .band-paper {
-  background: var(--color-paper);
+  background: var(--color-background);
 }
 
 .skip-link {
@@ -179,7 +180,7 @@
   left: 12px;
   top: -48px;
   z-index: 80;
-  background: var(--color-ink);
+  background: var(--color-navy-900);
   color: white;
   padding: 8px 12px;
 }
@@ -256,14 +257,27 @@
   font-size: var(--text-kicker);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-sage);
-  font-weight: 650;
+  color: var(--color-muted);
+  font-weight: 700;
 }
 
 .ed-facts dd {
-  font-family: var(--font-serif);
-  font-size: 1.35rem;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
   letter-spacing: -0.03em;
+}
+
+.has-dock {
+  --dock-h: calc(4.25rem + env(safe-area-inset-bottom));
+  padding-bottom: var(--dock-h);
+}
+
+@media (min-width: 1024px) {
+  .has-dock {
+    --dock-h: 0px;
+    padding-bottom: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

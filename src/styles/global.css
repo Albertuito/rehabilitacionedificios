@@ -11,8 +11,50 @@
   }
 
   ::selection {
-    background: #eadfd0;
-    color: var(--color-ink);
+    background: var(--color-orange-100);
+    color: var(--color-navy-950);
+  }
+
+  .consent-sheet {
+    position: fixed;
+    right: 0.75rem;
+    bottom: calc(var(--dock-h, 0px) + 0.75rem);
+    z-index: 50;
+    width: min(20.5rem, calc(100% - 1.5rem));
+    border: 1px solid var(--color-border);
+    background: var(--color-white);
+    color: var(--color-text);
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .consent-sheet__title {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 750;
+    margin: 0;
+    letter-spacing: -0.03em;
+  }
+
+  .consent-sheet__copy {
+    margin: 0.55rem 0 0;
+    font-size: 0.78rem;
+    color: var(--color-muted);
+    line-height: 1.45;
+  }
+
+  .consent-sheet__actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.4rem;
+    margin-top: 0.85rem;
+  }
+
+  .consent-sheet__actions .ed-btn {
+    min-height: 2.25rem;
+    font-size: 0.72rem;
+    padding: 0 0.35rem;
   }
 
   a {

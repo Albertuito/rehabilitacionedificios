@@ -1,24 +1,27 @@
-/* Editorial técnico-arquitectónico — prosa, tablas, figuras, formularios */
+/* Prosa, tablas, figuras y formularios */
 
 .ed-prose {
   max-width: var(--measure);
 }
 
 .ed-prose :where(h2) {
-  font-family: var(--font-serif);
-  font-size: clamp(1.6rem, 1.15rem + 1.4vw, 2.25rem);
-  margin: 2.75rem 0 0.9rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 1.15rem + 1.1vw, 1.95rem);
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  margin: 2.5rem 0 0.85rem;
 }
 
 .ed-prose :where(h3) {
-  font-family: var(--font-serif);
-  font-size: 1.4rem;
-  margin: 2rem 0 0.7rem;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 1.75rem 0 0.6rem;
 }
 
 .ed-prose :where(p, li) {
-  font-size: 1.0625rem;
-  line-height: 1.7;
+  font-size: 1.02rem;
+  line-height: 1.65;
 }
 
 .ed-prose :where(a) {
@@ -49,7 +52,7 @@
   font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-sage);
+  color: var(--color-muted);
   font-weight: 700;
 }
 
@@ -64,6 +67,7 @@
 .ed-figure-frame {
   overflow: hidden;
   background: var(--color-border);
+  border-radius: var(--radius-md);
 }
 
 .ed-figure img,
@@ -88,11 +92,11 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  font-weight: 650;
-  font-size: 0.8rem;
+  font-weight: 700;
+  font-size: 0.78rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--color-sage);
+  color: var(--color-muted);
 }
 
 .ed-field input,
@@ -105,15 +109,15 @@
   border: var(--rule);
   border-radius: var(--radius-sm);
   background: var(--color-white);
-  color: var(--color-ink);
+  color: var(--color-text);
   padding: 0.5rem 0.75rem;
 }
 
 .band-ink .ed-field select,
 .band-ink .ed-field input {
-  background: #1d2220;
-  color: var(--color-paper);
-  border-color: rgb(244 240 232 / 0.22);
+  background: var(--color-navy-800);
+  color: var(--color-white);
+  border-color: rgb(255 255 255 / 0.22);
 }
 
 .ed-faq details {
@@ -151,4 +155,34 @@ details > summary {
 
 details > summary::-webkit-details-marker {
   display: none;
+}
+
+.rehab-calc {
+  background: var(--color-white);
+  border: var(--rule);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.rehab-calc.is-dark {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.rehab-calc__result {
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-size: clamp(1.85rem, 3.5vw, 2.8rem);
+}
+
+@media (min-width: 768px) {
+  .rehab-calc {
+    padding: 2rem;
+  }
 }

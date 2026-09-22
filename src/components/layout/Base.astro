@@ -1,7 +1,9 @@
 ---
 import '../../styles/global.css';
 import { absoluteUrl, robotsContent, siteConfig, shouldIndex } from '../../config/site.config';
+import { affiliateConfig } from '../../config/affiliate.config';
 import ConsentSheet from '../ui/ConsentSheet';
+import MobileDock from '../conversion/MobileDock.astro';
 
 interface Props {
   title: string;
@@ -61,18 +63,19 @@ const gsc = shouldIndex() ? siteConfig.analytics.searchConsole : '';
     {updatedAt && <meta property="article:modified_time" content={updatedAt} />}
     {gsc && <meta name="google-site-verification" content={gsc} />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="preload" href="/fonts/newsreader-500.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/manrope-500.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter-700.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin />
     {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
     {siteConfig.analytics.gtmId && <meta name="gtm-id" content={siteConfig.analytics.gtmId} />}
     {ga && <meta name="ga-id" content={ga} />}
     {siteConfig.analytics.clarityId && <meta name="clarity-id" content={siteConfig.analytics.clarityId} />}
   </head>
-  <body class="ed-page">
+  <body class:list={['ed-page', affiliateConfig.isConfigured && 'has-dock']}>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
     <slot name="header" />
     <slot />
     <slot name="footer" />
+    <MobileDock />
     <ConsentSheet client:idle brand={siteConfig.brand.name} />
     <script>
       import '../../scripts/tracking';

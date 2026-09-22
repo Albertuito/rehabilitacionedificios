@@ -1,11 +1,11 @@
 {
-  "name": "Rehabilita tu Edificio",
-  "short_name": "Rehabilita",
-  "description": "Plataforma nacional para encontrar empresas especializadas en rehabilitación de edificios.",
+  "name": "Rehabilitando Edificios",
+  "short_name": "Rehabilitando",
+  "description": "Compara presupuestos de empresas especializadas en rehabilitación de edificios.",
   "start_url": "/",
   "display": "browser",
-  "background_color": "#F4F0E8",
-  "theme_color": "#151918",
+  "background_color": "#f5f7fa",
+  "theme_color": "#0d1b32",
   "lang": "es-ES",
   "icons": [
     {

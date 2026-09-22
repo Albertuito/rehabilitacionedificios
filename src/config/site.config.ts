@@ -55,13 +55,13 @@ export function isFilledLegalValue(value: string): boolean {
 
 export const siteConfig = {
   brand: {
-    name: 'Rehabilita tu Edificio',
-    shortName: 'Rehabilita tu Edificio',
-    tagline: 'Te ayudamos a encontrar empresas especializadas para rehabilitar tu edificio.',
+    name: 'Rehabilitando Edificios',
+    shortName: 'Rehabilitando Edificios',
+    tagline: 'Compara presupuestos de empresas especializadas en rehabilitación de edificios.',
     promise:
-      'Medio editorial que ayuda a comunidades y propietarios a comparar empresas de rehabilitación de edificios. No ejecutamos obras.',
+      'Plataforma de comparación para comunidades y propietarios que necesitan rehabilitar un edificio. No ejecutamos obras.',
     differentiation:
-      'No ejecutamos obras ni tenemos cuadrillas. Ordenamos el alcance, explicamos partidas y conectamos con profesionales de la zona.',
+      'No ejecutamos obras ni tenemos cuadrillas. Ayudamos a pedir presupuestos a profesionales de la zona y a comparar opciones.',
   },
   locale: 'es-ES',
   country: 'ES',

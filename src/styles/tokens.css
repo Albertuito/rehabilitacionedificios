@@ -1,30 +1,42 @@
-/* Editorial técnico-arquitectónico — tokens */
+/* Rehabilitando Edificios — identidad comercial */
 
 :root {
-  --color-ink: #151918;
-  --color-ink-soft: #2b302e;
-  --color-paper: #f4f0e8;
+  --color-navy-950: #081426;
+  --color-navy-900: #0d1b32;
+  --color-navy-800: #132747;
+  --color-orange-500: #ff9d0a;
+  --color-orange-600: #e98700;
+  --color-orange-100: #fff1d6;
   --color-white: #ffffff;
-  --color-terracotta: #b64a2b;
-  --color-terracotta-dark: #8f351f;
-  --color-sage: #68736a;
-  --color-muted: #515754;
-  --color-border: #d8d5ce;
-  --color-focus: #215c4a;
-  --color-paper-deep: #ebe6dc;
+  --color-background: #f5f7fa;
+  --color-surface: #ffffff;
+  --color-text: #121826;
+  --color-muted: #5e6877;
+  --color-border: #dce2ea;
+  --color-success: #168457;
 
-  --font-serif: "Newsreader", ui-serif, Georgia, "Times New Roman", serif;
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --color-ink: var(--color-text);
+  --color-ink-soft: #2a3344;
+  --color-paper: var(--color-background);
+  --color-terracotta: var(--color-orange-500);
+  --color-terracotta-dark: var(--color-orange-600);
+  --color-sage: var(--color-muted);
+  --color-focus: var(--color-orange-500);
+  --color-paper-deep: #e8edf3;
 
-  --text-body: clamp(1rem, 0.96rem + 0.18vw, 1.125rem);
-  --text-lead: clamp(1.125rem, 1.05rem + 0.35vw, 1.35rem);
-  --text-h1: clamp(2.35rem, 1.2rem + 4.6vw, 5rem);
-  --text-h2: clamp(1.75rem, 1.15rem + 2.1vw, 3.1rem);
-  --text-h3: clamp(1.35rem, 1.2rem + 0.7vw, 1.85rem);
+  --font-sans: "Inter", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-display);
+
+  --text-body: clamp(1rem, 0.97rem + 0.14vw, 1.0625rem);
+  --text-lead: clamp(1.05rem, 1rem + 0.28vw, 1.2rem);
+  --text-h1: clamp(2rem, 1.15rem + 3.2vw, 3.35rem);
+  --text-h2: clamp(1.5rem, 1.15rem + 1.5vw, 2.15rem);
+  --text-h3: clamp(1.15rem, 1.05rem + 0.45vw, 1.35rem);
   --text-kicker: 0.72rem;
-  --leading-body: 1.65;
-  --leading-display: 1.08;
-  --measure: 68ch;
+  --leading-body: 1.6;
+  --leading-display: 1.12;
+  --measure: 65ch;
   --measure-narrow: 38rem;
 
   --space-1: 0.5rem;
@@ -32,22 +44,23 @@
   --space-3: 1.25rem;
   --space-4: 2rem;
   --space-5: 2.75rem;
-  --space-6: 4.25rem;
-  --space-7: 6.25rem;
-  --header-h: 3.65rem;
+  --space-6: 4rem;
+  --space-7: 5.5rem;
+  --header-h: 4rem;
+  --dock-h: 0px;
 
-  --container: 1280px;
+  --container: 1220px;
   --gutter: 16px;
   --gutter-md: 24px;
   --grid-gap: 16px;
   --grid-gap-md: 24px;
 
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
 
-  --shadow-hair: 0 1px 0 rgb(21 25 24 / 6%);
-  --shadow-soft: 0 8px 24px rgb(21 25 24 / 5%);
+  --shadow-hair: 0 1px 0 rgb(8 20 38 / 6%);
+  --shadow-soft: 0 10px 28px rgb(8 20 38 / 8%);
   --rule: 1px solid var(--color-border);
 
   --duration: 160ms;
@@ -55,19 +68,19 @@
 }
 
 @theme {
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Newsreader", ui-serif, Georgia, "Times New Roman", serif;
-  --color-ink: #151918;
-  --color-ink-soft: #2b302e;
-  --color-paper: #f4f0e8;
+  --font-sans: "Inter", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Inter", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --color-ink: #121826;
+  --color-ink-soft: #2a3344;
+  --color-paper: #f5f7fa;
   --color-white: #ffffff;
-  --color-terracotta: #b64a2b;
-  --color-terracotta-dark: #8f351f;
-  --color-sage: #68736a;
-  --color-border: #d8d5ce;
-  --color-muted: #515754;
-  --color-focus: #215c4a;
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
+  --color-terracotta: #ff9d0a;
+  --color-terracotta-dark: #e98700;
+  --color-sage: #5e6877;
+  --color-border: #dce2ea;
+  --color-muted: #5e6877;
+  --color-focus: #ff9d0a;
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
 }

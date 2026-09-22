@@ -3,18 +3,18 @@ import Base from '../components/layout/Base.astro';
 import SiteHeader from '../components/layout/SiteHeader.astro';
 import SiteFooter from '../components/layout/SiteFooter.astro';
 import Figure from '../components/ui/Figure.astro';
+import LineIcon from '../components/ui/LineIcon.astro';
 import AffiliateCta from '../components/conversion/AffiliateCta.astro';
 import RehabCalc from '../components/calculator/RehabCalc';
 import Faq from '../components/ui/Faq.astro';
 import Sources from '../components/ui/Sources.astro';
 import { siteConfig, absoluteUrl } from '../config/site.config';
-import { affiliateConfig } from '../config/affiliate.config';
+import { PRIMARY_CTA } from '../config/affiliate.config';
 import { services } from '../data/services';
 import { locations } from '../data/locations';
-import { pricingMeta } from '../data/pricing';
 import { faqNode, jsonLd, organizationNode, webPageNode, websiteNode } from '../lib/schema';
-import andamio from '../assets/rehab/andamio.jpg';
 import edificio from '../assets/rehab/edificio.jpg';
+import andamio from '../assets/rehab/andamio.jpg';
 
 const faqs = [
   {
@@ -23,167 +23,134 @@ const faqs = [
       'No. Informamos y ayudamos a solicitar presupuestos a empresas especializadas a través de Habitissimo. No ejecutamos obras ni tenemos cuadrillas.',
   },
   {
+    question: '¿Pedir presupuestos tiene coste?',
+    answer: 'La solicitud es gratuita y no implica contratar. Completas el formulario en Habitissimo y comparas las propuestas que recibas.',
+  },
+  {
     question: '¿Tengo que dejar teléfono en la calculadora?',
     answer: 'No. El intervalo se calcula con actuación, plantas, superficie, estado y provincia. El contacto, si lo hay, ocurre en Habitissimo.',
   },
   {
     question: '¿Los precios son una cotización?',
-    answer: pricingMeta.disclaimer,
+    answer: 'No. Son bandas orientativas para preparar la junta. Cada edificio necesita medición, alcance y ofertas comparables.',
   },
 ];
 const schema = jsonLd([
   organizationNode(),
   websiteNode(),
   webPageNode({
-    name: 'Compara empresas de rehabilitación de edificios',
+    name: 'Rehabilitación de edificios en España',
     description:
-      'Compara empresas especializadas en fachadas, cubiertas, aislamiento, accesibilidad y rehabilitación integral para comunidades.',
+      'Compara presupuestos de empresas especializadas en fachadas, cubiertas, humedades, accesibilidad y rehabilitación integral.',
     path: '/',
   }),
   faqNode(faqs),
 ]);
-const needs = [
-  { href: '/servicios/rehabilitacion-integral-edificios/', label: 'Rehabilitación integral', need: 'integral' },
-  { href: '/servicios/rehabilitacion-fachadas/', label: 'Fachada', need: 'fachada' },
-  { href: '/servicios/reparacion-cubiertas-tejados/', label: 'Cubierta o tejado', need: 'cubierta' },
-  { href: '/servicios/aislamiento-sate/', label: 'Aislamiento SATE', need: 'sate' },
-  { href: '/servicios/reparacion-grietas/', label: 'Grietas y estructura', need: 'grietas' },
-  { href: '/servicios/accesibilidad-comunidades/', label: 'Accesibilidad', need: 'accesibilidad' },
-  { href: '/servicios/sustitucion-bajantes/', label: 'Bajantes', need: 'bajantes' },
-  { href: '/servicios/reforma-patios-interiores/', label: 'Patios y zonas comunes', need: 'patios' },
+const trust = [
+  { icon: 'free' as const, t: 'Solicitud gratuita', d: 'Pides presupuestos sin pagar por usar esta web.' },
+  { icon: 'commit' as const, t: 'Sin compromiso', d: 'Comparar opciones no obliga a contratar ninguna empresa.' },
+  { icon: 'zone' as const, t: 'Empresas de tu zona', d: 'La solicitud llega a profesionales que trabajan en tu provincia.' },
+  { icon: 'compare' as const, t: 'Compara antes de decidir', d: 'Revisa partidas, plazos y exclusiones con tu comunidad.' },
 ];
 const problems = [
-  { t: 'Desprendimientos o grietas', href: '/servicios/reparacion-grietas/' },
-  { t: 'Humedades y filtraciones', href: '/servicios/impermeabilizacion-cubiertas/' },
-  { t: 'Pérdidas de energía', href: '/servicios/rehabilitacion-energetica/' },
-  { t: 'Fachadas deterioradas', href: '/servicios/rehabilitacion-fachadas/' },
-  { t: 'Cubiertas con goteras', href: '/servicios/reparacion-cubiertas-tejados/' },
-  { t: 'Barreras arquitectónicas', href: '/servicios/accesibilidad-comunidades/' },
-  { t: 'Bajantes antiguas', href: '/servicios/sustitucion-bajantes/' },
-  { t: 'ITE desfavorable', href: '/servicios/ite-iee/' },
+  { icon: 'facade' as const, t: 'Fachada deteriorada', d: 'Desprendimientos, fisuras o revestimiento agotado.', href: '/servicios/rehabilitacion-fachadas/' },
+  { icon: 'roof' as const, t: 'Cubierta con goteras', d: 'Tejas sueltas, petos o encuentros que filtran agua.', href: '/servicios/reparacion-cubiertas-tejados/' },
+  { icon: 'damp' as const, t: 'Humedades y filtraciones', d: 'Manchas reiteradas pese a parches locales.', href: '/servicios/impermeabilizacion-cubiertas/' },
+  { icon: 'insulate' as const, t: 'Pérdida de aislamiento', d: 'Frío, condensación o fachada que ya hay que intervenir.', href: '/servicios/aislamiento-sate/' },
+  { icon: 'access' as const, t: 'Barreras de acceso', d: 'Portal, rampas o ascensor en zonas comunes.', href: '/servicios/accesibilidad-comunidades/' },
+  { icon: 'crack' as const, t: 'Grietas visibles', d: 'Fisuras en fachada, patio o caja de escalera.', href: '/servicios/reparacion-grietas/' },
+  { icon: 'ite' as const, t: 'ITE desfavorable', d: 'El informe pide actuar en envolvente o elementos comunes.', href: '/servicios/ite-iee/' },
+  { icon: 'building' as const, t: 'Rehabilitación integral', d: 'Varias partidas a la vez: fachada, cubierta y accesos.', href: '/servicios/rehabilitacion-integral-edificios/' },
 ];
 const process = [
-  { n: '01', t: 'Describe la actuación', d: 'Fachada, cubierta, SATE, accesibilidad u otra partida. Sin datos personales en esta web.' },
-  { n: '02', t: 'Profesionales de la zona', d: 'Completas la solicitud en Habitissimo. Empresas interesadas pueden contactarte.' },
-  { n: '03', t: 'Compara y decide', d: 'Contrasta partidas, plazos y exclusiones. El contrato, si llega, es con la empresa.' },
+  { n: '01', t: 'Describe el problema', d: 'Fachada, cubierta, humedades, accesibilidad u otra partida. Sin datos personales en esta web.' },
+  { n: '02', t: 'Recibe propuestas de tu zona', d: 'Completas la solicitud en Habitissimo. Empresas interesadas pueden contactarte.' },
+  { n: '03', t: 'Compara y decide', d: 'Contrasta alcance, plazos y exclusiones. El contrato, si llega, es con la empresa.' },
 ];
 ---
 
 <Base
-  title={`Compara empresas de rehabilitación de edificios | ${siteConfig.brand.name}`}
-  description="Compara empresas especializadas en fachadas, cubiertas, aislamiento, accesibilidad y rehabilitación integral. Recibe presupuestos para tu comunidad, gratis y sin compromiso."
+  title={`Rehabilitación de edificios en España | ${siteConfig.brand.name}`}
+  description="Compara presupuestos de empresas especializadas en fachadas, cubiertas, humedades, accesibilidad y rehabilitación integral. Gratis y sin compromiso."
   canonical={absoluteUrl('/')}
   jsonLd={schema}
 >
   <SiteHeader slot="header" />
   <main id="contenido" class="home">
-    <section class="home-hero ed-container">
-      <div class="home-hero__copy">
-        <p class="ed-kicker">Rehabilitación de edificios y comunidades</p>
-        <h1 class="ed-h1">Compara empresas de rehabilitación de edificios</h1>
-        <p class="ed-lead">
-          Describe la actuación de tu comunidad y recibe presupuestos de empresas especializadas en fachadas, cubiertas,
-          aislamiento, accesibilidad y rehabilitación integral. Gratis y sin compromiso.
-        </p>
-        <div class="home-hero__cta">
-          <AffiliateCta clickref="home_hero_rehabilitacion" label="Recibir presupuestos" placement="hero" />
-          <a class="ed-link" href="/servicios/">Ver tipos de rehabilitación</a>
+    <section class="home-hero band-ink">
+      <div class="ed-container home-hero__grid">
+        <div class="home-hero__copy">
+          <p class="ed-kicker">Solicitud gratuita y sin compromiso</p>
+          <h1 class="ed-h1">Rehabilitación de edificios en España</h1>
+          <p class="ed-lead">
+            Compara presupuestos de empresas especializadas en fachadas, cubiertas, humedades, accesibilidad y
+            rehabilitación integral.
+          </p>
+          <div class="home-hero__cta">
+            <AffiliateCta clickref="home_hero_rehabilitacion" label={PRIMARY_CTA} placement="hero" />
+            <a class="ed-btn ed-btn-ghost" href="/como-funciona/">Ver cómo funciona</a>
+          </div>
+          <p class="home-hero__note">Gratis y sin compromiso · Profesionales de tu zona · Compara antes de decidir</p>
+          <p class="home-hero__legal">Servicio gratuito de comparación. La solicitud se completa en Habitissimo.</p>
         </div>
-        <p class="ed-meta">{affiliateConfig.disclosure}</p>
-        <p class="home-hero__note">Solicitud gratuita · Profesionales de tu zona · Compara antes de decidir</p>
-      </div>
-      <div class="home-hero__photo">
-        <Figure
-          src={edificio}
-          alt="Bloques residenciales, ejemplo de parque de vivienda donde se rehabilitan fachadas y cubiertas"
-          caption="Ejemplo de tipología residencial. No es un proyecto ejecutado por esta web."
-          credit="Unsplash"
-          priority
-          ratio="4 / 5"
-          sizes="(min-width: 1024px) 42vw, 100vw"
-        />
+        <div class="home-hero__photo">
+          <Figure
+            src={edificio}
+            alt="Bloques residenciales, ejemplo de parque de vivienda donde se rehabilitan fachadas y cubiertas"
+            caption="Tipología residencial de ejemplo. No es un proyecto ejecutado por esta web."
+            credit="Unsplash"
+            priority
+            ratio="4 / 5"
+            sizes="(min-width: 1024px) 42vw, 100vw"
+          />
+        </div>
       </div>
     </section>
 
-    <Figure
-      src={andamio}
-      alt="Andamio en un edificio, ejemplo de medio auxiliar habitual en rehabilitación de fachada"
-      caption="Medios auxiliares de ejemplo. No representa una obra propia."
-      credit="Unsplash"
-      bleed
-      ratio="21 / 9"
-      sizes="100vw"
-    />
+    <section class="home-trust" aria-label="Por qué usar este servicio">
+      <div class="ed-container home-trust__grid">
+        {
+          trust.map((item) => (
+            <article>
+              <LineIcon name={item.icon} />
+              <h2>{item.t}</h2>
+              <p>{item.d}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
 
     <section class="ed-section band-white" id="necesidad">
-      <div class="ed-container home-split">
-        <div>
-          <p class="ed-kicker">Alcance</p>
-          <h2 class="ed-h2">¿Qué necesita vuestro edificio?</h2>
-          <p>Elige la actuación. Cada enlace abre una ficha, no un pack comercial.</p>
-        </div>
-        <ol class="ed-index">
+      <div class="ed-container">
+        <p class="ed-kicker">Diagnóstico rápido</p>
+        <h2 class="ed-h2">¿Qué problema tiene vuestro edificio?</h2>
+        <p class="ed-lead">Selecciona la necesidad principal y entra en la ficha de esa actuación.</p>
+        <ul class="home-problems">
           {
-            needs.map((item, i) => (
+            problems.map((item) => (
               <li>
-                <span class="ed-num">{String(i + 1).padStart(2, '0')}</span>
-                <a class="ed-link" href={item.href} data-need={item.need}>
-                  {item.label}
+                <a href={item.href}>
+                  <LineIcon name={item.icon} />
+                  <span>
+                    <strong>{item.t}</strong>
+                    <span>{item.d}</span>
+                  </span>
                 </a>
               </li>
             ))
           }
-        </ol>
+        </ul>
       </div>
     </section>
 
     <section class="ed-section">
-      <div class="ed-container home-offset">
-        <div>
-          <p class="ed-kicker">Diagnóstico</p>
-          <h2 class="ed-h2">Problemas habituales en comunidades</h2>
-          <p>Reconocer el síntoma ayuda a pedir la actuación correcta.</p>
-        </div>
-        <ul class="home-dividers">
-          {
-            problems.map((item) => (
-              <li>
-                <a class="ed-link" href={item.href}>{item.t}</a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-    </section>
-
-    <section class="ed-section band-white">
-      <div class="ed-container home-services">
-        <p class="ed-kicker">Servicios</p>
-        <h2 class="ed-h2">Actuaciones principales</h2>
-        <ul class="ed-index home-services__list">
-          {
-            services.slice(0, 6).map((item, i) => (
-              <li>
-                <span class="ed-num">{String(i + 1).padStart(2, '0')}</span>
-                <div>
-                  <h3 class="ed-h3">
-                    <a href={item.path}>{item.name}</a>
-                  </h3>
-                  <p>{item.short}</p>
-                </div>
-              </li>
-            ))
-          }
-        </ul>
-        <p><a class="ed-link" href="/servicios/">Ver todos los servicios</a></p>
-      </div>
-    </section>
-
-    <section class="band-ink">
-      <div class="ed-container ed-section home-process">
+      <div class="ed-container home-process">
         <div>
           <p class="ed-kicker">Proceso</p>
           <h2 class="ed-h2">Cómo funciona</h2>
+          <p>Tres pasos. Sin visita comercial de esta web y sin comprometer la contratación.</p>
+          <p><a class="ed-link" href="/como-funciona/">Ver el proceso completo</a></p>
         </div>
         <ol class="home-process__steps">
           {
@@ -199,51 +166,54 @@ const process = [
           }
         </ol>
         <div class="home-process__cta">
-          <AffiliateCta clickref="home_mid_proceso" label="Recibir presupuestos" placement="proceso" />
+          <AffiliateCta clickref="home_mid_proceso" label={PRIMARY_CTA} placement="proceso" />
         </div>
       </div>
     </section>
 
-    <section class="ed-section">
-      <div class="ed-container">
-        <p class="ed-kicker">Precios</p>
-        <h2 class="ed-h2">Guía orientativa, no un reclamo</h2>
-        <p class="ed-lead">{pricingMeta.disclaimer}</p>
-        <dl class="ed-facts">
-          <div>
-            <dt>Superficie</dt>
-            <dd>Fachada o cubierta real</dd>
-          </div>
-          <div>
-            <dt>Estado</dt>
-            <dd>Daño y urgencia</dd>
-          </div>
-          <div>
-            <dt>Acceso</dt>
-            <dd>Andamio y vía pública</dd>
-          </div>
-          <div>
-            <dt>Alcance</dt>
-            <dd>Parcial o coordinado</dd>
-          </div>
-        </dl>
-        <p class="home-price-note">
-          Consulta <a class="ed-link" href="/guias/cuanto-cuesta-rehabilitar-edificio/">cuánto cuesta rehabilitar un edificio</a>.
-        </p>
+    <section class="ed-section band-white">
+      <div class="ed-container home-services">
+        <div class="home-services__intro">
+          <p class="ed-kicker">Actuaciones</p>
+          <h2 class="ed-h2">Servicios de rehabilitación</h2>
+          <p>Elige la partida. Cada ficha explica el problema, el alcance habitual y cómo pedir ofertas comparables.</p>
+          <Figure
+            src={andamio}
+            alt="Andamio en un edificio, ejemplo de medio auxiliar habitual en rehabilitación de fachada"
+            caption="Medios auxiliares de ejemplo. No representa una obra propia."
+            credit="Unsplash"
+            ratio="16 / 10"
+            sizes="(min-width: 1024px) 36vw, 100vw"
+          />
+        </div>
+        <ul class="home-services__list">
+          {
+            services.slice(0, 6).map((item) => (
+              <li>
+                <a href={item.path}>
+                  <strong>{item.name}</strong>
+                  <span>{item.short}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="home-services__more"><a class="ed-link" href="/servicios/">Ver todos los servicios</a></p>
       </div>
     </section>
 
-    <section class="ed-section band-white" id="calculadora">
+    <section class="ed-section" id="calculadora">
       <div class="ed-container">
-        <RehabCalc client:load clickref="home_calculator_result" tone="ivory" />
+        <RehabCalc client:load clickref="home_calculator_result" />
       </div>
     </section>
 
-    <section class="ed-section">
+    <section class="ed-section band-white">
       <div class="ed-container home-geo">
         <div>
           <p class="ed-kicker">Cobertura</p>
-          <h2 class="ed-h2">Provincias y ciudades</h2>
+          <h2 class="ed-h2">Empresas de tu provincia</h2>
+          <p>Consulta el contexto local y pide presupuestos a profesionales de la zona.</p>
           <p><a class="ed-link" href="/provincias/">Directorio de 30 ubicaciones</a></p>
         </div>
         <div class="home-geo__cols">
@@ -258,38 +228,28 @@ const process = [
       </div>
     </section>
 
-    <section class="ed-section band-white">
+    <section class="ed-section">
       <div class="ed-container home-guides">
-        <a href="/guias/cuanto-cuesta-rehabilitar-edificio/" class="home-guides__feature">
-          <Figure
-            src={edificio}
-            alt="Bloques residenciales, ejemplo de parque donde se rehabilitan fachadas y cubiertas"
-            caption="Cuánto cuesta rehabilitar un edificio"
-            credit="Unsplash"
-            ratio="16 / 10"
-            sizes="(min-width: 1024px) 58vw, 100vw"
-          />
-          <h3 class="ed-h3">Cuánto cuesta rehabilitar un edificio</h3>
-        </a>
+        <div>
+          <p class="ed-kicker">Para decidir con criterio</p>
+          <h2 class="ed-h2">Guías prácticas</h2>
+          <p>Coste, permisos, quién paga y cómo comparar empresas. Sin sustituir al técnico ni al administrador.</p>
+        </div>
         <div class="home-guides__index">
-          <p class="ed-kicker">Índice</p>
-          <a class="ed-link" href="/guias/quien-paga-rehabilitacion-comunidad/">Quién paga una rehabilitación en una comunidad</a>
-          <a class="ed-link" href="/guias/permisos-rehabilitar-fachada/">Permisos necesarios</a>
-          <a class="ed-link" href="/guias/diferencia-ite-iee/">Diferencias entre ITE e IEE</a>
-          <a class="ed-link" href="/guias/elegir-empresa-rehabilitacion/">Cómo elegir una empresa</a>
-          <a class="ed-link" href="/guias/ayudas-rehabilitacion-edificios/">Ayudas disponibles</a>
-          <a class="ed-link" href="/guias/cuanto-cuesta-instalar-sate/">Cuándo instalar SATE</a>
-          <a class="ed-link" href="/guias/">Índice de guías</a>
+          <a href="/guias/cuanto-cuesta-rehabilitar-edificio/">Cuánto cuesta rehabilitar un edificio</a>
+          <a href="/guias/quien-paga-rehabilitacion-comunidad/">Quién paga una rehabilitación en una comunidad</a>
+          <a href="/guias/permisos-rehabilitar-fachada/">Permisos necesarios para una fachada</a>
+          <a href="/guias/elegir-empresa-rehabilitacion/">Cómo elegir una empresa</a>
+          <a href="/guias/">Índice de guías</a>
         </div>
       </div>
     </section>
 
     <section class="band-ink">
       <div class="ed-container ed-section home-final">
-        <h2 class="ed-h1">Cada edificio necesita una solución diferente</h2>
-        <p class="ed-lead">Solicita presupuestos a profesionales especializados y compara opciones antes de decidir.</p>
-        <AffiliateCta clickref="home_final_cta" label="Empezar solicitud gratuita" placement="final" />
-        <p class="ed-meta">{affiliateConfig.disclosure}</p>
+        <h2 class="ed-h1">Pide presupuestos y compara empresas de tu zona</h2>
+        <p class="ed-lead">Gratis y sin compromiso. La solicitud se completa en Habitissimo.</p>
+        <AffiliateCta clickref="home_final_cta" label={PRIMARY_CTA} placement="final" />
       </div>
     </section>
 
@@ -303,80 +263,136 @@ const process = [
 
 <style>
   .home-hero {
+    min-height: auto;
+  }
+
+  .home-hero__grid {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: var(--grid-gap);
-    padding-top: var(--space-5);
-    align-items: end;
+    padding-block: var(--space-5);
+    align-items: center;
   }
 
-  .home-hero__copy {
-    grid-column: 1 / -1;
-    padding-bottom: var(--space-4);
-  }
-
+  .home-hero__copy,
   .home-hero__photo {
     grid-column: 1 / -1;
+  }
+
+  .home-hero__photo :global(.ed-figure-frame) {
+    max-height: 520px;
   }
 
   .home-hero__cta {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 1.25rem 1.75rem;
-    margin: 2rem 0 1rem;
+    gap: 0.85rem;
+    margin: 1.75rem 0 1rem;
   }
 
   .home-hero__note {
-    margin: 1.75rem 0 0;
+    margin: 0.35rem 0 0;
     font-size: 0.875rem;
-    color: var(--color-sage);
+    color: rgb(255 255 255 / 0.78);
   }
 
-  .home-split,
-  .home-offset,
+  .home-hero__legal {
+    margin: 0.85rem 0 0;
+    font-size: 0.8rem;
+    color: rgb(255 255 255 / 0.62);
+    max-width: 42ch;
+  }
+
+  .home-trust {
+    background: var(--color-white);
+    border-bottom: var(--rule);
+  }
+
+  .home-trust__grid {
+    display: grid;
+    gap: 1.25rem;
+    padding-block: 1.35rem;
+  }
+
+  .home-trust article {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 0.75rem;
+    align-items: start;
+  }
+
+  .home-trust :global(.line-icon) {
+    grid-row: 1 / span 2;
+    margin-top: 0.15rem;
+  }
+
+  .home-trust h2 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+  }
+
+  .home-trust p {
+    margin: 0.2rem 0 0;
+    font-size: 0.84rem;
+    color: var(--color-muted);
+    max-width: none;
+  }
+
+  .home-problems {
+    list-style: none;
+    margin: 2rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .home-problems a {
+    display: flex;
+    gap: 0.9rem;
+    align-items: flex-start;
+    text-decoration: none;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.05rem;
+    min-height: 5.25rem;
+  }
+
+  .home-problems a:hover {
+    border-color: var(--color-navy-800);
+  }
+
+  .home-problems strong {
+    display: block;
+    font-size: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .home-problems a span span {
+    display: block;
+    margin-top: 0.2rem;
+    color: var(--color-muted);
+    font-size: 0.88rem;
+  }
+
+  .home-process,
+  .home-services,
   .home-geo,
-  .home-guides,
-  .home-process {
+  .home-guides {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: var(--grid-gap-md);
   }
 
-  .home-split > *,
-  .home-offset > *,
+  .home-process > *,
+  .home-services > *,
   .home-geo > *,
-  .home-guides > *,
-  .home-process > * {
+  .home-guides > * {
     grid-column: 1 / -1;
-  }
-
-  .home-dividers {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .home-dividers li {
-    border-top: var(--rule);
-    padding-block: 1.1rem;
-    max-width: none;
-  }
-
-  .home-dividers li:last-child {
-    border-bottom: var(--rule);
-  }
-
-  .home-services__list h3 a {
-    text-decoration: none;
-  }
-
-  .home-services__list h3 a:hover {
-    color: var(--color-terracotta);
-  }
-
-  .home-process__cta {
-    width: fit-content;
   }
 
   .home-process__steps {
@@ -387,25 +403,49 @@ const process = [
 
   .home-process__steps li {
     display: grid;
-    grid-template-columns: 4.5rem 1fr;
+    grid-template-columns: 3.5rem 1fr;
     gap: 1rem;
-    border-top: 1px solid rgb(244 240 232 / 0.18);
-    padding-block: 1.5rem;
+    border-top: var(--rule);
+    padding-block: 1.25rem;
   }
 
   .home-process__steps .ed-num {
-    font-size: 2rem;
-    color: #e08a72;
+    font-size: 1.7rem;
   }
 
-  .home-price-note {
-    margin-top: var(--space-4);
+  .home-services__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .home-services__list a {
+    display: block;
+    text-decoration: none;
+    border-top: var(--rule);
+    padding-block: 1.15rem;
+  }
+
+  .home-services__list a:hover strong {
+    color: var(--color-orange-600);
+  }
+
+  .home-services__list strong {
+    display: block;
+    font-size: 1.05rem;
+  }
+
+  .home-services__list span {
+    display: block;
+    margin-top: 0.3rem;
+    color: var(--color-muted);
+    font-size: 0.92rem;
   }
 
   .home-geo__cols {
     columns: 2;
     gap: 1.5rem 2rem;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     line-height: 1.8;
   }
 
@@ -415,27 +455,41 @@ const process = [
     break-inside: avoid;
   }
 
-  .home-guides__feature {
-    text-decoration: none;
-  }
-
   .home-guides__index {
     display: flex;
     flex-direction: column;
-    gap: 1.15rem;
+  }
+
+  .home-guides__index a {
+    display: block;
+    padding-block: 1rem;
     border-top: var(--rule);
-    padding-top: 1.25rem;
+    text-decoration: none;
+    font-weight: 650;
+  }
+
+  .home-guides__index a:hover {
+    color: var(--color-orange-600);
   }
 
   .home-final .ed-h1 {
-    max-width: 18ch;
+    max-width: 16ch;
   }
 
   .home-final .ed-lead {
-    margin-block: 1.5rem 2rem;
+    margin-block: 1.25rem 1.75rem;
   }
 
   @media (min-width: 768px) {
+    .home-trust__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding-block: 1.5rem;
+    }
+
+    .home-problems {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .home-geo__cols {
       columns: 3;
     }
@@ -443,29 +497,28 @@ const process = [
 
   @media (min-width: 1024px) {
     .home-hero {
-      padding-top: var(--space-6);
+      min-height: 680px;
+      display: flex;
+      align-items: center;
+    }
+
+    .home-hero__grid {
+      padding-block: var(--space-6);
+      width: 100%;
     }
 
     .home-hero__copy {
       grid-column: 1 / span 7;
       padding-right: 2rem;
-      padding-bottom: var(--space-6);
     }
 
     .home-hero__photo {
       grid-column: 8 / span 5;
     }
 
-    .home-split > :first-child,
-    .home-offset > :first-child,
-    .home-geo > :first-child {
-      grid-column: 1 / span 4;
-    }
-
-    .home-split > :last-child,
-    .home-offset > :last-child,
-    .home-geo > :last-child {
-      grid-column: 6 / span 7;
+    .home-trust__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.5rem;
     }
 
     .home-process > :first-child {
@@ -473,22 +526,39 @@ const process = [
     }
 
     .home-process__steps {
-      grid-column: 5 / span 8;
+      grid-column: 6 / span 7;
     }
 
     .home-process__cta {
-      grid-column: 5 / span 8;
-      width: fit-content;
+      grid-column: 6 / span 7;
     }
 
-    .home-guides__feature {
-      grid-column: 1 / span 7;
+    .home-services__intro {
+      grid-column: 1 / span 5;
+    }
+
+    .home-services__list {
+      grid-column: 7 / span 6;
+    }
+
+    .home-services__more {
+      grid-column: 7 / span 6;
+    }
+
+    .home-geo > :first-child {
+      grid-column: 1 / span 4;
+    }
+
+    .home-geo > :last-child {
+      grid-column: 6 / span 7;
+    }
+
+    .home-guides > :first-child {
+      grid-column: 1 / span 5;
     }
 
     .home-guides__index {
-      grid-column: 9 / span 4;
-      border-top: 0;
-      padding-top: 0.25rem;
+      grid-column: 7 / span 6;
     }
   }
 </style>

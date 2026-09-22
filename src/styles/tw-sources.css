@@ -1,3 +1,4 @@
+@source "../components/brand/BrandMark.astro";
 @source "../components/calculator/ReformCalculator.tsx";
 @source "../components/calculator/RehabCalc.tsx";
 @source "../components/content/AnswerBlock.astro";
@@ -7,6 +8,7 @@
 @source "../components/content/SourceList.astro";
 @source "../components/conversion/AffiliateCta.astro";
 @source "../components/conversion/AffiliateLink.astro";
+@source "../components/conversion/MobileDock.astro";
 @source "../components/editorial/ConsentSheet.tsx";
 @source "../components/editorial/Faq.astro";
 @source "../components/editorial/Figure.astro";
@@ -29,6 +31,7 @@
 @source "../components/ui/ConsentSheet.tsx";
 @source "../components/ui/Faq.astro";
 @source "../components/ui/Figure.astro";
+@source "../components/ui/LineIcon.astro";
 @source "../components/ui/Sources.astro";
 @source "../layouts/Article.astro";
 @source "../layouts/Base.astro";
@@ -37,6 +40,7 @@
 @source "../pages/afiliacion.astro";
 @source "../pages/aviso-legal.astro";
 @source "../pages/calculadora.astro";
+@source "../pages/como-funciona.astro";
 @source "../pages/contacto.astro";
 @source "../pages/cookies.astro";
 @source "../pages/design-system.astro";

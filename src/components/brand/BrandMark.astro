@@ -1,0 +1,71 @@
+---
+interface Props {
+  compact?: boolean;
+  invert?: boolean;
+}
+const { compact = false, invert = false } = Astro.props;
+---
+
+<span class:list={['brand-mark', compact && 'is-compact', invert && 'is-invert']}>
+  <svg class="brand-mark__mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+    <rect class="brand-mark__ground" x="4" y="34" width="32" height="2" rx="1" />
+    <path fill-rule="evenodd" d="M8 14h10v20H8V14Zm4 4h2v3h-2v-3Zm0 6h2v3h-2v-3Zm0 6h2v3h-2v-3Z" />
+    <path fill-rule="evenodd" d="M20 10h12v24H20V10Zm4 7.5h4V20h-4v-2.5Zm0 5.5h4v2.5h-4V23Zm0 5.5h4V31h-4v-2.5Z" />
+    <rect class="brand-mark__accent" x="24" y="11" width="4" height="2.5" rx="0.4" />
+  </svg>
+  <span class="brand-mark__text">
+    <span>Rehabilitando</span>
+    <span>Edificios</span>
+  </span>
+</span>
+
+<style>
+  .brand-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: var(--color-navy-900);
+    text-decoration: none;
+    min-width: 0;
+  }
+
+  .brand-mark__mark {
+    width: 2.15rem;
+    height: 2.15rem;
+    flex-shrink: 0;
+    fill: currentColor;
+  }
+
+  .brand-mark__accent {
+    fill: var(--color-orange-500);
+  }
+
+  .brand-mark__text {
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    font-size: 0.92rem;
+  }
+
+  .is-compact .brand-mark__text {
+    font-size: 0.78rem;
+  }
+
+  .is-compact .brand-mark__mark {
+    width: 1.85rem;
+    height: 1.85rem;
+  }
+
+  .is-invert {
+    color: var(--color-white);
+  }
+
+  @media (min-width: 1024px) {
+    .brand-mark__text {
+      font-size: 1.02rem;
+    }
+  }
+</style>

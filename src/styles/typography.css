@@ -1,35 +1,35 @@
-/* Editorial técnico-arquitectónico — tipografía */
+/* Rehabilitando Edificios — tipografía sans */
 
 @font-face {
-  font-family: "Newsreader";
+  font-family: "Inter";
   font-style: normal;
   font-display: swap;
   font-weight: 400;
-  src: url("/fonts/newsreader-400.woff2") format("woff2");
+  src: url("/fonts/inter-400.woff2") format("woff2");
 }
 
 @font-face {
-  font-family: "Newsreader";
-  font-style: normal;
-  font-display: swap;
-  font-weight: 500;
-  src: url("/fonts/newsreader-500.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "Newsreader";
+  font-family: "Inter";
   font-style: normal;
   font-display: swap;
   font-weight: 600;
-  src: url("/fonts/newsreader-600.woff2") format("woff2");
+  src: url("/fonts/inter-600.woff2") format("woff2");
 }
 
 @font-face {
-  font-family: "Newsreader";
+  font-family: "Inter";
   font-style: normal;
   font-display: swap;
   font-weight: 700;
-  src: url("/fonts/newsreader-700.woff2") format("woff2");
+  src: url("/fonts/inter-700.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 800;
+  src: url("/fonts/inter-800.woff2") format("woff2");
 }
 
 @font-face {
@@ -71,8 +71,8 @@ html {
 }
 
 body {
-  color: var(--color-ink);
-  background: var(--color-paper);
+  color: var(--color-text);
+  background: var(--color-background);
   font-optical-sizing: auto;
 }
 
@@ -82,8 +82,8 @@ h3,
 .ed-h1,
 .ed-h2,
 .ed-h3 {
-  font-family: var(--font-serif);
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-weight: 750;
   letter-spacing: -0.03em;
   line-height: var(--leading-display);
   text-wrap: balance;
@@ -93,16 +93,19 @@ h3,
 .ed-h1,
 h1.ed-h1 {
   font-size: var(--text-h1);
-  margin: 0 0 var(--space-4);
+  font-weight: 800;
+  margin: 0 0 var(--space-3);
 }
 
 .ed-h2 {
   font-size: var(--text-h2);
-  margin: 0 0 var(--space-4);
+  font-weight: 750;
+  margin: 0 0 var(--space-3);
 }
 
 .ed-h3 {
   font-size: var(--text-h3);
+  font-weight: 700;
   margin: 0 0 var(--space-2);
 }
 
@@ -111,13 +114,13 @@ h1.ed-h1 {
 }
 
 .ed-h3 a:hover {
-  color: var(--color-terracotta);
+  color: var(--color-orange-600);
 }
 
 .ed-lead {
   font-size: var(--text-lead);
   line-height: 1.5;
-  color: var(--color-ink-soft);
+  color: var(--color-muted);
   max-width: var(--measure-narrow);
   margin: 0 0 var(--space-3);
 }
@@ -125,18 +128,19 @@ h1.ed-h1 {
 .ed-kicker {
   font-family: var(--font-sans);
   font-size: var(--text-kicker);
-  letter-spacing: 0.16em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  font-weight: 650;
-  color: var(--color-sage);
-  margin: 0 0 var(--space-3);
+  font-weight: 700;
+  color: var(--color-orange-600);
+  margin: 0 0 0.85rem;
 }
 
 .ed-num {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-variant-numeric: tabular-nums;
+  font-weight: 800;
   letter-spacing: -0.04em;
-  color: var(--color-terracotta);
+  color: var(--color-orange-500);
   line-height: 1;
 }
 
@@ -156,15 +160,14 @@ p {
 .band-ink h1,
 .band-ink h2,
 .band-ink h3 {
-  color: var(--color-paper);
+  color: var(--color-white);
 }
 
 .band-ink .ed-lead,
-.band-ink .ed-kicker,
 .band-ink .ed-meta {
-  color: rgb(244 240 232 / 0.72);
+  color: rgb(255 255 255 / 0.78);
 }
 
 .band-ink .ed-kicker {
-  color: #c5cdc8;
+  color: var(--color-orange-500);
 }

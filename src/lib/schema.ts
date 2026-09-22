@@ -12,6 +12,7 @@ export function organizationNode(): Record<string, unknown> {
     '@id': `${siteConfig.siteUrl}/#organization`,
     name: siteConfig.brand.name,
     url: siteConfig.siteUrl,
+    logo: absoluteUrl('/favicon.svg'),
     description: siteConfig.brand.promise,
   };
 }

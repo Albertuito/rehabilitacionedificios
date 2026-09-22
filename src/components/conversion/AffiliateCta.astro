@@ -1,11 +1,11 @@
 ---
 import { buildAffiliateUrl, assertClickref } from '../../lib/affiliate';
-import { affiliateConfig } from '../../config/affiliate.config';
+import { affiliateConfig, PRIMARY_CTA } from '../../config/affiliate.config';
 import { getClickRef } from '../../data/tracking';
 
 interface Props {
   clickref: string;
-  label: string;
+  label?: string;
   class?: string;
   placement?: string;
   service?: string;
@@ -14,7 +14,7 @@ interface Props {
 }
 const {
   clickref,
-  label,
+  label = PRIMARY_CTA,
   class: className,
   placement,
   service,
