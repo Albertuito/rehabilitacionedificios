@@ -8,8 +8,12 @@ const catalog: Record<string, { title: string; url: string; consultedAt: string 
   CTE: { title: 'Código Técnico de la Edificación', url: 'https://www.codigotecnico.org/', consultedAt: '2026-09-21' },
   'CTE-HE': { title: 'CTE DB-HE Ahorro de energía', url: 'https://www.codigotecnico.org/DocumentosCTE/AhorroEnergia.html', consultedAt: '2026-09-21' },
   LPH: { title: 'Ley de Propiedad Horizontal', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-1960-10906', consultedAt: '2026-09-21' },
-  ITE: { title: 'Marco de inspección técnica de edificios', url: 'https://www.mivau.gob.es/', consultedAt: '2026-09-21' },
+  ITE: { title: 'Ministerio de Vivienda y Agenda Urbana', url: 'https://www.mivau.gob.es/', consultedAt: '2026-09-22' },
   LOE: { title: 'Ley de Ordenación de la Edificación', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-1999-21567', consultedAt: '2026-09-21' },
+  MAD: { title: 'Ayuntamiento de Madrid · sede electrónica', url: 'https://sede.madrid.es/', consultedAt: '2026-09-22' },
+  BCN: { title: 'Ajuntament de Barcelona · sede electrónica', url: 'https://seuelectronica.ajuntament.barcelona.cat/', consultedAt: '2026-09-22' },
+  VAL: { title: 'Ayuntamiento de Valencia · sede electrónica', url: 'https://sede.valencia.es/', consultedAt: '2026-09-22' },
+  SEV: { title: 'Ayuntamiento de Sevilla · sede electrónica', url: 'https://www.sevilla.org/ayuntamiento/servicios-electronicos', consultedAt: '2026-09-22' },
 };
 const { ids } = Astro.props;
 const sources = ids.map((id) => ({ id, ...catalog[id] })).filter((item) => item.title);

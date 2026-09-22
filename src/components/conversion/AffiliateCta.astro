@@ -1,5 +1,6 @@
 ---
 import { buildAffiliateUrl, assertClickref } from '../../lib/affiliate';
+import { affiliateConfig } from '../../config/affiliate.config';
 import { getClickRef } from '../../data/tracking';
 
 interface Props {
@@ -22,22 +23,36 @@ const {
 } = Astro.props;
 assertClickref(clickref);
 const record = getClickRef(clickref);
-const href = buildAffiliateUrl(clickref);
+const resolvedPlacement = placement ?? record?.placement;
+const resolvedService = service ?? record?.service ?? '';
+const resolvedLocation = location ?? record?.location ?? '';
+const href = buildAffiliateUrl(clickref, {
+  placement: resolvedPlacement,
+  service: resolvedService || undefined,
+  location: resolvedLocation || undefined,
+});
 const visual =
   className ??
   (variant === 'link' ? 'ed-link' : variant === 'ghost' ? 'ed-btn ed-btn-ghost' : 'ed-btn ed-btn-primary');
 ---
 
-<a
-  class={visual}
-  href={href}
-  rel="sponsored noopener"
-  target="_blank"
-  data-event="affiliate_click"
-  data-clickref={clickref}
-  data-placement={placement ?? record?.placement}
-  data-service={service ?? record?.service ?? ''}
-  data-location={location ?? record?.location ?? ''}
->
-  {label}
-</a>
+{
+  href ? (
+    <a
+      class={visual}
+      href={href}
+      rel={affiliateConfig.rel}
+      data-event="affiliate_click"
+      data-clickref={clickref}
+      data-placement={resolvedPlacement}
+      data-service={resolvedService}
+      data-location={resolvedLocation}
+    >
+      {label}
+    </a>
+  ) : (
+    <span class={`${visual} is-disabled`} aria-disabled="true" title={affiliateConfig.disabledReason}>
+      {label}
+    </span>
+  )
+}

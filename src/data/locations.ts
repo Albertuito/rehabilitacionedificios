@@ -315,7 +315,7 @@ export const locations: Location[] = [
     layoutVariant: 'split-climate',
     related: ['huelva', 'sevilla', 'malaga'],
     climate: 'viento, salitre y humedad marina',
-    stock: 'casco intramuros, isthmo y bloques de costa',
+    stock: 'casco intramuros, istmo y bloques de costa',
     angle: 'salitre, viento y accesos estrechos',
     permitHint: 'El casco intramuros limita medios auxiliares y horarios de carga.',
     ogTint: '#1B3A4B',

@@ -11,19 +11,28 @@ import { affiliateConfig } from '../config/affiliate.config';
   path="/afiliacion/"
 >
   <p>
-    Esta web facilita información sobre rehabilitación de edificios y ayuda a los usuarios a solicitar presupuestos a
-    profesionales. Algunas solicitudes se completan a través de Habitissimo mediante enlaces de afiliación.
+    Esta web facilita información sobre rehabilitación de edificios. Si hay un enlace de tracking Awin configurado, la
+    solicitud de presupuesto se completa en Habitissimo.
   </p>
+  {
+    affiliateConfig.isConfigured ? (
+      <p>
+        Podemos recibir una comisión si un profesional compra el contacto generado cuando solicitas presupuesto desde
+        determinados enlaces de {affiliateConfig.programName}. La simple visita o el clic no generan ingreso.
+      </p>
+    ) : (
+      <p>
+        El enlace de afiliación Awin o tidd.ly todavía no está configurado (<code>PUBLIC_AWIN_URL</code>). Los botones
+        de presupuesto están desactivados. No se usa un destino directo a habitissimo.es como tracking.
+      </p>
+    )
+  }
   <p>
-    Podemos recibir una comisión si un profesional compra el contacto generado cuando solicitas presupuesto desde
-    determinados enlaces de {affiliateConfig.programName}/Awin. La simple visita o el clic no generan ingreso.
-  </p>
-  <p>
-    Los enlaces de afiliación se marcan con <code>rel="sponsored"</code> y un <code>clickref</code> único por página y
-    posición para medir qué mensaje convierte, no para identificarte.
+    Los enlaces de afiliación se marcan con <code>rel="sponsored"</code> y un <code>clickref</code> por página y
+    posición. {affiliateConfig.disclosure}
   </p>
   <p>
     Independencia: no ejecutamos obras, no tenemos cuadrillas ni oficinas locales, y no presentamos proyectos propios. El
-    contrato de obra, si se celebra, es entre tú y el profesional. {affiliateConfig.disclosure}
+    contrato de obra, si se celebra, es entre tú y el profesional.
   </p>
 </SimplePage>

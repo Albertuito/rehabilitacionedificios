@@ -124,6 +124,14 @@
   color: var(--color-paper);
 }
 
+.ed-btn.is-disabled,
+.ed-link.is-disabled {
+  opacity: 0.42;
+  pointer-events: none;
+  cursor: not-allowed;
+  filter: grayscale(0.15);
+}
+
 .band-ink .ed-btn-primary {
   background: var(--color-paper);
   color: var(--color-ink);

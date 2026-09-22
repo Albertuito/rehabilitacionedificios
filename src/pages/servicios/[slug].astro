@@ -11,7 +11,7 @@ import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import { absoluteUrl } from '../../config/site.config';
 import { affiliateConfig } from '../../config/affiliate.config';
 import { getService, services } from '../../data/services';
-import { breadcrumbNode, faqNode, jsonLd, organizationNode, serviceNode, websiteNode } from '../../lib/schema';
+import { breadcrumbNode, faqNode, jsonLd, organizationNode, webPageNode, websiteNode } from '../../lib/schema';
 import andamio from '../../assets/rehab/andamio.jpg';
 import cubierta from '../../assets/rehab/cubierta.jpg';
 import edificio from '../../assets/rehab/edificio.jpg';
@@ -45,7 +45,7 @@ const schema = jsonLd([
     { name: 'Servicios', path: '/servicios/' },
     { name: data.h1, path: data.path },
   ]),
-  serviceNode({ name: data.h1, description: data.description, path: data.path }),
+  webPageNode({ name: data.h1, description: data.description, path: data.path }),
   faqNode(data.faqs),
 ]);
 ---
@@ -67,19 +67,6 @@ const schema = jsonLd([
         { name: def?.navLabel ?? 'Servicio' },
       ]}
     />
-
-    {pattern === 2 && (
-      <Figure
-        src={photo}
-        alt={`Ejemplo de ${def?.name ?? 'actuación'}, no un proyecto propio`}
-        caption="Imagen de contexto de la actuación."
-        credit="Unsplash"
-        bleed
-        priority
-        ratio="16 / 8"
-        sizes="100vw"
-      />
-    )}
 
     <section class="ed-container svc-hero">
       {pattern === 1 && (
@@ -139,7 +126,7 @@ const schema = jsonLd([
       </div>
     </section>
 
-    {pattern !== 2 && pattern !== 1 && (
+    {(pattern === 2 || (pattern !== 2 && pattern !== 1)) && (
       <section class="band-white ed-section">
         <div class="ed-container">
           <p class="ed-kicker">Ejemplo visual</p>

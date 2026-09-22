@@ -13,9 +13,12 @@ const featured = locations.slice(0, 8);
       <p class="site-footer__name">{siteConfig.brand.name}</p>
       <p class="site-footer__tagline">{siteConfig.brand.tagline}</p>
       <p>
-        {affiliateConfig.disclosure} Esta web facilita información sobre rehabilitación de edificios y ayuda a los
-        usuarios a solicitar presupuestos a profesionales. Algunas solicitudes se completan a través de Habitissimo
-        mediante enlaces de afiliación.
+        {affiliateConfig.disclosure}
+        {
+          affiliateConfig.isConfigured
+            ? ''
+            : ' Los botones de presupuesto están desactivados hasta configurar el enlace Awin.'
+        }
       </p>
       <p>
         Independencia: no ejecutamos obras, no tenemos cuadrillas ni oficinas locales, y no presentamos proyectos propios.
@@ -59,6 +62,7 @@ const featured = locations.slice(0, 8);
     <a href="/cookies/">Cookies</a>
     <button type="button" data-open-consent>Configurar cookies</button>
     <span>© {new Date().getFullYear()} {siteConfig.legal.legalName}</span>
+    <span class="site-footer__awin" aria-hidden="true">awin</span>
   </div>
 </footer>
 <script>
@@ -127,6 +131,14 @@ const featured = locations.slice(0, 8);
     border-top: 1px solid rgb(244 240 232 / 0.15);
     font-size: 0.85rem;
     color: rgb(244 240 232 / 0.7);
+  }
+
+  .site-footer__awin {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
   }
 
   .site-footer__legal a,

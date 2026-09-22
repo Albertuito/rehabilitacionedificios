@@ -12,7 +12,7 @@ import { absoluteUrl } from '../../config/site.config';
 import { affiliateConfig } from '../../config/affiliate.config';
 import { getPerson } from '../../data/authors';
 import { actionBands, pricingMeta } from '../../data/pricing';
-import { articleNode, breadcrumbNode, faqNode, jsonLd, organizationNode, websiteNode } from '../../lib/schema';
+import { articleNode, breadcrumbNode, faqNode, jsonLd, organizationNode, webPageNode, websiteNode } from '../../lib/schema';
 import edificio from '../../assets/rehab/edificio.jpg';
 
 const entry = await getEntry('guides', 'cuanto-cuesta-rehabilitar-edificio');
@@ -28,6 +28,7 @@ const schema = jsonLd([
     { name: 'Guías', path: '/guias/' },
     { name: data.h1, path: data.path },
   ]),
+  webPageNode({ name: data.h1, description: data.description, path: data.path }),
   articleNode({
     headline: data.h1,
     description: data.description,

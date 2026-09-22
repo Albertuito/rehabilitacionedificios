@@ -1,20 +1,17 @@
 import { useEffect, useState } from 'preact/hooks';
+import { CONSENT_COOKIE, parseConsentChoice, type ConsentChoice } from '../../lib/consent';
 
-type Choice = 'accepted' | 'rejected' | 'custom' | null;
 interface Props { brand: string }
-const COOKIE = 'ri_consent';
 
-function readChoice(): Choice {
-  const match = document.cookie.split('; ').find((item) => item.startsWith(`${COOKIE}=`));
-  const value = match?.split('=')[1];
-  if (value === 'accepted' || value === 'rejected' || value === 'custom') return value;
-  return null;
+function readChoice(): ConsentChoice {
+  const match = document.cookie.split('; ').find((item) => item.startsWith(`${CONSENT_COOKIE}=`));
+  return parseConsentChoice(match?.split('=')[1]);
 }
 
-function writeChoice(choice: Exclude<Choice, null>) {
+function writeChoice(choice: Exclude<ConsentChoice, null>) {
   const expires = new Date();
   expires.setFullYear(expires.getFullYear() + 1);
-  document.cookie = `${COOKIE}=${choice}; expires=${expires.toUTCString()}; path=/; SameSite=Lax`;
+  document.cookie = `${CONSENT_COOKIE}=${choice}; expires=${expires.toUTCString()}; path=/; SameSite=Lax`;
   window.dispatchEvent(new CustomEvent('ri:consent', { detail: choice }));
 }
 
@@ -31,21 +28,33 @@ export default function ConsentSheet({ brand }: Props) {
 
   if (!open) return null;
 
-  const decide = (next: Exclude<Choice, null>) => {
+  const decide = (next: Exclude<ConsentChoice, null>) => {
     writeChoice(next);
     setOpen(false);
   };
 
   return (
-    <div class="fixed bottom-4 right-4 z-50 w-[min(28rem,calc(100%-2rem))] border border-border bg-paper p-5 text-ink shadow-[0_8px_30px_rgb(21_25_24/12%)]" role="dialog" aria-labelledby="consent-title">
-      <h2 id="consent-title" class="font-serif text-2xl m-0">Cookies en {brand}</h2>
-      <p class="mt-3 text-sm text-ink-soft">
-        Solo las técnicas son necesarias. La analítica no esencial se carga si la aceptas. Rechazar no bloquea la calculadora ni pedir presupuesto.
+    <div
+      class="fixed bottom-3 right-3 z-50 w-[min(20.5rem,calc(100%-1.5rem))] border border-border bg-paper p-3.5 text-ink shadow-[0_6px_20px_rgb(21_25_24/10%)]"
+      role="dialog"
+      aria-labelledby="consent-title"
+    >
+      <h2 id="consent-title" class="font-serif text-lg m-0 leading-tight">
+        Cookies en {brand}
+      </h2>
+      <p class="mt-2 text-xs text-ink-soft leading-snug">
+        Solo las técnicas son necesarias. La analítica se carga si la aceptas.
       </p>
-      <div class="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3">
-        <button class="ed-btn ed-btn-primary" type="button" onClick={() => decide('accepted')}>Aceptar</button>
-        <button class="ed-btn ed-btn-ghost" type="button" onClick={() => decide('rejected')}>Rechazar</button>
-        <button class="ed-btn ed-btn-ghost" type="button" onClick={() => decide('custom')}>Configurar</button>
+      <div class="mt-3 grid grid-cols-3 gap-1.5">
+        <button class="ed-btn ed-btn-primary" type="button" style={{ minHeight: '2.25rem', fontSize: '0.75rem', padding: '0 0.4rem' }} onClick={() => decide('accepted')}>
+          Aceptar
+        </button>
+        <button class="ed-btn ed-btn-ghost" type="button" style={{ minHeight: '2.25rem', fontSize: '0.75rem', padding: '0 0.4rem' }} onClick={() => decide('rejected')}>
+          Rechazar
+        </button>
+        <button class="ed-btn ed-btn-ghost" type="button" style={{ minHeight: '2.25rem', fontSize: '0.75rem', padding: '0 0.4rem' }} onClick={() => decide('custom')}>
+          Ajustar
+        </button>
       </div>
     </div>
   );

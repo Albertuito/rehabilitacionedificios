@@ -1,4 +1,19 @@
+import { applyAwinConsent } from '../lib/affiliate';
+import { readConsentFromDocument } from '../lib/consent';
+
 const events = [];
+
+function syncAffiliateConsent() {
+  const consent = readConsentFromDocument();
+  document.querySelectorAll('[data-event="affiliate_click"]').forEach((node) => {
+    if (!(node instanceof HTMLAnchorElement) || !node.getAttribute('href')) return;
+    try {
+      node.href = applyAwinConsent(node.href, consent);
+    } catch {
+      /* href inválido: no tocar */
+    }
+  });
+}
 
 function track(name, params) {
   events.push({ name, params, at: Date.now() });
@@ -42,24 +57,50 @@ function loadAnalytics() {
 }
 
 window.addEventListener('ri:consent', (event) => {
+  syncAffiliateConsent();
   if (event.detail === 'rejected') return;
   loadAnalytics();
 });
 
-document.addEventListener('click', (event) => {
-  const link = event.target?.closest?.('[data-event="affiliate_click"]');
-  if (!link) return;
-  track('affiliate_click', {
-    page_path: location.pathname,
-    service: link.getAttribute('data-service') || undefined,
-    location: link.getAttribute('data-location') || undefined,
-    placement: link.getAttribute('data-placement'),
-    clickref: link.getAttribute('data-clickref'),
-  });
-});
+syncAffiliateConsent();
+
+document.addEventListener(
+  'click',
+  (event) => {
+    const link = event.target?.closest?.('[data-event="affiliate_click"]');
+    if (!link) return;
+    if (link instanceof HTMLAnchorElement && link.getAttribute('href')) {
+      try {
+        link.href = applyAwinConsent(link.href, readConsentFromDocument());
+      } catch {
+        /* href inválido: no tocar */
+      }
+    }
+    track('affiliate_click', {
+      page_path: location.pathname,
+      service: link.getAttribute('data-service') || undefined,
+      location: link.getAttribute('data-location') || undefined,
+      placement: link.getAttribute('data-placement'),
+      clickref: link.getAttribute('data-clickref'),
+    });
+  },
+  true,
+);
 
 window.addEventListener('ri:calculator_complete', (event) => {
   track('calculator_complete', event.detail);
+});
+
+window.addEventListener('ri:calculator_submit', (event) => {
+  track('calculator_submit', event.detail);
+});
+
+window.addEventListener('ri:service_select', (event) => {
+  track('service_select', event.detail);
+});
+
+window.addEventListener('ri:location_select', (event) => {
+  track('location_select', event.detail);
 });
 
 document.addEventListener('click', (event) => {

@@ -13,7 +13,7 @@ import { affiliateConfig } from '../../config/affiliate.config';
 import { getRelatedLocations, getLocation } from '../../data/locations';
 import { services } from '../../data/services';
 import { pricingMeta } from '../../data/pricing';
-import { breadcrumbNode, faqNode, jsonLd, organizationNode, serviceNode, websiteNode } from '../../lib/schema';
+import { breadcrumbNode, faqNode, jsonLd, organizationNode, webPageNode, websiteNode } from '../../lib/schema';
 import edificio from '../../assets/rehab/edificio.jpg';
 import andamio from '../../assets/rehab/andamio.jpg';
 
@@ -33,7 +33,7 @@ const schema = jsonLd([
     { name: 'Provincias', path: '/provincias/' },
     { name: location.name, path: data.path },
   ]),
-  serviceNode({ name: data.h1, description: data.description, path: data.path }),
+  webPageNode({ name: data.h1, description: data.description, path: data.path }),
   faqNode(data.faqs),
 ]);
 ---
@@ -43,7 +43,7 @@ const schema = jsonLd([
   description={data.description}
   canonical={absoluteUrl(data.path)}
   jsonLd={schema}
-  ogImage={absoluteUrl(`/images/og/${data.citySlug}.svg`)}
+  ogImage={absoluteUrl('/images/og/default.jpg')}
   publishedAt={data.publishedAt.toISOString()}
   updatedAt={data.updatedAt.toISOString()}
 >

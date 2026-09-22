@@ -7,7 +7,7 @@ import Figure from '../../components/ui/Figure.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import { absoluteUrl, siteConfig } from '../../config/site.config';
 import { services } from '../../data/services';
-import { breadcrumbNode, jsonLd, organizationNode, websiteNode } from '../../lib/schema';
+import { breadcrumbNode, jsonLd, organizationNode, webPageNode, websiteNode } from '../../lib/schema';
 import andamio from '../../assets/rehab/andamio.jpg';
 import cubierta from '../../assets/rehab/cubierta.jpg';
 
@@ -20,6 +20,12 @@ const schema = jsonLd([
     { name: 'Inicio', path: '/' },
     { name: 'Servicios', path: '/servicios/' },
   ]),
+  webPageNode({
+    name: 'Tipos de rehabilitación de edificios',
+    description: 'Fachadas, cubiertas, SATE, accesibilidad, bajantes, patios e ITE.',
+    path: '/servicios/',
+    type: 'CollectionPage',
+  }),
 ]);
 ---
 

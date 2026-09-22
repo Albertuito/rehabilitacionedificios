@@ -8,9 +8,7 @@ interface ImportMetaEnv {
   readonly PUBLIC_TAX_ID?: string;
   readonly PUBLIC_HOSTING?: string;
   readonly PUBLIC_REGISTRY?: string;
-  readonly PUBLIC_AWIN_MID?: string;
-  readonly PUBLIC_AWIN_AFFID?: string;
-  readonly PUBLIC_AFFILIATE_DESTINATION?: string;
+  readonly PUBLIC_AWIN_URL?: string;
   readonly PUBLIC_GTM_ID?: string;
   readonly PUBLIC_GA_ID?: string;
   readonly PUBLIC_CLARITY_ID?: string;

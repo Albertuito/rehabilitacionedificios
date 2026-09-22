@@ -8,7 +8,7 @@ interface JsonLd {
 
 export function organizationNode(): Record<string, unknown> {
   return {
-    '@type': ['Organization', 'OnlineBusiness'],
+    '@type': 'Organization',
     '@id': `${siteConfig.siteUrl}/#organization`,
     name: siteConfig.brand.name,
     url: siteConfig.siteUrl,
@@ -22,6 +22,24 @@ export function websiteNode(): Record<string, unknown> {
     '@id': `${siteConfig.siteUrl}/#website`,
     name: siteConfig.brand.name,
     url: siteConfig.siteUrl,
+    publisher: { '@id': `${siteConfig.siteUrl}/#organization` },
+    inLanguage: siteConfig.language,
+  };
+}
+
+export function webPageNode(input: {
+  name: string;
+  description: string;
+  path: string;
+  type?: 'WebPage' | 'CollectionPage';
+}): Record<string, unknown> {
+  return {
+    '@type': input.type ?? 'WebPage',
+    '@id': `${absoluteUrl(input.path)}#webpage`,
+    name: input.name,
+    description: input.description,
+    url: absoluteUrl(input.path),
+    isPartOf: { '@id': `${siteConfig.siteUrl}/#website` },
     publisher: { '@id': `${siteConfig.siteUrl}/#organization` },
     inLanguage: siteConfig.language,
   };
@@ -59,18 +77,6 @@ export function articleNode(input: {
     publisher: { '@id': `${siteConfig.siteUrl}/#organization` },
     image: input.image,
     mainEntityOfPage: absoluteUrl(input.path),
-  };
-}
-
-export function serviceNode(input: { name: string; description: string; path: string }): Record<string, unknown> {
-  return {
-    '@type': 'Service',
-    name: input.name,
-    description: input.description,
-    provider: { '@id': `${siteConfig.siteUrl}/#organization` },
-    areaServed: 'ES',
-    serviceType: 'Información y acceso a profesionales de rehabilitación de edificios',
-    url: absoluteUrl(input.path),
   };
 }
 

@@ -6,7 +6,7 @@ import SiteFooter from '../../components/layout/SiteFooter.astro';
 import AffiliateCta from '../../components/conversion/AffiliateCta.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import { absoluteUrl, siteConfig } from '../../config/site.config';
-import { breadcrumbNode, jsonLd, organizationNode, websiteNode } from '../../lib/schema';
+import { breadcrumbNode, jsonLd, organizationNode, webPageNode, websiteNode } from '../../lib/schema';
 
 const guides = (await getCollection('guides')).sort(
   (a, b) => b.data.updatedAt.getTime() - a.data.updatedAt.getTime(),
@@ -18,6 +18,12 @@ const schema = jsonLd([
     { name: 'Inicio', path: '/' },
     { name: 'Guías', path: '/guias/' },
   ]),
+  webPageNode({
+    name: 'Guías de rehabilitación de edificios',
+    description: 'Costes, permisos, ITE, ayudas y criterios para comparar empresas.',
+    path: '/guias/',
+    type: 'CollectionPage',
+  }),
 ]);
 ---
 

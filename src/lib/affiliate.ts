@@ -1,35 +1,53 @@
-import { affiliateConfig, DEFAULT_AFFILIATE_DESTINATION } from '../config/affiliate.config';
+import { affiliateConfig, isAwinTrackingUrl } from '../config/affiliate.config';
 import { getClickRef } from '../data/tracking';
+import { awinConsentValue, type ConsentChoice } from './consent';
 
-export function resolveAffiliateDestination(raw: string): string {
+export interface AffiliateContext {
+  service?: string;
+  location?: string;
+  placement?: string;
+  consent?: ConsentChoice;
+}
+
+export function hasAffiliateTracking(url = affiliateConfig.trackingUrl): boolean {
+  return Boolean(url) && isAwinTrackingUrl(url);
+}
+
+/** Destino directo (Habitissimo) no cuenta como tracking. Solo Awin/tidd.ly. */
+export function resolveAffiliateDestination(raw: string): string | null {
   const trimmed = (raw ?? '').trim();
-  const href = trimmed
-    ? /^https?:\/\//i.test(trimmed)
-      ? trimmed
-      : `https://${trimmed}`
-    : DEFAULT_AFFILIATE_DESTINATION;
+  if (!trimmed) return null;
   try {
-    return new URL(href).toString();
+    const url = new URL(/^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`);
+    return isAwinTrackingUrl(url.toString()) ? url.toString() : null;
   } catch {
-    return DEFAULT_AFFILIATE_DESTINATION;
+    return null;
   }
 }
 
-export function buildAffiliateUrl(clickref: string): string {
-  const merchantId = affiliateConfig.merchantId.trim();
-  const affiliateId = affiliateConfig.affiliateId.trim();
-  const destination = resolveAffiliateDestination(affiliateConfig.destinationUrl);
-  if (!merchantId || !affiliateId) {
-    const fallback = new URL(destination);
-    fallback.searchParams.set('clickref', clickref);
-    return fallback.toString();
-  }
-  const params = new URLSearchParams();
-  params.set('awinmid', merchantId);
-  params.set('awinaffid', affiliateId);
-  params.set('clickref', clickref);
-  params.set('ued', destination);
-  return `${affiliateConfig.awinBase}?${params.toString()}`;
+export function applyAwinConsent(href: string, consent: ConsentChoice): string {
+  const url = new URL(href);
+  const cons = awinConsentValue(consent);
+  if (cons) url.searchParams.set('cons', cons);
+  else url.searchParams.delete('cons');
+  return url.toString();
+}
+
+export function buildAffiliateUrl(
+  clickref: string,
+  extra: AffiliateContext = {},
+  trackingUrl = affiliateConfig.trackingUrl,
+): string | null {
+  if (!hasAffiliateTracking(trackingUrl)) return null;
+  const url = new URL(trackingUrl);
+  url.searchParams.set('clickref', clickref);
+  if (extra.placement) url.searchParams.set('clickref2', extra.placement);
+  const context = [extra.service, extra.location].filter(Boolean).join('|');
+  if (context) url.searchParams.set('clickref3', context);
+  const cons = awinConsentValue(extra.consent ?? null);
+  if (cons) url.searchParams.set('cons', cons);
+  else url.searchParams.delete('cons');
+  return url.toString();
 }
 
 export function assertClickref(clickref: string): void {

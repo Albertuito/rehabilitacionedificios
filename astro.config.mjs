@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import preact from '@astrojs/preact';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import { siteConfig } from './site.config';
+import { shouldIndex, siteConfig } from './site.config';
 import tailwindcss from '@tailwindcss/vite';
 
 const geo301 = {
@@ -51,6 +51,7 @@ export default defineConfig({
     mdx(),
     sitemap({
       filter: (page) =>
+        shouldIndex() &&
         !['/design-system', '/aviso-legal', '/privacidad', '/cookies', '/404'].some((part) => page.includes(part)),
     }),
   ],

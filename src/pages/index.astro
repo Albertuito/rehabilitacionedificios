@@ -12,8 +12,7 @@ import { affiliateConfig } from '../config/affiliate.config';
 import { services } from '../data/services';
 import { locations } from '../data/locations';
 import { pricingMeta } from '../data/pricing';
-import { faqNode, jsonLd, organizationNode, websiteNode } from '../lib/schema';
-import hero from '../assets/rehab/hero-fachada.jpg';
+import { faqNode, jsonLd, organizationNode, webPageNode, websiteNode } from '../lib/schema';
 import andamio from '../assets/rehab/andamio.jpg';
 import edificio from '../assets/rehab/edificio.jpg';
 
@@ -32,7 +31,17 @@ const faqs = [
     answer: pricingMeta.disclaimer,
   },
 ];
-const schema = jsonLd([organizationNode(), websiteNode(), faqNode(faqs)]);
+const schema = jsonLd([
+  organizationNode(),
+  websiteNode(),
+  webPageNode({
+    name: 'Compara empresas de rehabilitación de edificios',
+    description:
+      'Compara empresas especializadas en fachadas, cubiertas, aislamiento, accesibilidad y rehabilitación integral para comunidades.',
+    path: '/',
+  }),
+  faqNode(faqs),
+]);
 const needs = [
   { href: '/servicios/rehabilitacion-integral-edificios/', label: 'Rehabilitación integral', need: 'integral' },
   { href: '/servicios/rehabilitacion-fachadas/', label: 'Fachada', need: 'fachada' },
@@ -61,8 +70,8 @@ const process = [
 ---
 
 <Base
-  title={`Encuentra profesionales para rehabilitar tu edificio | ${siteConfig.brand.name}`}
-  description="Cuéntanos qué necesita tu edificio y solicita presupuestos a empresas especializadas en fachadas, cubiertas, aislamiento, accesibilidad y rehabilitación integral. Gratis y sin compromiso."
+  title={`Compara empresas de rehabilitación de edificios | ${siteConfig.brand.name}`}
+  description="Compara empresas especializadas en fachadas, cubiertas, aislamiento, accesibilidad y rehabilitación integral. Recibe presupuestos para tu comunidad, gratis y sin compromiso."
   canonical={absoluteUrl('/')}
   jsonLd={schema}
 >
@@ -71,13 +80,13 @@ const process = [
     <section class="home-hero ed-container">
       <div class="home-hero__copy">
         <p class="ed-kicker">Rehabilitación de edificios y comunidades</p>
-        <h1 class="ed-h1">Encuentra profesionales para rehabilitar tu edificio</h1>
+        <h1 class="ed-h1">Compara empresas de rehabilitación de edificios</h1>
         <p class="ed-lead">
-          Cuéntanos qué necesita tu edificio y solicita presupuestos a empresas especializadas en fachadas, cubiertas,
+          Describe la actuación de tu comunidad y recibe presupuestos de empresas especializadas en fachadas, cubiertas,
           aislamiento, accesibilidad y rehabilitación integral. Gratis y sin compromiso.
         </p>
         <div class="home-hero__cta">
-          <AffiliateCta clickref="home_hero_rehabilitacion" label="Solicitar presupuestos gratis" placement="hero" />
+          <AffiliateCta clickref="home_hero_rehabilitacion" label="Recibir presupuestos" placement="hero" />
           <a class="ed-link" href="/servicios/">Ver tipos de rehabilitación</a>
         </div>
         <p class="ed-meta">{affiliateConfig.disclosure}</p>
@@ -85,8 +94,8 @@ const process = [
       </div>
       <div class="home-hero__photo">
         <Figure
-          src={hero}
-          alt="Edificio residencial urbano, ejemplo de tipología donde suele intervenirse la envolvente"
+          src={edificio}
+          alt="Bloques residenciales, ejemplo de parque de vivienda donde se rehabilitan fachadas y cubiertas"
           caption="Ejemplo de tipología residencial. No es un proyecto ejecutado por esta web."
           credit="Unsplash"
           priority
@@ -189,7 +198,9 @@ const process = [
             ))
           }
         </ol>
-        <AffiliateCta clickref="home_mid_proceso" label="Solicitar presupuestos para mi edificio" placement="proceso" />
+        <div class="home-process__cta">
+          <AffiliateCta clickref="home_mid_proceso" label="Recibir presupuestos" placement="proceso" />
+        </div>
       </div>
     </section>
 
@@ -224,7 +235,7 @@ const process = [
 
     <section class="ed-section band-white" id="calculadora">
       <div class="ed-container">
-        <RehabCalc client:visible clickref="home_calculator_result" tone="ivory" />
+        <RehabCalc client:load clickref="home_calculator_result" tone="ivory" />
       </div>
     </section>
 
@@ -364,6 +375,10 @@ const process = [
     color: var(--color-terracotta);
   }
 
+  .home-process__cta {
+    width: fit-content;
+  }
+
   .home-process__steps {
     list-style: none;
     margin: 0;
@@ -461,9 +476,9 @@ const process = [
       grid-column: 5 / span 8;
     }
 
-    .home-process .ed-btn {
+    .home-process__cta {
       grid-column: 5 / span 8;
-      justify-self: start;
+      width: fit-content;
     }
 
     .home-guides__feature {

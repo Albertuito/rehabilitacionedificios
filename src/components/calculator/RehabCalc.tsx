@@ -1,7 +1,9 @@
-import { useMemo, useState } from 'preact/hooks';
+import { useEffect, useMemo, useState } from 'preact/hooks';
 import { locations } from '../../data/locations';
 import { estimateRehab, formatEuro } from '../../lib/pricing';
 import { buildAffiliateUrl } from '../../lib/affiliate';
+import { affiliateConfig } from '../../config/affiliate.config';
+import { readConsentFromDocument, type ConsentChoice } from '../../lib/consent';
 import type { RehabAction } from '../../data/pricing';
 
 interface Props {
@@ -20,20 +22,40 @@ const actions: { id: RehabAction; label: string }[] = [
   { id: 'patios', label: 'Patios y zonas comunes' },
 ];
 
+function emit(name: string, detail: Record<string, unknown>) {
+  window.dispatchEvent(new CustomEvent(name, { detail }));
+}
+
 export default function RehabCalc({ clickref, tone = 'ivory' }: Props) {
   const [action, setAction] = useState<RehabAction>('fachada');
   const [floors, setFloors] = useState(5);
   const [area, setArea] = useState(400);
   const [condition, setCondition] = useState<'aceptable' | 'deteriorado' | 'grave'>('deteriorado');
   const [scaffolding, setScaffolding] = useState(true);
-  const [province, setProvince] = useState('madrid');
+  const [province, setProvince] = useState('');
+  const [consent, setConsent] = useState<ConsentChoice>(null);
   const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    setConsent(readConsentFromDocument());
+    const onConsent = (event: Event) => {
+      const detail = (event as CustomEvent<ConsentChoice>).detail;
+      setConsent(detail ?? readConsentFromDocument());
+    };
+    window.addEventListener('ri:consent', onConsent);
+    return () => window.removeEventListener('ri:consent', onConsent);
+  }, []);
   const dark = tone === 'charcoal';
   const result = useMemo(
     () => estimateRehab({ action, floors, area, condition, scaffolding, province }),
     [action, floors, area, condition, scaffolding, province],
   );
-  const href = buildAffiliateUrl(clickref);
+  const href = buildAffiliateUrl(clickref, {
+    service: action,
+    location: province || undefined,
+    placement: 'calculator',
+    consent,
+  });
 
   return (
     <form
@@ -41,11 +63,9 @@ export default function RehabCalc({ clickref, tone = 'ivory' }: Props) {
       onSubmit={(event) => {
         event.preventDefault();
         setDone(true);
-        window.dispatchEvent(
-          new CustomEvent('ri:calculator_complete', {
-            detail: { action, floors, area, province },
-          }),
-        );
+        const detail = { action, floors, area, province };
+        emit('ri:calculator_submit', detail);
+        emit('ri:calculator_complete', detail);
       }}
     >
       <p class="ed-kicker" style={dark ? { color: '#c5cdc8' } : undefined}>
@@ -57,7 +77,14 @@ export default function RehabCalc({ clickref, tone = 'ivory' }: Props) {
       <div class="ed-grid">
         <label class="ed-field col-span-12 md:col-span-4">
           Tipo de actuación
-          <select value={action} onChange={(event) => setAction(event.currentTarget.value as RehabAction)}>
+          <select
+            value={action}
+            onChange={(event) => {
+              const next = event.currentTarget.value as RehabAction;
+              setAction(next);
+              emit('ri:service_select', { service: next });
+            }}
+          >
             {actions.map((item) => (
               <option value={item.id}>{item.label}</option>
             ))}
@@ -81,7 +108,15 @@ export default function RehabCalc({ clickref, tone = 'ivory' }: Props) {
         </label>
         <label class="ed-field col-span-12 md:col-span-6">
           Provincia o ciudad
-          <select value={province} onChange={(event) => setProvince(event.currentTarget.value)}>
+          <select
+            value={province}
+            onChange={(event) => {
+              const next = event.currentTarget.value;
+              setProvince(next);
+              if (next) emit('ri:location_select', { location: next });
+            }}
+          >
+            <option value="">Elige provincia</option>
             {locations.map((item) => (
               <option value={item.slug}>{item.name}</option>
             ))}
@@ -96,6 +131,9 @@ export default function RehabCalc({ clickref, tone = 'ivory' }: Props) {
         </label>
       </div>
       <p class={dark ? 'mt-6 text-paper/70' : 'mt-6 text-muted'}>{result.disclaimer}</p>
+      <p class={dark ? 'mt-2 text-paper/70' : 'mt-2 text-muted'}>
+        Bandas de partida: {result.unitLow}–{result.unitHigh} {result.unit}.
+      </p>
       <button class="ed-btn ed-btn-primary mt-4" type="submit">
         Calcular intervalo
       </button>
@@ -110,19 +148,30 @@ export default function RehabCalc({ clickref, tone = 'ivory' }: Props) {
               <li>{item}</li>
             ))}
           </ul>
-          <a
-            class="ed-btn ed-btn-primary mt-8"
-            href={href}
-            rel="sponsored noopener"
-            target="_blank"
-            data-clickref={clickref}
-            data-event="affiliate_click"
-            data-placement="calculator"
-            data-location={province}
-            data-service={action}
-          >
-            Obtén presupuestos adaptados a tu edificio
-          </a>
+          <p class="mt-6 font-semibold">No incluye</p>
+          <ul class="mt-2 max-w-prose pl-5">
+            {result.exclusions.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+          {href ? (
+            <a
+              class="ed-btn ed-btn-primary mt-8"
+              href={href}
+              rel={affiliateConfig.rel}
+              data-clickref={clickref}
+              data-event="affiliate_click"
+              data-placement="calculator"
+              data-location={province}
+              data-service={action}
+            >
+              Obtén presupuestos adaptados a tu edificio
+            </a>
+          ) : (
+            <span class="ed-btn ed-btn-primary is-disabled mt-8" aria-disabled="true" title={affiliateConfig.disabledReason}>
+              Obtén presupuestos adaptados a tu edificio
+            </span>
+          )}
         </div>
       )}
     </form>

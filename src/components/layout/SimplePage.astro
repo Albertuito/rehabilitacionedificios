@@ -4,7 +4,7 @@ import SiteHeader from './SiteHeader.astro';
 import SiteFooter from './SiteFooter.astro';
 import Breadcrumbs from '../seo/Breadcrumbs.astro';
 import { absoluteUrl } from '../../config/site.config';
-import { breadcrumbNode, jsonLd, organizationNode, websiteNode } from '../../lib/schema';
+import { breadcrumbNode, jsonLd, organizationNode, webPageNode, websiteNode } from '../../lib/schema';
 
 interface Props {
   title: string;
@@ -17,6 +17,7 @@ const { title, description, h1, path, robots } = Astro.props;
 const schema = jsonLd([
   organizationNode(),
   websiteNode(),
+  webPageNode({ name: h1, description, path }),
   breadcrumbNode([
     { name: 'Inicio', path: '/' },
     { name: h1, path },

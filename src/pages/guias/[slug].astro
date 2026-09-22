@@ -10,7 +10,7 @@ import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import { absoluteUrl } from '../../config/site.config';
 import { affiliateConfig } from '../../config/affiliate.config';
 import { getPerson } from '../../data/authors';
-import { articleNode, breadcrumbNode, faqNode, jsonLd, organizationNode, websiteNode } from '../../lib/schema';
+import { articleNode, breadcrumbNode, faqNode, jsonLd, organizationNode, webPageNode, websiteNode } from '../../lib/schema';
 
 export async function getStaticPaths() {
   const entries = await getCollection('guides');
@@ -34,6 +34,7 @@ const schema = jsonLd([
     { name: 'Guías', path: '/guias/' },
     { name: data.h1, path: data.path },
   ]),
+  webPageNode({ name: data.h1, description: data.description, path: data.path }),
   articleNode({
     headline: data.h1,
     description: data.description,

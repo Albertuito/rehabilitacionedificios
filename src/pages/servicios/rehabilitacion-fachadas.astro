@@ -11,8 +11,7 @@ import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
 import { absoluteUrl } from '../../config/site.config';
 import { affiliateConfig } from '../../config/affiliate.config';
 import { getService, services } from '../../data/services';
-import { breadcrumbNode, faqNode, jsonLd, organizationNode, serviceNode, websiteNode } from '../../lib/schema';
-import hero from '../../assets/rehab/hero-fachada.jpg';
+import { breadcrumbNode, faqNode, jsonLd, organizationNode, webPageNode, websiteNode } from '../../lib/schema';
 import andamio from '../../assets/rehab/andamio.jpg';
 import detalle from '../../assets/rehab/detalle.jpg';
 
@@ -30,7 +29,7 @@ const schema = jsonLd([
     { name: 'Servicios', path: '/servicios/' },
     { name: data.h1, path: data.path },
   ]),
-  serviceNode({ name: data.h1, description: data.description, path: data.path }),
+  webPageNode({ name: data.h1, description: data.description, path: data.path }),
   faqNode(data.faqs),
 ]);
 ---
@@ -53,17 +52,6 @@ const schema = jsonLd([
       ]}
     />
 
-    <Figure
-      src={hero}
-      alt="Fachada de edificio residencial, ejemplo de envolvente donde se intervienen revestimientos y anclajes"
-      caption="Ejemplo de envolvente. No es un proyecto ejecutado por esta web."
-      credit="Unsplash"
-      bleed
-      priority
-      ratio="16 / 7"
-      sizes="100vw"
-    />
-
     <section class="ed-container fachada-hero">
       <p class="ed-kicker">Servicio · envolvente</p>
       <h1 class="ed-h1">{data.h1}</h1>
@@ -74,6 +62,17 @@ const schema = jsonLd([
       </div>
       <p class="ed-meta">{affiliateConfig.disclosure}</p>
     </section>
+
+    <Figure
+      src={andamio}
+      alt="Andamio en un edificio residencial, ejemplo de medio auxiliar en rehabilitación de fachada"
+      caption="Ejemplo de envolvente y medios auxiliares. No es un proyecto ejecutado por esta web."
+      credit="Unsplash"
+      bleed
+      priority
+      ratio="16 / 7"
+      sizes="100vw"
+    />
 
     <section class="ed-section-s band-white">
       <div class="ed-container">

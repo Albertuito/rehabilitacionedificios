@@ -1,25 +1,37 @@
 ---
 import { buildAffiliateUrl, assertClickref } from '../../lib/affiliate';
+import { affiliateConfig } from '../../config/affiliate.config';
 
 interface Props {
   clickref: string;
   label: string;
   class?: string;
   placement?: string;
+  service?: string;
+  location?: string;
 }
-const { clickref, label, class: className = 'btn btn-primary', placement = 'inline' } = Astro.props;
+const { clickref, label, class: className = 'ed-link', placement = 'inline', service, location } = Astro.props;
 assertClickref(clickref);
-const href = buildAffiliateUrl(clickref);
+const href = buildAffiliateUrl(clickref, { placement, service, location });
 ---
 
-<a
-  class={className}
-  href={href}
-  rel="sponsored noopener"
-  target="_blank"
-  data-event="affiliate_click"
-  data-clickref={clickref}
-  data-placement={placement}
->
-  {label}
-</a>
+{
+  href ? (
+    <a
+      class={className}
+      href={href}
+      rel={affiliateConfig.rel}
+      data-event="affiliate_click"
+      data-clickref={clickref}
+      data-placement={placement}
+      data-service={service ?? ''}
+      data-location={location ?? ''}
+    >
+      {label}
+    </a>
+  ) : (
+    <span class={`${className} is-disabled`} aria-disabled="true" title={affiliateConfig.disabledReason}>
+      {label}
+    </span>
+  )
+}

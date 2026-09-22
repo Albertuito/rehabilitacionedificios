@@ -588,7 +588,7 @@ const variants = ['split-climate', 'problems-first', 'permits-first', 'stock-fir
 for (const loc of locations) {
   const copy = geoCopy[loc.slug];
   if (!copy) throw new Error(`Falta copy para ${loc.slug}`);
-  const extra = `El parque se describe aquí como ${loc.stock}, bajo un clima ${loc.climate}. El hilo de esta landing es ${loc.angle}. ${loc.permitHint} Los importes que veas en calculadoras o tablas de esta web son orientativos: cada edificio necesita medición de fachada o cubierta, medios auxiliares y, si procede, proyecto. Revisión editorial ${stamp.updatedAt}. No somos una constructora ni tenemos delegación en ${loc.name}: la solicitud de presupuesto se completa a través de Habitissimo para que profesionales de la zona puedan contactar.`;
+  const extra = `${loc.stock.charAt(0).toUpperCase()}${loc.stock.slice(1)}. Clima ${loc.climate}. ${loc.angle.charAt(0).toUpperCase()}${loc.angle.slice(1)}. ${loc.permitHint} Los importes de las calculadoras son orientativos: cada edificio necesita medición, medios auxiliares y, si procede, proyecto. Revisión editorial ${stamp.updatedAt}. No somos constructora ni tenemos delegación en ${loc.name}.`;
   const body = `## Contexto local
 
 ${copy.intro}

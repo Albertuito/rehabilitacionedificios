@@ -3,7 +3,7 @@ export const geoCopy = {
   madrid: {
     title: 'Rehabilitación de edificios en Madrid: comunidades e ITE | Rehabilita tu Edificio',
     description: 'Fachadas, cubiertas y andamios en comunidades madrileñas. Compara empresas especializadas según el estado del bloque y las reglas municipales de ocupación de vía.',
-    h1: 'Rehabilitar un edificio en Madrid empieza por la ITE y por el andamio en calle estrecha',
+    h1: 'Rehabilitación de edificios en Madrid',
     keyword: 'rehabilitación de edificios Madrid',
     answer: 'En Madrid, la rehabilitación de un edificio de comunidad suele girar alrededor de la inspección técnica, de fachadas de ladrillo o aplacado de los años 60–80 y de la ocupación de acera con andamio. El mismo metraje de fachada no cuesta igual en un ensanche con vado fácil que en un interior de manzana sin espacio de carga.',
     faqs: [
@@ -323,7 +323,7 @@ Esta web informa y conecta con profesionales, no pica fachadas.`,
   cadiz: {
     title: 'Rehabilitación de edificios en Cádiz: viento y casco intramuros | Rehabilita tu Edificio',
     description: 'Salitre, viento y calles estrechas del casco de Cádiz. Compara medios auxiliares y sistemas de fachada para comunidades intramuros o de ensanche.',
-    h1: 'Rehabilitar en Cádiz: intramuros el andamio es el presupuesto; fuera, el salitre',
+    h1: 'Rehabilitación de edificios en Cádiz',
     keyword: 'rehabilitación de edificios Cádiz',
     answer: 'En Cádiz el casco intramuros limita camiones y andamios; el resto de la ciudad añade viento y salitre. Comparar un m² de mortero entre intramuros y ensanche sin hablar de medios auxiliares es inútil.',
     faqs: [

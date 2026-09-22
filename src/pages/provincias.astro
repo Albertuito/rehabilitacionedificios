@@ -6,7 +6,7 @@ import AffiliateCta from '../components/conversion/AffiliateCta.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
 import { absoluteUrl, siteConfig } from '../config/site.config';
 import { locations } from '../data/locations';
-import { breadcrumbNode, jsonLd, organizationNode, websiteNode } from '../lib/schema';
+import { breadcrumbNode, jsonLd, organizationNode, webPageNode, websiteNode } from '../lib/schema';
 
 const schema = jsonLd([
   organizationNode(),
@@ -15,6 +15,12 @@ const schema = jsonLd([
     { name: 'Inicio', path: '/' },
     { name: 'Provincias', path: '/provincias/' },
   ]),
+  webPageNode({
+    name: 'Rehabilitación de edificios por provincia',
+    description: 'Directorio de 30 ubicaciones urbanas para comparar empresas locales.',
+    path: '/provincias/',
+    type: 'CollectionPage',
+  }),
 ]);
 ---
 
